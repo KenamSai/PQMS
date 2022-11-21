@@ -23,7 +23,7 @@ class SideBar extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 3),
                 child: Text(
-                  "Saiteja Kenam",
+                  "Saiteja_Kenam",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
