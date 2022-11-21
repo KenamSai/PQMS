@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:pqms/UI/Card_Component.dart';
 import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/UI/Text_Component.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -88,15 +89,30 @@ class _DashboardState extends State<Dashboard> {
                   color: Colors.black.withOpacity(0.1),
                   child: Column(
                     children: [
-                      CardComponent(
-                          TextData: "Import Release Order",
-                          icon: "assets/import.png"),
-                      CardComponent(
-                          TextData: "Export Applications",
-                          icon: "assets/export.png"),
-                      CardComponent(
-                          TextData: "View Saved Applications",
-                          icon: "assets/export.png"),
+                      GestureDetector(
+                        onTap: (() {
+                          Navigator.pushNamed(context, AppRoutes.importpermit);
+                        }),
+                        child: CardComponent(
+                            TextData: "Import Release Order",
+                            icon: "assets/import.png"),
+                      ),
+                      GestureDetector(
+                         onTap: (() {
+                          Navigator.pushNamed(context, AppRoutes.exportpermit);
+                        }),
+                        child: CardComponent(
+                            TextData: "Export Applications",
+                            icon: "assets/export.png"),
+                      ),
+                      GestureDetector(
+                         onTap: (() {
+                          Navigator.pushNamed(context, AppRoutes.viewpermit);
+                        }),
+                        child: CardComponent(
+                            TextData: "View Saved Applications",
+                            icon: "assets/export.png"),
+                      ),
                     ],
                   ),
                 ),
