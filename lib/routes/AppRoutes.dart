@@ -6,4 +6,5 @@ class AppRoutes {
   static const importpermit = "/Import";
   static const exportpermit = "/exportpermit ";
   static const viewpermit = "/viewpermit";
+  
 }

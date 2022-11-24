@@ -1,5 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
+import 'package:pqms/models/login/login_request.dart';
+import 'package:pqms/models/login/login_response.dart';
 import 'package:pqms/routes/AppRoutes.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,6 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
+  TextEditingController _username = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,6 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Container(
                         color: Colors.white,
                         child: TextField(
+                          controller: _username,
+
+                          
                           decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
@@ -74,11 +86,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Container(
                         color: Colors.white,
                         child: TextField(
+                          controller: _password,
                           obscureText: !_isPasswordVisible,
                           decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
                             labelText: "Password",
+                          
                             labelStyle: TextStyle(
                               color: Colors.grey,
                             ),
@@ -108,7 +122,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.green[900],
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context,AppRoutes.dashboardpage);
+                            if (validation()) {
+                              getLoginResponse();
+                            }
+                            
                           },
                           child: Text(
                             "Login",
@@ -133,4 +150,71 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  bool validation() {
+    if (_username.text.isEmpty) {
+      //showAlert();
+      return false;
+    } else if (_password.text.isEmpty) {
+      //showAlert();
+      return false;
+    }
+
+    return true;
+  }
+  Future<void> getLoginResponse() async {
+  final requestUrl = BaseUrl.uat_base_url + EndPoints.login;
+  final loginrequest = LoginRequest();
+  loginrequest.iMEI = "7b1fe3550ff840b2";
+  loginrequest.deviceId = "7b1fe3550ff840b2";
+  
+  loginrequest.username = _username.text.toString().trim();
+  loginrequest.password = _password.text.toString().trim();
+  loginrequest.toJson();
+  print(loginrequest.toJson());
+  final requestPayload = loginrequest.toJson();
+  Map<String, String> requestHeaders = {
+    'clientId': 'Client123Cgg',
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Access-Control-Allow-Origin': '*'
+  };
+  final _dioObject = Dio();
+
+  try {
+    final _response = await _dioObject.post(
+        requestUrl,
+        data: requestPayload, 
+        options: Options(headers: requestHeaders));
+        //converting response from json to model cls
+     final loginResponse = LoginResponse.fromJson(_response.data);
+    //  print(_response.data);
+    //  print(loginResponse.statusCode);
+    //   print(loginResponse.data?.userName);
+     if(loginResponse.statusCode==200)
+     {
+      
+         SharedPreferencesClass().writeTheData(PreferenceConst.username,loginResponse.data?.userName);
+         SharedPreferencesClass().writeTheData(PreferenceConst.token,loginResponse.data?.token);
+        //  var  read = await SharedPreferencesClass().readTheData(PreferenceConst.username);
+        //  print(read);
+        Navigator.pushNamed(context, AppRoutes.dashboardpage);
+         
+      
+     }
+     else if(loginResponse.statusCode==204)
+     {
+      //Alert
+     } 
+    
+  } on DioError catch (e) {
+   print(e.message);
+   if(e.response?.statusCode==400||e.response?.statusCode==500)
+   {
+    //Alert
+   }
+
+  }
 }
+
+}
+
