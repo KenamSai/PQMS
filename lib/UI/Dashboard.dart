@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:pqms/UI/Card_Component.dart';
+import 'package:pqms/reusable/Card_Component.dart';
 import 'package:pqms/UI/SideBar.dart';
-import 'package:pqms/UI/Text_Component.dart';
+import 'package:pqms/reusable/Text_Component.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
 class Dashboard extends StatefulWidget {
@@ -20,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
       drawer: SideBar(),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 5, 140, 9),
+        backgroundColor: Colors.green[900],
         title: Text(
           "UAT-PQMS",
         ),

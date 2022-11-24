@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Container(
               margin:
-                  EdgeInsets.only(top: 80, left: 50, right: 50, bottom: 150),
+                  EdgeInsets.only(top: 80, left: 50, right: 50, bottom: 50),
               width: 100,
               height: 100,
               decoration: BoxDecoration(
@@ -38,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Container(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     "Officer Login",

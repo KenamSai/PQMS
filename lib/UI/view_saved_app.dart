@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
-import '../routes/AppRoutes.dart';
-import 'Card_Component.dart';
-import 'Text_Component.dart';
+import '../reusable/Card_Component.dart';
+import '../reusable/Text_Component.dart';
 
 class ViewSavedApplication extends StatefulWidget {
   const ViewSavedApplication({super.key});
