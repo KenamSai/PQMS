@@ -3,6 +3,8 @@ import 'package:pqms/reusable/Card_Component.dart';
 import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/reusable/Text_Component.dart';
 import 'package:pqms/routes/AppRoutes.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -12,6 +14,23 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  String rolename = "";
+
+  @override
+  initState() {
+    super.initState();
+    initial();
+  }
+
+  Future<void> initial() async {
+    String temp =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    print("temp:" + temp);
+    setState(() {
+      rolename = temp;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +91,7 @@ class _DashboardState extends State<Dashboard> {
                 height: 10,
               ),
               TextComponent(
-                TextData: "Saiteja Kenam",
+                TextData: rolename,
                 fontSize: 20,
               ),
               SizedBox(
@@ -96,7 +115,7 @@ class _DashboardState extends State<Dashboard> {
                             icon: "assets/import.png"),
                       ),
                       GestureDetector(
-                         onTap: (() {
+                        onTap: (() {
                           Navigator.pushNamed(context, AppRoutes.exportpermit);
                         }),
                         child: CardComponent(
@@ -104,7 +123,7 @@ class _DashboardState extends State<Dashboard> {
                             icon: "assets/export.png"),
                       ),
                       GestureDetector(
-                         onTap: (() {
+                        onTap: (() {
                           Navigator.pushNamed(context, AppRoutes.viewpermit);
                         }),
                         child: CardComponent(

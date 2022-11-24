@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
 
-class SideBar extends StatelessWidget {
+class SideBar extends StatefulWidget {
   const SideBar({super.key});
+
+  @override
+  State<SideBar> createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> {
+  String role ="";
+  @override
+  void initState() {
+    super.initState();
+    initial();
+  }
+  
+   Future<void> initial() async {
+    String temp =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    print("temp:" + temp);
+    setState(() {
+      role = temp;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +46,7 @@ class SideBar extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 3),
                 child: Text(
-                  "Saiteja_Kenam",
+                  role,
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -83,3 +106,5 @@ class SideBar extends StatelessWidget {
     );
   }
 }
+
+
