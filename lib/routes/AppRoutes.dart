@@ -6,5 +6,6 @@ class AppRoutes {
   static const importpermit = "/Import";
   static const exportpermit = "/exportpermit ";
   static const viewpermit = "/viewpermit";
-  
+  static const Splash="/SplashScreen";
+  static const bgreusable="/bg Reusable";
 }

@@ -1,10 +1,10 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:pqms/ModelClass/SplashModel.dart';
 import 'package:flutter/material.dart';
+import 'package:pqms/ModelClass/SplashModel.dart';
 import 'package:pqms/UI/appVersion.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,12 +30,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    //network();
-    call();
+    network();
+    //call();
   }
 
-call(){Navigator.pushNamed(context, AppRoutes.Login);}
+  call() {
+    Navigator.pushNamed(context, AppRoutes.Login);
+  }
   network() async {
     var result = await Connectivity().checkConnectivity();
     if (result == ConnectivityResult.mobile ||
@@ -75,11 +76,10 @@ call(){Navigator.pushNamed(context, AppRoutes.Login);}
       );
 
       final SplashResponse = SplashModelClass.fromJson(_response.data);
-   
-      if (SplashResponse.statusCode == 200) {
-       
-        final versionNumber = await appVersion().getAppVersion();
 
+      if (SplashResponse.statusCode == 200) {
+
+        final versionNumber = await appVersion().getAppVersion();
 
         if (SplashResponse.data?.versionNumber != null &&
             versionNumber == SplashResponse.data?.versionNumber) {
