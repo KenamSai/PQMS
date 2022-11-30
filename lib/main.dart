@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/UI/Dashboard.dart';
 import 'package:pqms/routes/AppPages.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      builder: EasyLoading.init(),
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/services.dart';
 
 class reusableAlert extends StatelessWidget {
   const reusableAlert(
@@ -10,7 +9,9 @@ class reusableAlert extends StatelessWidget {
       required this.icon,
       this.textColor,
       this.titleTextColor,
-      this.iconColor});
+      this.iconColor,
+      this.Yes,
+      this.No});
 
   final String title;
   final String message;
@@ -18,6 +19,8 @@ class reusableAlert extends StatelessWidget {
   final Color? textColor;
   final Color? titleTextColor;
   final Color? iconColor;
+  final String? Yes;
+  final String? No;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -39,6 +42,25 @@ class reusableAlert extends StatelessWidget {
           color: textColor ?? Colors.black,
         ),
       ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TextButton(
+              onPressed: (() {
+                SystemNavigator.pop();
+              }),
+              child: Text(Yes ?? ""),
+            ),
+            TextButton(
+              onPressed: (() {
+                Navigator.pop(context);
+              }),
+              child: Text(No ?? ""),
+            )
+          ],
+        )
+      ],
     );
   }
 }

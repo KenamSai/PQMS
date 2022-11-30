@@ -1,0 +1,339 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:pqms/ModelClass/ExportApplicationModelClass.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
+
+class ExportApplicationDetails extends StatefulWidget {
+  const ExportApplicationDetails({super.key});
+
+  @override
+  State<ExportApplicationDetails> createState() =>
+      _ExportApplicationDetailsState();
+}
+
+class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
+  DataApplicationDetails? exportmodelDetails;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("UAT-PQMS"),
+        backgroundColor: Colors.green[900],
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName("/Dashboard"),
+              );
+            },
+            child: Icon(
+              Icons.home,
+              size: 50,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: ExactAssetImage("assets/bg.png"),
+          ),
+        ),
+        child: SingleChildScrollView(
+          physics: ScrollPhysics(),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Import Application Details",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    RowComponent(
+                      "Application Id",
+                      exportmodelDetails?.applicationId,
+                    ),
+                    RowComponent(
+                      "Exporter Name",
+                      exportmodelDetails?.importerName,
+                    ),
+                    RowComponent(
+                      "Exporter Address",
+                      exportmodelDetails?.importerAddress,
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    RowComponent(
+                      "Importer Name",
+                      exportmodelDetails?.exporterName,
+                    ),
+                    RowComponent(
+                      "Importer Address",
+                      exportmodelDetails?.exporterAddress,
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    RowComponent(
+                      "Export Purpose",
+                      exportmodelDetails?.purposeofExport,
+                    ),
+                    RowComponent(
+                      "Commodity",
+                      exportmodelDetails?.commodity,
+                    ),
+                    RowComponent(
+                      "Export Of Country",
+                      exportmodelDetails?.countrytoExport,
+                    ),
+                    RowComponent(
+                      "Quantity",
+                      exportmodelDetails?.quantity,
+                    ),
+                    RowComponent(
+                      "Necessary Documents",
+                      exportmodelDetails?.necessaryDocuments,
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    RowComponent(
+                      "Scientific Name",
+                      exportmodelDetails?.scientificName,
+                    ),
+                    RowComponent(
+                      "PSC No",
+                      exportmodelDetails?.pscNo,
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    RowComponent(
+                      "Mode Of Packing",
+                      exportmodelDetails?.packingMode,
+                    ),
+                    RowComponent(
+                      "Place Of Origin",
+                      exportmodelDetails?.placeofOrigin,
+                    ),
+                    RowComponent(
+                      "Port Of Loading",
+                      exportmodelDetails?.portofLoading,
+                    ),
+                    RowComponent(
+                      "No of Packages",
+                      exportmodelDetails?.noOfPackages,
+                    ),
+                    RowComponent(
+                      "Country of Origin",
+                      exportmodelDetails?.countryOrigin,
+                    ),
+                    RowComponent(
+                      "Value Of Commodity",
+                      exportmodelDetails?.valueofCommodity,
+                    ),
+                    RowComponent(
+                      "Plant Part",
+                      exportmodelDetails?.plantPart,
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    RowComponent(
+                      "Means Of Conveyance",
+                      exportmodelDetails?.meansOfConveyance,
+                    ),
+                    RowComponent(
+                      "Invoice No",
+                      exportmodelDetails?.invoiceNo,
+                    ),
+                    RowComponent(
+                      "Invoice Date",
+                      exportmodelDetails?.invoiceDate,
+                    ),
+                    RowComponent(
+                      "Category",
+                      exportmodelDetails?.category,
+                    ),
+                    RowComponent(
+                      "Quantity in Volume",
+                      exportmodelDetails?.quantityinVolume,
+                    ),
+                    RowComponent(
+                      "Commodity Desc",
+                      exportmodelDetails?.commodityDesc,
+                    ),
+                    RowComponent(
+                      "Inspection outside Pqms",
+                      exportmodelDetails?.inspectionOutsidepqms,
+                    ),
+                    RowComponent(
+                      "Treatment Needed",
+                      exportmodelDetails?.treatmentNeeded,
+                    ),
+                    RowComponent(
+                      "Foreign Port Of Shipment",
+                      exportmodelDetails?.foreignportofShipment,
+                    ),
+                    RowComponent(
+                      "Place Of Inspection",
+                      exportmodelDetails?.placeofInspection,
+                    ),
+                    RowComponent(
+                      "No Of Containers",
+                      exportmodelDetails?.status,
+                    ),
+                    RowComponent(
+                      "Date Of Inspection",
+                      exportmodelDetails?.inspectionDate,
+                    ),
+                    RowComponent(
+                      "Current Status",
+                      exportmodelDetails?.status,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration.zero).then((value) {
+      final id = ModalRoute.of(context)?.settings.arguments as String;
+      //print(id);
+      getApplnDetails(id);
+    });
+  }
+
+  RowComponent(var data, var value) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4, left: 10, bottom: 3),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              data.toString(),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Text(
+              value.toString(),
+              style: TextStyle(fontSize: 17),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void getApplnDetails(String id) async {
+    var requestURL = "https://pqms-uat.cgg.gov.in/pqms/getPSCAppDetails";
+    final requestPayload = {
+      "data": id, //pass id
+    };
+    // print("dataID:$dataId");
+    final token =
+        await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final username =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    final requestHeaders = {
+      "clientId": "Client123Cgg",
+      "token": token.toString(),
+      "userName": username.toString(),
+    };
+    final _dioObject = Dio();
+    try {
+      final _response = await _dioObject.post(
+        requestURL,
+        data: requestPayload,
+        options: Options(headers: requestHeaders),
+      );
+      print("Data:$_response");
+      final responseData =
+          ExportApplicationDetailsModelClass.fromJson(_response.data);
+      //print(responseData);
+      setState(() {
+        if (responseData.statusCode == 200) {
+          exportmodelDetails = responseData.data;
+        } else {
+          print("else");
+        }
+      });
+    } on DioError catch (e) {
+      print("error${e.message}");
+    }
+  }
+}

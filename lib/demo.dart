@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:pqms/UI/backgroundImage.dart';
+import 'package:pqms/reusable/backgroundImage.dart';
 
 class demo extends StatefulWidget {
   const demo({super.key});

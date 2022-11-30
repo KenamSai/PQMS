@@ -12,7 +12,7 @@ class SharedPreferencesClass {
     }
   }
 
-  readTheData(String key) async {
+  Future<dynamic> readTheData(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.get(key);
   }

@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
-import 'package:pqms/models/login/login_request.dart';
-import 'package:pqms/models/login/login_response.dart';
+import 'package:pqms/ModelClass/login_request.dart';
+import 'package:pqms/ModelClass/login_response.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -35,8 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin:
-                  EdgeInsets.only(top: 80, left: 50, right: 50, bottom: 50),
+              margin: EdgeInsets.only(top: 80, left: 50, right: 50, bottom: 50),
               width: 100,
               height: 100,
               decoration: BoxDecoration(
@@ -63,8 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white,
                         child: TextField(
                           controller: _username,
-
-                          
                           decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
@@ -91,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             fillColor: Colors.white,
                             filled: true,
                             labelText: "Password",
-                          
                             labelStyle: TextStyle(
                               color: Colors.grey,
                             ),
@@ -123,8 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             if (validation()) {
                               getLoginResponse();
+                              EasyLoading.show(status: "Loading...");
                             }
-                            
                           },
                           child: Text(
                             "Login",
@@ -152,7 +149,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool validation() {
     if (_username.text.isEmpty) {
-      //showAlert();
       return false;
     } else if (_password.text.isEmpty) {
       //showAlert();
@@ -161,59 +157,52 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return true;
   }
+
   Future<void> getLoginResponse() async {
-  final requestUrl = BaseUrl.uat_base_url + EndPoints.login;
-  final loginrequest = LoginRequest();
-  loginrequest.iMEI = "7b1fe3550ff840b2";
-  loginrequest.deviceId = "7b1fe3550ff840b2";
-  
-  loginrequest.username = _username.text.toString().trim();
-  loginrequest.password = _password.text.toString().trim();
-  loginrequest.toJson();
-  print(loginrequest.toJson());
-  final requestPayload = loginrequest.toJson();
-  Map<String, String> requestHeaders = {
-    'clientId': 'Client123Cgg',
-    'Content-Type': 'application/json; charset=UTF-8',
-    'Access-Control-Allow-Origin': '*'
-  };
-  final _dioObject = Dio();
+    final requestUrl = BaseUrl.uat_base_url + EndPoints.login;
+    final loginrequest = LoginRequest();
+    loginrequest.iMEI = "7b1fe3550ff840b2";
+    loginrequest.deviceId = "7b1fe3550ff840b2";
 
-  try {
-    final _response = await _dioObject.post(
-        requestUrl,
-        data: requestPayload, 
-        options: Options(headers: requestHeaders));
-        //converting response from json to model cls
-     final loginResponse = LoginResponse.fromJson(_response.data);
-    //  print(_response.data);
-    //  print(loginResponse.statusCode);
-    //   print(loginResponse.data?.userName);
-     if(loginResponse.statusCode==200)
-     {
-      
-         SharedPreferencesClass().writeTheData(PreferenceConst.username,loginResponse.data?.userName);
-         SharedPreferencesClass().writeTheData(PreferenceConst.token,loginResponse.data?.token);
-        //  var  read = await SharedPreferencesClass().readTheData(PreferenceConst.username);
-        //  print(read);
+    loginrequest.username = _username.text.toString().trim();
+    loginrequest.password = _password.text.toString().trim();
+    loginrequest.toJson();
+    print(loginrequest.toJson());
+    final requestPayload = loginrequest.toJson();
+    Map<String, String> requestHeaders = {
+      'clientId': 'Client123Cgg',
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*'
+    };
+    final _dioObject = Dio();
+
+    try {
+      final _response = await _dioObject.post(requestUrl,
+          data: requestPayload, options: Options(headers: requestHeaders));
+      //converting response from json to model cls
+      final loginResponse = LoginResponse.fromJson(_response.data);
+      //  print(_response.data);
+      //  print(loginResponse.statusCode);
+      //   print(loginResponse.data?.userName);
+      if (loginResponse.statusCode == 200) {
+          await SharedPreferencesClass().writeTheData(
+              PreferenceConst.username, loginResponse.data?.userName);
+          await SharedPreferencesClass()
+              .writeTheData(PreferenceConst.token, loginResponse.data?.token);
+
+      EasyLoading.dismiss();
+
+      // String read = await SharedPreferencesClass().readTheData(PreferenceConst.username);
+      //    print("login name:$read");
         Navigator.pushNamed(context, AppRoutes.dashboardpage);
-         
-      
-     }
-     else if(loginResponse.statusCode==204)
-     {
-      //Alert
-     } 
-    
-  } on DioError catch (e) {
-   print(e.message);
-   if(e.response?.statusCode==400||e.response?.statusCode==500)
-   {
-    //Alert
-   }
-
+      } else if (loginResponse.statusCode == 204) {
+        //Alert
+      }
+    } on DioError catch (e) {
+      print(e.message);
+      if (e.response?.statusCode == 400 || e.response?.statusCode == 500) {
+        //Alert
+      }
+    }
   }
 }
-
-}
-

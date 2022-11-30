@@ -1,17 +1,17 @@
-class importListModelClass {
+class ExportList_Model {
   String? statusMessage;
   int? statusCode;
-  List<Data>? data;
+  List<ExportData>? data;
 
-  importListModelClass({this.statusMessage, this.statusCode, this.data});
+  ExportList_Model({this.statusMessage, this.statusCode, this.data});
 
-  importListModelClass.fromJson(Map<String, dynamic> json) {
+  ExportList_Model.fromJson(Map<String, dynamic> json) {
     statusMessage = json['status_Message'];
     statusCode = json['status_Code'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ExportData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new ExportData.fromJson(v));
       });
     }
   }
@@ -27,39 +27,43 @@ class importListModelClass {
   }
 }
 
-class Data {
+class ExportData {
   String? applicationId;
-  String? importerName;
+  String? exporterName;
+  String? exporterCountry;
+  String? exporterPurpose;
   String? applDate;
   String? commodity;
   String? status;
-  String? formType;
 
-  Data(
+  ExportData(
       {this.applicationId,
-      this.importerName,
+      this.exporterName,
+      this.exporterCountry,
+      this.exporterPurpose,
       this.applDate,
       this.commodity,
-      this.status,
-      this.formType});
+      this.status});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ExportData.fromJson(Map<String, dynamic> json) {
     applicationId = json['applicationId'];
-    importerName = json['importerName'];
+    exporterName = json['exporterName'];
+    exporterCountry = json['exporterCountry'];
+    exporterPurpose = json['exporterPurpose'];
     applDate = json['applDate'];
     commodity = json['commodity'];
     status = json['status'];
-    formType = json['formType'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['applicationId'] = this.applicationId;
-    data['importerName'] = this.importerName;
+    data['exporterName'] = this.exporterName;
+    data['exporterCountry'] = this.exporterCountry;
+    data['exporterPurpose'] = this.exporterPurpose;
     data['applDate'] = this.applDate;
     data['commodity'] = this.commodity;
     data['status'] = this.status;
-    data['formType'] = this.formType;
     return data;
   }
 }

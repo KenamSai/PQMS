@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
+import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -12,14 +13,14 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-  String role ="";
+  String role = "";
   @override
   void initState() {
     super.initState();
     initial();
   }
-  
-   Future<void> initial() async {
+
+  Future<void> initial() async {
     String temp =
         await SharedPreferencesClass().readTheData(PreferenceConst.username);
     print("temp:" + temp);
@@ -58,15 +59,18 @@ class _SideBarState extends State<SideBar> {
           ),
           decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-            Colors.green.shade900,
-            Colors.green.shade700,
-            Colors.green.shade600
-          ])),
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                Colors.green.shade900,
+                Colors.green.shade700,
+                Colors.green.shade600
+              ])),
         ),
         ListTile(
+          onTap: (() {
+            Navigator.popUntil(context, ModalRoute.withName("/Dashboard"));
+          }),
           leading: Icon(
             Icons.space_dashboard_rounded,
             color: Colors.black,
@@ -74,6 +78,9 @@ class _SideBarState extends State<SideBar> {
           title: Text("Dashboard"),
         ),
         ListTile(
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.privacy);
+          },
           leading: Icon(
             Icons.notes,
             color: Colors.black,
@@ -88,6 +95,17 @@ class _SideBarState extends State<SideBar> {
           title: Text("App Info"),
         ),
         ListTile(
+          onTap: () {
+            showDialog(context: context, builder:(context) {
+              return reusableAlert(
+                title: "UAT-PQMS",
+                message: "Do you want to exit from app?",
+                icon: Icons.error,
+                Yes: "Yes",
+                No: "No",);
+            },);
+            
+          },
           leading: Image.asset(
             "assets/exit.png",
             height: 20,
@@ -106,5 +124,3 @@ class _SideBarState extends State<SideBar> {
     );
   }
 }
-
-

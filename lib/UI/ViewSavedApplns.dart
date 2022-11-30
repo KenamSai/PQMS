@@ -1,48 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:pqms/reusable/Card_Component.dart';
-import 'package:pqms/UI/SideBar.dart';
-import 'package:pqms/reusable/Text_Component.dart';
 import 'package:pqms/routes/AppRoutes.dart';
-import 'package:pqms/sharedpreference/preference.dart';
-import 'package:pqms/sharedpreference/sharedpreference.dart';
+import '../reusable/Card_Component.dart';
+import '../reusable/Text_Component.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+class ViewSavedApplication extends StatefulWidget {
+  const ViewSavedApplication({super.key});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<ViewSavedApplication> createState() => _ViewSavedApplicationState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  String? rolename ;
-
-  @override
-  initState() {
-    super.initState();
-    initial();
-    // print("init:$rolename");
-  }
-
-  initial() async {
-    String temp =
-        await SharedPreferencesClass().readTheData(PreferenceConst.username);
-    //print("temp:" + temp);
-    setState(() {
-      rolename = temp;
-      //print("rolename:$rolename");
-    });
-  }
-
+class _ViewSavedApplicationState extends State<ViewSavedApplication> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.green[900],
-        title: Text(
-          "UAT-PQMS",
+        backgroundColor: Color.fromARGB(255, 5, 140, 9),
+        title: Text('UAT-PQMS'
         ),
         actions: [
           GestureDetector(
@@ -59,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
           )
         ],
       ),
-      body: Container(
+       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: ExactAssetImage("assets/bg.png"),
@@ -94,46 +69,32 @@ class _DashboardState extends State<Dashboard> {
                 height: 10,
               ),
               TextComponent(
-                TextData: rolename ?? "",
+                TextData: "Saved Applications",
                 fontSize: 20,
               ),
-              SizedBox(
-                height: 5,
-              ),
-              TextComponent(
-                TextData: "Inspector",
-                fontSize: 18,
-              ),
+              
               Center(
                 child: Card(
                   color: Colors.black.withOpacity(0.1),
                   child: Column(
                     children: [
                       GestureDetector(
-                        onTap: (() async{
-                          Navigator.pushNamed(context, AppRoutes.importrelease);
-                        await EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
+                        onTap: (() {
+                          Navigator.pushNamed(context, AppRoutes.importsaved);
                         }),
                         child: CardComponent(
-                            TextData: "Import Release Order",
+                            TextData: "Import Saved Applications",
                             icon: "assets/import.png"),
                       ),
                       GestureDetector(
-                        onTap: (() {
-                          Navigator.pushNamed(context, AppRoutes.exportrelease);
+                         onTap: (() {
+                           Navigator.pushNamed(context, AppRoutes.exportsaved);
                         }),
                         child: CardComponent(
-                            TextData: "Export Applications",
+                            TextData: "Export Saved  Applications",
                             icon: "assets/export.png"),
                       ),
-                      GestureDetector(
-                        onTap: (() {
-                          Navigator.pushNamed(context, AppRoutes.ViewSavedAppln);
-                        }),
-                        child: CardComponent(
-                            TextData: "View Saved Applications",
-                            icon: "assets/export.png"),
-                      ),
+                     
                     ],
                   ),
                 ),

@@ -1,11 +1,18 @@
+import 'package:pqms/UI/ViewSavedApplns.dart';
+
 class AppRoutes {
   AppRoutes._();
-  static const initial = dashboardpage;
+  static const initial = Login;
   static const dashboardpage = "/Dashboard";
   static const Login = "/LoginScreen";
-  static const importpermit = "/Import";
-  static const exportpermit = "/exportpermit ";
-  static const viewpermit = "/viewpermit";
-  static const Splash="/SplashScreen";
-  static const bgreusable="/bg Reusable";
+  static const importrelease = "/Import release order";
+  static const exportrelease = "/export release order";
+  static const ViewSavedAppln = "/viewsavedappln";
+  static const Splash = "/SplashScreen";
+  static const bgreusable = "/bg Reusable";
+  static const importApplDetails = "/importApplDetails";
+  static const privacy = "/privacy policy";
+  static const importsaved = "/importsaved";
+  static const exportsaved = "/exportsaved";
+  static const exportApplnDetails="/exportApplnDetails";
 }

@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import '../reusable/Card_Component.dart';
 import '../reusable/Text_Component.dart';
 
-class ViewSavedApplication extends StatefulWidget {
-  const ViewSavedApplication({super.key});
+class ExportSavedApplication extends StatefulWidget {
+  const ExportSavedApplication({super.key});
 
   @override
-  State<ViewSavedApplication> createState() => _ViewSavedApplicationState();
+  State<ExportSavedApplication> createState() => _ExportSavedApplicationState();
 }
 
-class _ViewSavedApplicationState extends State<ViewSavedApplication> {
+class _ExportSavedApplicationState extends State<ExportSavedApplication> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 5, 140, 9),
+        backgroundColor: Color.fromARGB(255, 27, 92, 29),
         title: Text('UAT-PQMS'
         ),
         actions: [
@@ -68,7 +68,7 @@ class _ViewSavedApplicationState extends State<ViewSavedApplication> {
                 height: 10,
               ),
               TextComponent(
-                TextData: "Saved Applications",
+                TextData: " Export Saved Applications",
                 fontSize: 20,
               ),
               
@@ -82,15 +82,15 @@ class _ViewSavedApplicationState extends State<ViewSavedApplication> {
                           
                         }),
                         child: CardComponent(
-                            TextData: "Import Saved Applications",
+                            TextData: "Inspection Saved Applications",
                             icon: "assets/import.png"),
                       ),
                       GestureDetector(
                          onTap: (() {
-                          ;
+                          
                         }),
                         child: CardComponent(
-                            TextData: "Export Saved  Applications",
+                            TextData: "Treatment Saved  Applications",
                             icon: "assets/export.png"),
                       ),
                      

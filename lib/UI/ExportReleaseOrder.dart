@@ -1,22 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:pqms/ModelClass/importModelClass.dart';
-import 'package:pqms/UI/importListItem.dart';
+import 'package:pqms/ModelClass/exportListModel.dart';
+import 'package:pqms/UI/ExportListItem.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
-class ImportList extends StatefulWidget {
-  const ImportList({super.key});
+
+class ExportList extends StatefulWidget {
+  const ExportList({super.key});
 
   @override
-  State<ImportList> createState() => _ImportListState();
+  State<ExportList> createState() => _ExportList();
 }
 
-class _ImportListState extends State<ImportList> {
-  // importListModelClass? responseData;
-  List<Data> dataList = [];
-
+class _ExportList extends State<ExportList> {
+  List<ExportData> exportList=[];
+   //late ExportList_Model modelDataa;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +57,7 @@ class _ImportListState extends State<ImportList> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Import Release Order",
+                  "Export Release Order",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -70,11 +69,11 @@ class _ImportListState extends State<ImportList> {
               ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: dataList.length,
+                itemCount: exportList.length,
                 itemBuilder: (context, index) {
-                  final userData = dataList[index];
-                  return ImportListItem(
-                    userInfo: userData,
+                  final userDataa = exportList[index];
+                  return ExportListItem(
+                    userInfo: userDataa,
                   );
                 },
               )
@@ -93,17 +92,16 @@ class _ImportListState extends State<ImportList> {
   }
 
   getDetails() async {
-    var requestURL = "https://pqms-uat.cgg.gov.in/pqms/getIROList";
+    var requestURL = "https://pqms-uat.cgg.gov.in/pqms/getPSCList";
     final requestPayload = {
       "data": "Inspector",
     };
-    final token =
-        await SharedPreferencesClass().readTheData(PreferenceConst.token);
-    final username =
-        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    final token=await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final username=await SharedPreferencesClass().readTheData(PreferenceConst.username);
     final requestHeaders = {
       "clientId": "Client123Cgg",
-      "token": token.toString(),
+      "token":
+          token.toString(),
       "userName": username.toString(),
     };
     final _dioObject = Dio();
@@ -113,18 +111,15 @@ class _ImportListState extends State<ImportList> {
         data: requestPayload,
         options: Options(headers: requestHeaders),
       );
-      print("response:$_response");
-      final responseData = importListModelClass.fromJson(_response.data);
-      //print(responseData.data![0].importerName);
+      print(_response);
+      final responseData = ExportList_Model.fromJson(_response.data);
+      print(responseData);
       setState(() {
-        //this.responseData = responseData;
-        //print(responseData.data?.length);
-        if (responseData.statusCode == 200) {
-          dataList = responseData.data!;
-          EasyLoading.dismiss();
-        } else {}
+         if (responseData.statusCode == 200)
+        exportList = responseData.data!;
+        //print(modelDataa.data?.length);
       });
-      //print("${responseData.data?[0].status}");
+      print("on top:${responseData.data?[0].status}");
     } on DioError catch (e) {
       print("error${e.message}");
     }
