@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/exportListModel.dart';
 import 'package:pqms/UI/ExportListItem.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -117,6 +118,7 @@ class _ExportList extends State<ExportList> {
       setState(() {
          if (responseData.statusCode == 200)
         exportList = responseData.data!;
+        EasyLoading.dismiss();
         //print(modelDataa.data?.length);
       });
       print("on top:${responseData.data?[0].status}");
