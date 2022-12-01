@@ -2,7 +2,7 @@ import 'package:pqms/UI/ViewSavedApplns.dart';
 
 class AppRoutes {
   AppRoutes._();
-  static const initial = Login;
+  static const initial =Login;
   static const dashboardpage = "/Dashboard";
   static const Login = "/LoginScreen";
   static const importrelease = "/Import release order";
@@ -15,4 +15,5 @@ class AppRoutes {
   static const importsaved = "/importsaved";
   static const exportsaved = "/exportsaved";
   static const exportApplnDetails="/exportApplnDetails";
+  static const importTransactionDetails="/importTransactionDetails";
 }

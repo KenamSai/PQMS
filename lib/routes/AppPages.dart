@@ -6,6 +6,7 @@ import 'package:pqms/UI/ExportSavedApplications.dart';
 import 'package:pqms/UI/SplashScreen.dart';
 import 'package:pqms/UI/ViewSavedApplns.dart';
 import 'package:pqms/UI/importApplicationDetails.dart';
+import 'package:pqms/UI/importTransactionDetails.dart';
 import 'package:pqms/UI/import_list.dart';
 import 'package:pqms/UI/importsavedApplication.dart';
 import 'package:pqms/UI/login.dart';
@@ -28,7 +29,7 @@ class AppPages {
       AppRoutes.importsaved:(context) => ImportSavedApplication(),
       AppRoutes.exportsaved:(context) => ExportSavedApplication(),
       AppRoutes.exportApplnDetails:(context) =>ExportApplicationDetails(),
-    
+      AppRoutes.importTransactionDetails:(context) => ImportTransactionDetails(),
       
     };
   }
