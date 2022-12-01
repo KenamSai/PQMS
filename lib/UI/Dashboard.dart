@@ -111,15 +111,16 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       GestureDetector(
                         onTap: (() async{
-                          Navigator.pushNamed(context, AppRoutes.importrelease);
-                        await EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
+                           await EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
+                          Navigator.pushNamed(context, AppRoutes.importrelease);                   
                         }),
                         child: CardComponent(
                             TextData: "Import Release Order",
                             icon: "assets/import.png"),
                       ),
                       GestureDetector(
-                        onTap: (() {
+                        onTap: (()async {
+                           await EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
                           Navigator.pushNamed(context, AppRoutes.exportrelease);
                         }),
                         child: CardComponent(

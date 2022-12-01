@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/exportListModel.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
@@ -9,7 +10,8 @@ class ExportListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async{
+        await EasyLoading.show(status: "Loading...");
         Navigator.pushNamed(context, AppRoutes.exportApplnDetails,
             arguments: userInfo?.applicationId);
       },
