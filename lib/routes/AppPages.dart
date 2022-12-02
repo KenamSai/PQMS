@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pqms/UI/Dashboard.dart';
 import 'package:pqms/UI/ExportApplicationDetails.dart';
+import 'package:pqms/UI/ExportInspectionEntry.dart';
 import 'package:pqms/UI/ExportReleaseOrder.dart';
 import 'package:pqms/UI/ExportSavedApplications.dart';
 import 'package:pqms/UI/SplashScreen.dart';
@@ -30,6 +31,7 @@ class AppPages {
       AppRoutes.exportsaved:(context) => ExportSavedApplication(),
       AppRoutes.exportApplnDetails:(context) =>ExportApplicationDetails(),
       AppRoutes.importTransactionDetails:(context) => ImportTransactionDetails(),
+      AppRoutes.exportinspection:(context) => ExportInspectionEntry(),
       
     };
   }

@@ -1,8 +1,6 @@
-
-
 class AppRoutes {
   AppRoutes._();
-  static const initial =Login;
+  static const initial =exportinspection;
   static const dashboardpage = "/Dashboard";
   static const Login = "/LoginScreen";
   static const importrelease = "/Import release order";
@@ -16,4 +14,5 @@ class AppRoutes {
   static const exportsaved = "/exportsaved";
   static const exportApplnDetails="/exportApplnDetails";
   static const importTransactionDetails="/importTransactionDetails";
+  static const exportinspection="/ExportInspectionEntry";
 }
