@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pqms/reusable/ImageComponent.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
@@ -130,14 +131,14 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                     firstDate: DateTime(2000),
                                     lastDate: DateTime(2101),
                                   );
-                                  // if (selectedDate != null) {
-                                  //   String formattedDate =
-                                  //       DateFormat('yyyy-MM-dd')
-                                  //           .format(selectedDate);
-                                  //   setState(() {
-                                  //     _date.text = formattedDate;
-                                  //   });
-                                  // }
+                                  if (selectedDate != null) {
+                                    String formattedDate =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(selectedDate);
+                                    setState(() {
+                                      _date.text = formattedDate;
+                                    });
+                                  }
                                 }),
                           ),
                           TextReusable(

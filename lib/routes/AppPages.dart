@@ -33,6 +33,7 @@ class AppPages {
       AppRoutes.exportApplnDetails:(context) =>ExportApplicationDetails(),
       AppRoutes.importTransactionDetails:(context) => ImportTransactionDetails(),
       AppRoutes.exportinspection:(context) => ExportInspectionEntry(),
+      AppRoutes.importinspection:(context) => ImportInspectionEntry(),
       
     };
   }

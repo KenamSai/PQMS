@@ -13,15 +13,15 @@ import 'package:pqms/sharedpreference/sharedpreference.dart';
 
 
 
-class Inspectiondetails extends StatefulWidget {
-  const Inspectiondetails({super.key});
+class ImportInspectionEntry extends StatefulWidget {
+  const ImportInspectionEntry({super.key});
 
   @override
-  State<Inspectiondetails> createState() =>
-      _Inspectiondetails();
+  State<ImportInspectionEntry> createState() =>
+      _ImportInspectionEntry();
 }
 
-class _Inspectiondetails extends State<Inspectiondetails> {
+class _ImportInspectionEntry extends State<ImportInspectionEntry> {
   TextEditingController noofsamples = TextEditingController();
   TextEditingController samplesize = TextEditingController();
   TextEditingController inspectionplace = TextEditingController();
