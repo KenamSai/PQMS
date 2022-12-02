@@ -8,6 +8,7 @@ class TextComponent extends StatelessWidget {
 
   final String TextData;
   final double fontSize;
+  
   @override
   Widget build(BuildContext context) {
     return Text(

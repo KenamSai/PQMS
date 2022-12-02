@@ -9,6 +9,7 @@ import 'package:pqms/UI/importApplicationDetails.dart';
 import 'package:pqms/UI/importTransactionDetails.dart';
 import 'package:pqms/UI/import_list.dart';
 import 'package:pqms/UI/importsavedApplication.dart';
+import 'package:pqms/UI/inspectionDetails.dart';
 import 'package:pqms/UI/login.dart';
 import 'package:pqms/UI/privacyPolicy.dart';
 import 'package:pqms/demo.dart';
@@ -30,7 +31,7 @@ class AppPages {
       AppRoutes.exportsaved:(context) => ExportSavedApplication(),
       AppRoutes.exportApplnDetails:(context) =>ExportApplicationDetails(),
       AppRoutes.importTransactionDetails:(context) => ImportTransactionDetails(),
-      
+      AppRoutes.inspectiondetails:(context) => Inspectiondetails(),
     };
   }
 }
