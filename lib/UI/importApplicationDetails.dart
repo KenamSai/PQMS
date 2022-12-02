@@ -327,7 +327,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                       ...[
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.inspectiondetails);
+                         //   Navigator.pushNamed(context, AppRoutes.inspectiondetails);
                           },
                           child: Container(
                             decoration: BoxDecoration(
