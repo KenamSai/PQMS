@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/ExportApplicationModelClass.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -308,10 +309,15 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                             height: 32,
                             width: MediaQuery.of(context).size.width * 0.9,
                             child: Center(
-                              child: Text(
-                                "INSPECTION",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15),
+                              child: GestureDetector(
+                                 onTap: (() {
+                                        Navigator.pushNamed(context, AppRoutes.exportinspection);
+                                      }),
+                                child: Text(
+                                  "INSPECTION",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             ),
                           )
@@ -331,10 +337,15 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                   height: 32.0,
                                   width: 150,
                                   child: Center(
-                                    child: Text(
-                                      "INSPECTION",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 15),
+                                    child: GestureDetector(
+                                      onTap: (() {
+                                        Navigator.pushNamed(context, AppRoutes.exportinspection);
+                                      }),
+                                      child: Text(
+                                        "INSPECTION",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
                                     ),
                                   ),
                                 ),
