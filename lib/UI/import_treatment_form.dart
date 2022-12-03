@@ -1,27 +1,24 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/reusable/TextReusable.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:pqms/reusable/image.dart';
 
-
-class ExportInspectionEntry extends StatefulWidget {
-  const ExportInspectionEntry({super.key});
+class ImportTreatmentForm extends StatefulWidget {
+  const ImportTreatmentForm({super.key});
 
   @override
-  State<ExportInspectionEntry> createState() => _ExportInspectionEntryState();
+  State<ImportTreatmentForm> createState() => _ImportTreatmentForm();
 }
 
-class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
+class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   TextEditingController _DutyOfficer = TextEditingController();
-  TextEditingController _NoOfsamples = TextEditingController();
-  TextEditingController _Samplesize = TextEditingController();
-  TextEditingController _InspectionPlace = TextEditingController();
-  TextEditingController _date = TextEditingController();
-  TextEditingController _InspectionRemarks = TextEditingController();
-  XFile? _imageData = null;
+  TextEditingController _Chemicals = TextEditingController();
+  TextEditingController _Dosage = TextEditingController();
+  TextEditingController _Duration = TextEditingController();
+  TextEditingController _Temperature = TextEditingController();
+  TextEditingController _TreatmentDate = TextEditingController();
+  TextEditingController _CompletedDate = TextEditingController();
+  TextEditingController _DoneBy = TextEditingController();
+  TextEditingController _TreatmentRemarks = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +61,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
               child: Container(
                 child: Center(
                   child: Text(
-                    "Export Inspection Entry",
+                    "Import Treatment Form",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 23,
@@ -89,31 +86,36 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                             requiredData: "*",
                           ),
                           TextReusable(
-                            data: "No Samples",
-                            controller: _NoOfsamples,
+                            data: "Chemicals",
+                            controller: _Chemicals,
                           ),
                           TextReusable(
-                            data: "Sample size",
-                            controller: _Samplesize,
+                            data: "Dosage",
+                            controller: _Dosage,
                           ),
                           TextReusable(
-                            data: "Inspection Place",
-                            controller: _InspectionPlace,
-                            requiredData: "*",
+                            data: "Duration(Hrs)",
+                            controller: _Duration,
+                            
+                          ),
+                          TextReusable(
+                            data: "Temperature(DegC)",
+                            controller: _Temperature,
+                            
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: TextField(
                                 readOnly: true,
-                                controller: _date,
+                                controller: _TreatmentDate,
                                 decoration: InputDecoration(
-                                  icon: Icon(
+                                  suffixIcon: Icon(
                                     Icons.calendar_today,
                                     color: Colors.green.shade400,
                                   ),
                                   label: RichText(
                                     text: TextSpan(
-                                        text: "Completed Inspection Date",
+                                        text: "Treatment Date",
                                         style: TextStyle(
                                             color: Colors.green.shade600),
                                         children: [
@@ -136,14 +138,61 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                         DateFormat('yyyy-MM-dd')
                                             .format(selectedDate);
                                     setState(() {
-                                      _date.text = formattedDate;
+                                      _TreatmentDate.text = formattedDate;
+                                    });
+                                  }
+                                }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: TextField(
+                                readOnly: true,
+                                controller: _CompletedDate,
+                                decoration: InputDecoration(
+                                  suffixIcon: Icon(
+                                    Icons.calendar_today,
+                                    color: Colors.green.shade400,
+                                  ),
+                                  label: RichText(
+                                    text: TextSpan(
+                                        text:
+                                            "Completed Date of Supervision?Treatment",
+                                        style: TextStyle(
+                                            color: Colors.green.shade600),
+                                        children: [
+                                          TextSpan(
+                                            text: "*",
+                                            style: TextStyle(color: Colors.red),
+                                          )
+                                        ]),
+                                  ),
+                                ),
+                                onTap: () async {
+                                  final selectedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2101),
+                                  );
+                                  if (selectedDate != null) {
+                                    String formattedDate =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(selectedDate);
+                                    setState(() {
+                                      _CompletedDate.text = formattedDate;
                                     });
                                   }
                                 }),
                           ),
                           TextReusable(
-                            data: "Inspection Remarks",
-                            controller: _InspectionRemarks,
+                            data: "Done BY",
+                            controller: _DoneBy,
+                            requiredData: "*",
+                          ),
+                          TextReusable(
+                            maxlines: 5,
+                            data: "Treatment Remarks",
+                            controller: _TreatmentRemarks,
                             requiredData: "*",
                           ),
                         ],
@@ -152,30 +201,6 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     SizedBox(
                       height: 10,
                     ),
-                    Card(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text(
-                              "Capture Image",
-                              style: TextStyle(color: Colors.green.shade600),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                ImgPicker(),
-                                ImgPicker(),
-                                ImgPicker(),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),
@@ -202,11 +227,12 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       ),
     );
   }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    _date.text = "";
-  }
 }
+
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+
+//     _date.text = "";
+//   }
+// }

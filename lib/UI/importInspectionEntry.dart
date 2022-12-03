@@ -7,14 +7,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pqms/reusable/image.dart';
 
 
-class ExportInspectionEntry extends StatefulWidget {
-  const ExportInspectionEntry({super.key});
+class ImportInspectionEntry extends StatefulWidget {
+  const ImportInspectionEntry({super.key});
 
   @override
-  State<ExportInspectionEntry> createState() => _ExportInspectionEntryState();
+  State<ImportInspectionEntry> createState() => _ImportInspectionEntryState();
 }
 
-class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
+class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
   TextEditingController _DutyOfficer = TextEditingController();
   TextEditingController _NoOfsamples = TextEditingController();
   TextEditingController _Samplesize = TextEditingController();
@@ -64,7 +64,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
               child: Container(
                 child: Center(
                   child: Text(
-                    "Export Inspection Entry",
+                    "Import Inspection Entry",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 23,
@@ -107,7 +107,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 readOnly: true,
                                 controller: _date,
                                 decoration: InputDecoration(
-                                  icon: Icon(
+                                  suffixIcon: Icon(
                                     Icons.calendar_today,
                                     color: Colors.green.shade400,
                                   ),
@@ -142,6 +142,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 }),
                           ),
                           TextReusable(
+                            maxlines: 5,
                             data: "Inspection Remarks",
                             controller: _InspectionRemarks,
                             requiredData: "*",

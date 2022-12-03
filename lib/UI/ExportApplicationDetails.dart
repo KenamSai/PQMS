@@ -279,19 +279,25 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.3),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5.0),
+                    GestureDetector(
+                      onTap: (() {
+                        Navigator.pushNamed(context, AppRoutes.importTransactionDetails,arguments: exportmodelDetails?.applicationId);
+                        EasyLoading.show(status: "Loading...");
+                      }),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.3),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5.0),
+                          ),
                         ),
-                      ),
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 32.0,
-                      child: Center(
-                        child: Text(
-                          "VIEW TRANSACTION DETAILS",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 32.0,
+                        child: Center(
+                          child: Text(
+                            "VIEW TRANSACTION DETAILS",
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
                         ),
                       ),
                     ),

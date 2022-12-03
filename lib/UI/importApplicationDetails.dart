@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pqms/ModelClass/common_request.dart';
 import 'package:pqms/ModelClass/importApplModelClass.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -303,8 +306,9 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.importTransactionDetails);
+                         Navigator.pushNamed(
+                            context, AppRoutes.importTransactionDetails,arguments: modelDetails?.applicationId);
+                               EasyLoading.show(status: "Loading...");
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -355,7 +359,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            //Navigate to Inspection
+                             Navigator.pushNamed(context, AppRoutes.importinspection);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -377,7 +381,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            //Navigate to Treatment
+                              Navigator.pushNamed(context,AppRoutes.importtreatment);
                           },
                           child: Container(
                             width: 183,
@@ -440,25 +444,27 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
         final String id = ModalRoute.of(context)?.settings.arguments as String;
         // print("init$id");
         getDetails(id);
+        
       },
     );
     // print("init :$id");
   }
 
   void getDetails(String id) async {
-    var requestURL = "https://pqms-uat.cgg.gov.in/pqms/getIroAppDetails";
+    var requestURL = BaseUrl.uat_base_url+EndPoints.ImportAppDetails;
     final requestPayload = {
       "data": id, //pass id
     };
     // print("dataID:$dataId");
-    final token = SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final token = await SharedPreferencesClass().readTheData(PreferenceConst.token);
     final username =
-        SharedPreferencesClass().readTheData(PreferenceConst.username);
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
     final requestHeaders = {
       "clientId": "Client123Cgg",
       "token": token.toString(),
       "userName": username.toString(),
     };
+    print("=========$token.toString()");
     final _dioObject = Dio();
     try {
       final _response = await _dioObject.post(
@@ -483,4 +489,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
       print("error${e.message}");
     }
   }
+  
 }
+
+
