@@ -5,11 +5,14 @@ class TextReusable extends StatelessWidget {
     super.key,
     required this.data,
     required this.controller,
-    this.requiredData,
+    this.requiredData, 
+    this.maxlines, 
+     
   });
   final String data;
   final TextEditingController controller;
   final String? requiredData;
+  final int? maxlines;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,6 +20,7 @@ class TextReusable extends StatelessWidget {
       child: TextField(
         controller: controller,
         cursorColor: Colors.green.shade600,
+        maxLines: maxlines,
         decoration: InputDecoration(
           label: RichText(
             text: TextSpan(

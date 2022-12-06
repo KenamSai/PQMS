@@ -163,7 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginrequest = LoginRequest();
     loginrequest.iMEI = "7b1fe3550ff840b2";
     loginrequest.deviceId = "7b1fe3550ff840b2";
-
     loginrequest.username = _username.text.toString().trim();
     loginrequest.password = _password.text.toString().trim();
     loginrequest.toJson();

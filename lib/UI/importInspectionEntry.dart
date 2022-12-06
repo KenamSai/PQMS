@@ -7,14 +7,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pqms/reusable/image.dart';
 
 
-class ExportInspectionEntry extends StatefulWidget {
-  const ExportInspectionEntry({super.key});
+class ImportInspectionEntry extends StatefulWidget {
+  const ImportInspectionEntry({super.key});
 
   @override
-  State<ExportInspectionEntry> createState() => _ExportInspectionEntryState();
+  State<ImportInspectionEntry> createState() => _ImportInspectionEntryState();
 }
 
-class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
+class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
   TextEditingController _DutyOfficer = TextEditingController();
   TextEditingController _NoOfsamples = TextEditingController();
   TextEditingController _Samplesize = TextEditingController();
@@ -23,10 +23,8 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   TextEditingController _InspectionRemarks = TextEditingController();
   XFile? _imageData = null;
 
-
   @override
   Widget build(BuildContext context) {
-    final id = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -66,7 +64,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
               child: Container(
                 child: Center(
                   child: Text(
-                    "Export Inspection Entry",
+                    "Import Inspection Entry",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 23,
@@ -84,24 +82,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     Card(
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Container(
-                              alignment: Alignment.topLeft,
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "Application Number    ",
-                                    style:
-                                        TextStyle(color: Colors.green.shade600),
-                                    children: [
-                                      TextSpan(
-                                        text: "$id",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    ]),
-                              ),
-                            ),
-                          ),
+                          Text("Application Number:"),
                           TextReusable(
                             data: "Duty Officer",
                             controller: _DutyOfficer,
@@ -121,14 +102,11 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                             requiredData: "*",
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(6.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: TextField(
                                 readOnly: true,
                                 controller: _date,
                                 decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.green.shade700),),
                                   suffixIcon: Icon(
                                     Icons.calendar_today,
                                     color: Colors.green.shade400,
@@ -151,7 +129,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                     context: context,
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime(2000),
-                                    lastDate: DateTime.now(),
+                                    lastDate: DateTime(2101),
                                   );
                                   if (selectedDate != null) {
                                     String formattedDate =
@@ -164,6 +142,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 }),
                           ),
                           TextReusable(
+                            maxlines: 5,
                             data: "Inspection Remarks",
                             controller: _InspectionRemarks,
                             requiredData: "*",
@@ -179,17 +158,9 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: RichText(
-                              text: TextSpan(
-                                  text: "Capture Image",
-                                  style:
-                                      TextStyle(color: Colors.green.shade600),
-                                  children: [
-                                    TextSpan(
-                                      text: "*",
-                                      style: TextStyle(color: Colors.red),
-                                    )
-                                  ]),
+                            child: Text(
+                              "Capture Image",
+                              style: TextStyle(color: Colors.green.shade600),
                             ),
                           ),
                           Padding(
@@ -197,7 +168,9 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                               
+                                ImgPicker(),
+                                ImgPicker(),
+                                ImgPicker(),
                               ],
                             ),
                           )
@@ -221,22 +194,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     "SAVE",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {
-                    print("id:  $id");
-                     print("Duty officer:  ${_DutyOfficer.text}");
-                      print("No of samples: ${_NoOfsamples.text} ");
-                       print("sample size:  ${_Samplesize.text}");
-                        print("inspection place:  ${_InspectionPlace.text}");
-                         print("inspection date:  ${_date.text}");
-                          print("remarks:  ${_InspectionRemarks.text}");
-                          _DutyOfficer.clear();
-                          _NoOfsamples.clear();
-                          _Samplesize.clear();
-                          _InspectionPlace.clear();
-                          _date.clear();
-                          _InspectionRemarks.clear();
-                       
-                  },
+                  onPressed: () {},
                 ),
               ),
             ),

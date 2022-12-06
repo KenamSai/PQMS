@@ -7,10 +7,11 @@ import 'package:pqms/UI/ExportSavedApplications.dart';
 import 'package:pqms/UI/SplashScreen.dart';
 import 'package:pqms/UI/ViewSavedApplns.dart';
 import 'package:pqms/UI/importApplicationDetails.dart';
+import 'package:pqms/UI/importInspectionEntry.dart';
 import 'package:pqms/UI/importTransactionDetails.dart';
-import 'package:pqms/UI/import_list.dart';
+import 'package:pqms/UI/import_release_order.dart';
+import 'package:pqms/UI/import_treatment_form.dart';
 import 'package:pqms/UI/importsavedApplication.dart';
-import 'package:pqms/UI/inspectionDetails.dart';
 import 'package:pqms/UI/login.dart';
 import 'package:pqms/UI/privacyPolicy.dart';
 import 'package:pqms/demo.dart';
@@ -34,6 +35,7 @@ class AppPages {
       AppRoutes.importTransactionDetails:(context) => ImportTransactionDetails(),
       AppRoutes.exportinspection:(context) => ExportInspectionEntry(),
       AppRoutes.importinspection:(context) => ImportInspectionEntry(),
+      AppRoutes.importtreatment:(context) => ImportTreatmentForm(),
       
     };
   }
