@@ -36,20 +36,23 @@ class ExportListItem extends StatelessWidget {
   RowComponent(String data, String? value) {
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
-          child: SizedBox(
-            width: 150,
+
+         Expanded(
             child: Text(
-              data,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              data.toString(),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
-          child: SizedBox(child: Text(value!)),
-        )
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Text(
+              value.toString(),
+              style: TextStyle(fontSize: 17),
+            ),
+          )
+        
       ],
     );
   }

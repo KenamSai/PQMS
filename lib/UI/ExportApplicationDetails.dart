@@ -310,9 +310,14 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                             width: MediaQuery.of(context).size.width * 0.9,
                             child: Center(
                               child: GestureDetector(
-                                 onTap: (() {
-                                        Navigator.pushNamed(context, AppRoutes.exportinspection);
-                                      }),
+                                onTap: (() {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.exportinspection,
+                                    arguments:
+                                        exportmodelDetails?.applicationId,
+                                  );
+                                }),
                                 child: Text(
                                   "INSPECTION",
                                   style: TextStyle(
@@ -339,7 +344,12 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                   child: Center(
                                     child: GestureDetector(
                                       onTap: (() {
-                                        Navigator.pushNamed(context, AppRoutes.exportinspection);
+                                        Navigator.pushNamed(
+                                          context,
+                                          AppRoutes.exportinspection,
+                                          arguments:
+                                              exportmodelDetails?.applicationId,
+                                        );
                                       }),
                                       child: Text(
                                         "INSPECTION",

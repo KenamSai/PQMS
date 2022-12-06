@@ -13,8 +13,9 @@ class TextReusable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(6.0),
       child: TextField(
+        controller: controller,
         cursorColor: Colors.green.shade600,
         decoration: InputDecoration(
           label: RichText(
