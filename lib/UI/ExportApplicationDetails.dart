@@ -365,13 +365,20 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  height: 32.0,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.3),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context,
+                                    AppRoutes.exporttreatment,
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 32.0,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.3),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5.0),
+                                      ),
                                     ),
                                   ),
                                   child: Center(
