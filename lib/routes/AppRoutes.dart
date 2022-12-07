@@ -17,4 +17,6 @@ class AppRoutes {
   static const exportinspection="/ExportInspectionEntry";
   static const importinspection="/ImportInspectionEntry";
   static const importtreatment="/importtreatment";
+  static const exporttreatment="/exporttreatment";
+
 }
