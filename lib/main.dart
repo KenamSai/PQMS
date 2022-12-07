@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:pqms/UI/Dashboard.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/routes/AppPages.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+      final db = DatabaseHelper.instance.database;
     return MaterialApp(
       title: 'Flutter Demo',
       initialRoute: AppRoutes.initial,

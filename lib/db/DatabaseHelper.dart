@@ -1,15 +1,14 @@
 import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
-  static final _databaseName = "FirstDatabase.db";
+  static final _databaseName = "PQMS.db";
   static final _databaseVersion = 1;
-  static final colId = "id";
+  static final colId="id";
 
-  static final table = 'Export Inspection Entry';
+  static final table = 'ExportInspectionEntry';
   // static final tableContact = 'contact';
 
   // make this a singleton class
@@ -51,7 +50,9 @@ SampleSize varchar(255),
 InspectionPlace varchar(255),
 InspectionDate varchar(255),
 InspectionRemarks varchar(255),
-
+userimage1 varchar(255),
+userimage2 varchar(255),
+userimage3 varchar(255)
 );
 
           ''');
@@ -121,5 +122,20 @@ InspectionRemarks varchar(255),
   //   return await db
   //       .delete(tableContact, where: '$columnId = ?', whereArgs: [id]);
   // }
+     
+
+  //CRUD
+  //Creation
+  //Read
+  //Update
+  //Delete
 
 }
+
+/*
+
+//path 
+//file - Db filename.db
+
+
+ */

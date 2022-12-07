@@ -1,11 +1,12 @@
-import 'dart:io';
+
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pqms/reusable/image.dart';
-
+import 'package:pqms/reusable/imagecallback.dart';
 
 class ExportInspectionEntry extends StatefulWidget {
   const ExportInspectionEntry({super.key});
@@ -21,12 +22,14 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   TextEditingController _InspectionPlace = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _InspectionRemarks = TextEditingController();
-  XFile? _imageData = null;
-
 
   @override
   Widget build(BuildContext context) {
-    final id = ModalRoute.of(context)?.settings.arguments;
+    XFile imageData1 = XFile("");
+    XFile imageData2 = XFile("");
+    XFile imageData3 = XFile("");
+
+    final String id = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -127,8 +130,9 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 controller: _date,
                                 decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.green.shade700),),
+                                    borderSide: BorderSide(
+                                        color: Colors.green.shade700),
+                                  ),
                                   suffixIcon: Icon(
                                     Icons.calendar_today,
                                     color: Colors.green.shade400,
@@ -197,7 +201,24 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                               
+                                ImgPickerCamera(
+                                  callbackValue: (imageData) {
+                                    imageData1 = imageData;
+                                    // print("path1:${imageData1.path}");
+                                  },
+                                ),
+                                ImgPickerCamera(
+                                  callbackValue: (imageData) {
+                                    imageData2 = imageData;
+                                    //print("path2:${imageData2.path}");
+                                  },
+                                ),
+                                ImgPickerCamera(
+                                  callbackValue: (imageData) {
+                                    imageData3 = imageData;
+                                    //print("path3:${imageData3.path}");
+                                  },
+                                ),
                               ],
                             ),
                           )
@@ -221,21 +242,30 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     "SAVE",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {
-                    print("id:  $id");
-                     print("Duty officer:  ${_DutyOfficer.text}");
-                      print("No of samples: ${_NoOfsamples.text} ");
-                       print("sample size:  ${_Samplesize.text}");
-                        print("inspection place:  ${_InspectionPlace.text}");
-                         print("inspection date:  ${_date.text}");
-                          print("remarks:  ${_InspectionRemarks.text}");
-                          _DutyOfficer.clear();
-                          _NoOfsamples.clear();
-                          _Samplesize.clear();
-                          _InspectionPlace.clear();
-                          _date.clear();
-                          _InspectionRemarks.clear();
-                       
+                  onPressed: ()async {
+                    final data = exportResponseinspectionModelClass(
+                      applicationId: id,
+                      dutyofficer: _DutyOfficer.text,
+                      noofSamples: _NoOfsamples.text,
+                      inspectionDate: _date.text,
+                      sampleSize: _Samplesize.text,
+                      inspectionPlace: _InspectionPlace.text,
+                      inspectionRemarks: _InspectionRemarks.text,
+                      userimage1: imageData1.path,
+                      userimage2: imageData2.path,
+                      userimage3: imageData3.path,
+                    );
+                    _DutyOfficer.clear();
+                    _NoOfsamples.clear();
+                    _Samplesize.clear();
+                    _InspectionPlace.clear();
+                    _date.clear();
+                    _InspectionRemarks.clear();
+
+                    final DatabaseHelper _databaseService =
+                        DatabaseHelper.instance;
+                     final details=await _databaseService.insertInto(data.toJson(), "ExportInspectionEntry");
+                     print("dbdata:$details");
                   },
                 ),
               ),
