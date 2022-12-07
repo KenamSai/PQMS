@@ -375,10 +375,15 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                     ),
                                   ),
                                   child: Center(
-                                    child: Text(
-                                      "TREATMENT",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        
+                                      },
+                                      child: Text(
+                                        "TREATMENT",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
                                     ),
                                   ),
                                 ),
