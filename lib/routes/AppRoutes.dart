@@ -20,6 +20,7 @@ class AppRoutes {
   static const exporttreatment="/exporttreatment";
   static const exportinspectionsaved="/exportinspectionsaved";
    static const exporttreatmentsaved="/exporttreatmentsaved";
+   static const exporttreatmentSubmission="/exporttreatmentSubmission";
 
 
 }
