@@ -7,8 +7,9 @@ import 'package:pqms/UI/ExportSavedApplications.dart';
 import 'package:pqms/UI/SplashScreen.dart';
 import 'package:pqms/UI/ViewSavedApplns.dart';
 import 'package:pqms/UI/exportInspectionSaved.dart';
+import 'package:pqms/UI/exportTreatmentSubmit.dart';
 import 'package:pqms/UI/exportTreatmentsaved.dart';
-import 'package:pqms/UI/export_treatment.dart';
+import 'package:pqms/UI/export_treatment%20entry.dart';
 import 'package:pqms/UI/importApplicationDetails.dart';
 import 'package:pqms/UI/importInspectionEntry.dart';
 import 'package:pqms/UI/importTransactionDetails.dart';
@@ -45,6 +46,7 @@ class AppPages {
       AppRoutes.exporttreatment:(context) => ExportTreatmentForm(),
       AppRoutes.exporttreatmentsaved:(context) => exportTreatmentSaved(),
       AppRoutes.exportinspectionsaved:(context) => exportInspectionSaved(),
+      AppRoutes.exporttreatmentSubmission:(context) => ExportTreatmentSubmit(),
       AppRoutes.importinspectionsaved:(context) => ImportInspectionSavedApplications(),
       AppRoutes.importtreatmentsaved:(context) => ImportTreatmentSavedApplications(),
       AppRoutes.importinspectionformsubmit:(context) => ImportInspectionSubmit(),

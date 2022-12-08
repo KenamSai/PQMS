@@ -12,6 +12,17 @@ class AppRoutes {
   static const privacy = "/privacy policy";
   static const importsaved = "/importsaved";
   static const exportsaved = "/exportsaved";
+  static const exportApplnDetails="/exportApplnDetails";
+  static const importTransactionDetails="/importTransactionDetails";
+  static const exportinspection="/ExportInspectionEntry";
+  static const importinspection="/ImportInspectionEntry";
+  static const importtreatment="/importtreatment";
+  static const exporttreatment="/exporttreatment";
+  static const exportinspectionsaved="/exportinspectionsaved";
+   static const exporttreatmentsaved="/exporttreatmentsaved";
+   static const exporttreatmentSubmission="/exporttreatmentSubmission";
+
+
   static const exportApplnDetails = "/exportApplnDetails";
   static const importTransactionDetails = "/importTransactionDetails";
   static const exportinspection = "/ExportInspectionEntry";

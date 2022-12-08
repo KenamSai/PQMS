@@ -103,35 +103,40 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
                       itemCount: ListData.length,
                       itemBuilder: (context, index) {
                         final data = ListData[index];
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10.0),
+                        return GestureDetector(
+                          onTap: () {
+                            
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
                             ),
-                          ),
-                          child: Column(
-                            children: [
-                              RowComponent(
-                                "Application Id",
-                                data.applicationId,
-                              ),
-                              RowComponent(
-                                "Application Date",
-                                data.inspectionDate,
-                              ),
-                              RowComponent(
-                                "Duty Officer",
-                                data.dutyofficer,
-                              ),
-                              RowComponent(
-                                "No of Samples",
-                                data.noofSamples,
-                              ),
-                              RowComponent(
-                                "Remarks",
-                                data.inspectionRemarks,
-                              ),
-                            ],
+                            child: Column(
+                              children: [
+                                RowComponent(
+                                  "Application Id",
+                                  data.applicationId,
+                                ),
+                                RowComponent(
+                                  "Application Date",
+                                  data.inspectionDate,
+                                ),
+                                RowComponent(
+                                  "Duty Officer",
+                                  data.dutyofficer,
+                                ),
+                                RowComponent(
+                                  "No of Samples",
+                                  data.noofSamples,
+                                ),
+                                RowComponent(
+                                  "Remarks",
+                                  data.inspectionRemarks,
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
