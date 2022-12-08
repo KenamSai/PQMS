@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import '../reusable/Card_Component.dart';
 
 
@@ -80,7 +81,7 @@ class _ExportSavedApplicationState extends State<ExportSavedApplication> {
                     children: [
                       GestureDetector(
                         onTap: (() {
-                          
+                          Navigator.pushNamed(context, AppRoutes.exportinspectionsaved);
                         }),
                         child: CardComponent(
                             TextData: "Inspection Saved Applications",
@@ -88,7 +89,7 @@ class _ExportSavedApplicationState extends State<ExportSavedApplication> {
                       ),
                       GestureDetector(
                          onTap: (() {
-                          
+                            Navigator.pushNamed(context, AppRoutes.exporttreatmentsaved);
                         }),
                         child: CardComponent(
                             TextData: "Treatment Saved  Applications",

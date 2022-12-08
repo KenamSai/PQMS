@@ -34,26 +34,29 @@ class ExportListItem extends StatelessWidget {
   }
 
   RowComponent(String data, String? value) {
-    return Row(
-      children: [
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Row(
+        children: [
 
-         Expanded(
-            child: Text(
-              data.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+           Expanded(
+              child: Text(
+                data.toString(),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              ),
             ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Text(
-              value.toString(),
-              style: TextStyle(fontSize: 17),
+            SizedBox(
+              width: 10,
             ),
-          )
-        
-      ],
+            Expanded(
+              child: Text(
+                value.toString(),
+                style: TextStyle(fontSize: 17),
+              ),
+            )
+          
+        ],
+      ),
     );
   }
 }
