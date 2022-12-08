@@ -11,7 +11,7 @@ class DatabaseHelper {
   static final ExportInspectiontable = 'ExportInspectionEntry';
   static final ImportInspectiontable = 'ImportInspectionEntry';
   static final exporttreatmenttable = 'ExportTreatment';
-  static final ImportTreatmenttable=  'ImportTreatmenttable';
+  static final ImportTreatmenttable = 'ImportTreatmenttable';
   // static final tableContact = 'contact';
 
   // make this a singleton class
@@ -59,7 +59,8 @@ userimage3 varchar(255)
 );
  ''');
     await db.execute('''
- CREATE TABLE ImportInspectionEntry(
+ CREATE TABLE ImportInspectionEntry
+ (
 applicationId varchar(255),
 Dutyofficer varchar(255),
 NoofSamples varchar(255),
@@ -73,30 +74,19 @@ userimage3 varchar(255)
 );
 
           ''');
-await db.execute('''
-          CREATE TABLE $exporttreatmenttable
+    await db.execute('''
+          CREATE TABLE ExportTreatment
 (
-applicationIn varchar(255),
+applicationId varchar(255),
 Dutyofficer varchar(255),
 Chemicals varchar(255),
 Dosage varchar(255),
 Duration varchar(255),
 Temperature varchar(255),
+CompletionDate varchar(255),
 TreatmentDate varchar(255),
-CompletionEntry(
-applicationId varchar(255),
-DuDatyofficer varchar(255),
-NoofSamples varchar(255),
-Se varchar(255),
-Donempy varchar(255),
-TreatmentReSize varchar(255),
-InspectionPlace varchar(255),
-InspectionDate varchar(255),
-InspectionRemarks varchar(255),
-userimage1 varchar(255),
-userimage2 varchar(255),
-userimage3 varchar(255)
-);marks varchar(255)
+Doneby varchar(255),
+TreatmentRemarks varchar(255)
 );
           ''');
     await db.execute('''
