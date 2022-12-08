@@ -6,10 +6,11 @@ import 'package:path_provider/path_provider.dart';
 class DatabaseHelper {
   static final _databaseName = "PQMS.db";
   static final _databaseVersion = 1;
-  static final colId="id";
+  static final colId = "id";
 
   static final ExportInspectiontable = 'ExportInspectionEntry';
   static final ImportInspectiontable = 'ImportInspectionEntry';
+  static final ImportTreatmenttable=  'ImportTreatmenttable';
   // static final tableContact = 'contact';
 
   // make this a singleton class
@@ -42,7 +43,7 @@ class DatabaseHelper {
   // SQL code to create the database table
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-          CREATE TABLE $ExportInspectiontable
+          CREATE TABLE ExportInspectionEntry
 (
 applicationId varchar(255),
 Dutyofficer varchar(255),
@@ -55,9 +56,37 @@ userimage1 varchar(255),
 userimage2 varchar(255),
 userimage3 varchar(255)
 );
-         CREATE TABLE ImportInspectiontable
+ ''');
+    await db.execute('''
+         CREATE TABLE ImportInspectionEntry(
+applicationId varchar(255),
+Dutyofficer varchar(255),
+NoofSamples varchar(255),
+SampleSize varchar(255),
+InspectionPlace varchar(255),
+InspectionDate varchar(255),
+InspectionRemarks varchar(255),
+userimage1 varchar(255),
+userimage2 varchar(255),
+userimage3 varchar(255)
+);
 
           ''');
+    await db.execute('''
+          CREATE TABLE ImportTreatmenttable
+(
+applicationId varchar(255),
+Dutyofficer varchar(255),
+Chemicals varchar(255),
+Dosage varchar(255),
+Duration varchar(255),
+Temperature varchar(255),
+TreatmentDate varchar(255),
+CompletedDate varchar(255),
+DoneBy varchar(255),
+TreatmentRemarks varchar(255)
+);
+  ''');
 
     // await db.execute(
     //     "CREATE TABLE user (username TEXT NOT NULL,phone TEXT NOT NULL,email TEXT NOT NULL)");
@@ -68,9 +97,7 @@ userimage3 varchar(255)
   // Inserts a row in the database where each key in the Map is a column name
   // and the value is the column value. The return value is the id of the
   // inserted row.
-  Future<int> insert(
-    Map<String, dynamic> row, String tableName
-  ) async {
+  Future<int> insert(Map<String, dynamic> row, String tableName) async {
     Database? db = await instance.database;
     return await db.insert(tableName, row);
   }
@@ -86,12 +113,13 @@ userimage3 varchar(255)
 
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
-  Future<List<Map<String, dynamic>>> queryAllRows(String s,String tableName) async {
+  Future<List<Map<String, dynamic>>> queryAllRows(String tableName) async {
     Database db = await instance.database;
     return await db.query(tableName);
   }
 
-  Future<List<Map<String, dynamic>>> queryAllRowsofContact(String tableName) async {
+  Future<List<Map<String, dynamic>>> queryAllRowsofContact(
+      String tableName) async {
     Database db = await instance.database;
     return await db.query(tableName);
   }
@@ -114,7 +142,7 @@ userimage3 varchar(255)
 
   // // Deletes the row specified by the id. The number of affected rows is
   // // returned. This should be 1 as long as the row exists.
-  Future<int> delete(int value,String tableName) async {
+  Future<int> delete(int value, String tableName) async {
     Database db = await instance.database;
     return await db.delete(tableName, where: '$colId = ?', whereArgs: [value]);
   }
@@ -124,7 +152,6 @@ userimage3 varchar(255)
   //   return await db
   //       .delete(tableContact, where: '$columnId = ?', whereArgs: [id]);
   // }
-     
 
   //CRUD
   //Creation

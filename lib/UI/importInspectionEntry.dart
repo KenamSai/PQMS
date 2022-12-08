@@ -1,10 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pqms/ModelClass/import_inspection_response.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pqms/reusable/image.dart';
+import 'package:pqms/reusable/imagecallback.dart';
 
 
 class ImportInspectionEntry extends StatefulWidget {
@@ -21,10 +21,15 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
   TextEditingController _InspectionPlace = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _InspectionRemarks = TextEditingController();
-  XFile? _imageData = null;
+  
 
   @override
   Widget build(BuildContext context) {
+    XFile imageData1 = XFile("");
+    XFile imageData2 = XFile("");
+    XFile imageData3 = XFile("");
+     final String id = ModalRoute.of(context)?.settings.arguments as String;
+    // final productId = ModalRoute.of(context)!.settings.arguments as String?;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -82,7 +87,25 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     Card(
                       child: Column(
                         children: [
-                          Text("Application Number:"),
+                           Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Container(
+                              alignment: Alignment.topLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: "Application Number    ",
+                                    style:
+                                        TextStyle(color: Colors.green.shade600),
+                                    children: [
+                                      TextSpan(
+                                        text: "$id",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                          ),
+                         
                           TextReusable(
                             data: "Duty Officer",
                             controller: _DutyOfficer,
@@ -153,14 +176,22 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     SizedBox(
                       height: 10,
                     ),
-                    Card(
+                     Card(
                       child: Column(
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: Text(
-                              "Capture Image",
-                              style: TextStyle(color: Colors.green.shade600),
+                            child: RichText(
+                              text: TextSpan(
+                                  text: "Capture Image",
+                                  style:
+                                      TextStyle(color: Colors.green.shade600),
+                                  children: [
+                                    TextSpan(
+                                      text: "*",
+                                      style: TextStyle(color: Colors.red),
+                                    )
+                                  ]),
                             ),
                           ),
                           Padding(
@@ -168,9 +199,24 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                ImgPicker(),
-                                ImgPicker(),
-                                ImgPicker(),
+                                ImgPickerCamera(
+                                  callbackValue: (imageData) {
+                                    imageData1 = imageData;
+                                    // print("path1:${imageData1.path}");
+                                  },
+                                ),
+                                ImgPickerCamera(
+                                  callbackValue: (imageData) {
+                                    imageData2 = imageData;
+                                    //print("path2:${imageData2.path}");
+                                  },
+                                ),
+                                ImgPickerCamera(
+                                  callbackValue: (imageData) {
+                                    imageData3 = imageData;
+                                    //print("path3:${imageData3.path}");
+                                  },
+                                ),
                               ],
                             ),
                           )
@@ -190,11 +236,38 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                   color: Colors.black.withOpacity(0.3),
                 ),
                 child: TextButton(
+                  // onPressed: () {  },
                   child: Text(
                     "SAVE",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {},
+                        onPressed: ()async {
+                    final data = ImportResponseinspectionModelClass(
+                      applicationId: id,
+                      Dutyofficer: _DutyOfficer.text,
+                      NoofSamples: _NoOfsamples.text,
+                      SampleSize: _Samplesize.text,
+                      InspectionPlace: _InspectionPlace.text,
+                      InspectionDate: _date.text,
+                      InspectionRemarks: _InspectionRemarks.text,
+                      userimage1: imageData1.path,
+                      userimage2: imageData2.path,
+                      userimage3: imageData3.path,
+                    );
+                    _DutyOfficer.clear();
+                    _NoOfsamples.clear();
+                    _Samplesize.clear();
+                    _InspectionPlace.clear();
+                    _date.clear();
+                    _InspectionRemarks.clear();
+
+                    final DatabaseHelper _databaseService =
+                        DatabaseHelper.instance;
+                     final details=await _databaseService.insertInto(data.toJson(), DatabaseHelper.ImportInspectiontable);
+                     print("dbdata:$details");
+                     final Entries = await _databaseService.queryAllRows(DatabaseHelper.ImportInspectiontable);
+                     print(Entries);
+                  },
                 ),
               ),
             ),

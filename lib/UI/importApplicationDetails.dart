@@ -331,7 +331,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                       ...[
                         GestureDetector(
                           onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.importinspection);
+                          Navigator.pushNamed(context, AppRoutes.importinspection,arguments: modelDetails?.applicationId);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -359,7 +359,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                             Navigator.pushNamed(context, AppRoutes.importinspection);
+                             Navigator.pushNamed(context, AppRoutes.importinspection,arguments: modelDetails?.applicationId);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -381,7 +381,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                         ),
                         GestureDetector(
                           onTap: () {
-                              Navigator.pushNamed(context,AppRoutes.importtreatment);
+                              Navigator.pushNamed(context,AppRoutes.importtreatment,arguments: modelDetails?.applicationId);
                           },
                           child: Container(
                             width: 183,

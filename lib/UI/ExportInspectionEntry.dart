@@ -264,7 +264,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
 
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
-                     final details=await _databaseService.insertInto(data.toJson(), "ExportInspectionEntry");
+                     final details=await _databaseService.insertInto(data.toJson(), DatabaseHelper.ExportInspectiontable);
                      print("dbdata:$details");
                   },
                 ),

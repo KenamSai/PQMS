@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pqms/ModelClass/import_treatment.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 
 class ImportTreatmentForm extends StatefulWidget {
@@ -10,7 +12,7 @@ class ImportTreatmentForm extends StatefulWidget {
 }
 
 class _ImportTreatmentForm extends State<ImportTreatmentForm> {
-  TextEditingController _DutyOfficer = TextEditingController();
+  TextEditingController _Dutyofficer = TextEditingController();
   TextEditingController _Chemicals = TextEditingController();
   TextEditingController _Dosage = TextEditingController();
   TextEditingController _Duration = TextEditingController();
@@ -19,9 +21,11 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   TextEditingController _CompletedDate = TextEditingController();
   TextEditingController _DoneBy = TextEditingController();
   TextEditingController _TreatmentRemarks = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
+    final String? id = ModalRoute.of(context)?.settings.arguments as String?;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -79,10 +83,28 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                     Card(
                       child: Column(
                         children: [
-                          Text("Application Number:"),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Container(
+                              alignment: Alignment.topLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: "Application Number    ",
+                                    style:
+                                        TextStyle(color: Colors.green.shade600),
+                                    children: [
+                                      TextSpan(
+                                        text: "$id",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                          ),
+                          
                           TextReusable(
                             data: "Duty Officer",
-                            controller: _DutyOfficer,
+                            controller: _Dutyofficer,
                             requiredData: "*",
                           ),
                           TextReusable(
@@ -218,7 +240,42 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                     "SAVE",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    final data= ImportTreatmentModelClass(
+                      applicationId: id,
+                      Dutyofficer: _Dutyofficer.text,
+                      Chemicals: _Chemicals.text,
+                      Dosage: _Dosage.text,
+                      Duration: _Duration.text,
+                      Temperature: _Temperature.text,
+                      TreatmentDate: _TreatmentDate.text,
+                      CompletedDate: _CompletedDate.text,
+                      DoneBy: _DoneBy.text,
+                      TreatmentRemarks: _TreatmentRemarks.text,
+                    );
+                    _Dutyofficer.clear();
+                    _Chemicals.clear();
+                    _Dosage.clear();
+                    _Duration.clear();
+                    _Temperature.clear();
+                    _TreatmentDate.clear();
+                    _CompletedDate.clear();
+                    _DoneBy.clear();
+                    _TreatmentRemarks.clear();
+                   
+                    final DatabaseHelper _databaseService = DatabaseHelper.instance;
+
+                    final details = await _databaseService.insertInto(data.toJson(),DatabaseHelper.ImportTreatmenttable);
+                    print("dbdata:$details");
+                    final entries = await _databaseService.queryAllRows(DatabaseHelper.ImportTreatmenttable);
+                    print(entries);
+                    // final DatabaseHelper _databaseService =
+                    //     DatabaseHelper.instance;
+                    //  final details=await _databaseService.insertInto(data.toJson(), DatabaseHelper.ImportInspectiontable);
+                    //  print("dbdata:$details");
+                    //  final Entries = await _databaseService.queryAllRows(DatabaseHelper.ImportInspectiontable);
+                    //  print(Entries);
+                  },
                 ),
               ),
             ),
@@ -227,12 +284,16 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
       ),
     );
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    _TreatmentDate.text = "";
+    _CompletedDate.text="";
+  }
+
 }
 
-//   @override
-//   void initState() {
-//     // TODO: implement initState
+  
+  
 
-//     _date.text = "";
-//   }
-// }
