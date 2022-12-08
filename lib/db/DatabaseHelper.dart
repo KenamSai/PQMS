@@ -59,7 +59,8 @@ userimage3 varchar(255)
 );
  ''');
     await db.execute('''
- CREATE TABLE ImportInspectionEntry(
+ CREATE TABLE ImportInspectionEntry
+ (
 applicationId varchar(255),
 Dutyofficer varchar(255),
 NoofSamples varchar(255),
@@ -96,7 +97,7 @@ InspectionRemarks varchar(255),
 userimage1 varchar(255),
 userimage2 varchar(255),
 userimage3 varchar(255)
-);marks varchar(255)
+marks varchar(255)
 );
           ''');
     await db.execute('''
