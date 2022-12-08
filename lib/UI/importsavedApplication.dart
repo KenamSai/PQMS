@@ -81,7 +81,7 @@ class _ImportSavedApplicationState extends State<ImportSavedApplication> {
                     children: [
                       GestureDetector(
                         onTap: (() {
-                          
+                          Navigator.pushNamed(context, AppRoutes.importinspectionsaved);
                         }),
                         child: CardComponent(
                             TextData: "Inspection Saved Applications",
@@ -89,7 +89,7 @@ class _ImportSavedApplicationState extends State<ImportSavedApplication> {
                       ),
                       GestureDetector(
                          onTap: (() {
-                         
+                          Navigator.pushNamed(context, AppRoutes.importtreatmentsaved);
                         }),
                         child: CardComponent(
                             TextData: "Treatment Saved  Applications",

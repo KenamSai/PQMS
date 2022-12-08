@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pqms/ModelClass/import_treatment.dart';
+import 'package:pqms/ModelClass/import_treatment_response.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 
