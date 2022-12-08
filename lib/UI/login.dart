@@ -18,8 +18,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
-  TextEditingController _username = new TextEditingController();
-  TextEditingController _password = new TextEditingController();
+  TextEditingController _username =  TextEditingController();
+  TextEditingController _password =  TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -146,7 +146,13 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _username.text = "Ashok_Android";
+    _password.text = "PQMS@2022";
+  }
   bool validation() {
     if (_username.text.isEmpty) {
       return false;
@@ -166,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
     loginrequest.username = _username.text.toString().trim();
     loginrequest.password = _password.text.toString().trim();
     loginrequest.toJson();
-    print(loginrequest.toJson());
+   // print(loginrequest.toJson());
     final requestPayload = loginrequest.toJson();
     Map<String, String> requestHeaders = {
       'clientId': 'Client123Cgg',

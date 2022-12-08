@@ -6,6 +6,8 @@ import 'package:pqms/UI/ExportReleaseOrder.dart';
 import 'package:pqms/UI/ExportSavedApplications.dart';
 import 'package:pqms/UI/SplashScreen.dart';
 import 'package:pqms/UI/ViewSavedApplns.dart';
+import 'package:pqms/UI/exportInspectionSaved.dart';
+import 'package:pqms/UI/exportTreatmentsaved.dart';
 import 'package:pqms/UI/export_treatment.dart';
 import 'package:pqms/UI/importApplicationDetails.dart';
 import 'package:pqms/UI/importInspectionEntry.dart';
@@ -38,6 +40,8 @@ class AppPages {
       AppRoutes.importinspection:(context) => ImportInspectionEntry(),
       AppRoutes.importtreatment:(context) => ImportTreatmentForm(),
       AppRoutes.exporttreatment:(context) => ExportTreatmentForm(),
+      AppRoutes.exporttreatmentsaved:(context) => exportTreatmentSaved(),
+      AppRoutes.exportinspectionsaved:(context) => exportInspectionSaved(),
       
     };
   }

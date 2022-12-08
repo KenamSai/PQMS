@@ -10,6 +10,7 @@ class DatabaseHelper {
 
   static final ExportInspectiontable = 'ExportInspectionEntry';
   static final ImportInspectiontable = 'ImportInspectionEntry';
+  static final exporttreatmenttable = 'ExportTreatment';
   // static final tableContact = 'contact';
 
   // make this a singleton class
@@ -55,12 +56,22 @@ userimage1 varchar(255),
 userimage2 varchar(255),
 userimage3 varchar(255)
 );
-         CREATE TABLE ImportInspectiontable
-
           ''');
-
-    // await db.execute(
-    //     "CREATE TABLE user (username TEXT NOT NULL,phone TEXT NOT NULL,email TEXT NOT NULL)");
+await db.execute('''
+          CREATE TABLE $exporttreatmenttable
+(
+applicationId varchar(255),
+Dutyofficer varchar(255),
+Chemicals varchar(255),
+Dosage varchar(255),
+Duration varchar(255),
+Temperature varchar(255),
+TreatmentDate varchar(255),
+CompletionDate varchar(255),
+Doneby varchar(255),
+TreatmentRemarks varchar(255)
+);
+          ''');
   }
 
   // Helper methods
@@ -86,7 +97,7 @@ userimage3 varchar(255)
 
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
-  Future<List<Map<String, dynamic>>> queryAllRows(String s,String tableName) async {
+  Future<List<Map<String, dynamic>>> queryAllRows(String tableName) async {
     Database db = await instance.database;
     return await db.query(tableName);
   }

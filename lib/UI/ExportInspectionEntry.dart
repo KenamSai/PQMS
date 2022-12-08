@@ -29,7 +29,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
     XFile imageData2 = XFile("");
     XFile imageData3 = XFile("");
 
-    final String id = ModalRoute.of(context)?.settings.arguments as String;
+    String id = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -261,6 +261,8 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     _InspectionPlace.clear();
                     _date.clear();
                     _InspectionRemarks.clear();
+                  
+                   
 
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
