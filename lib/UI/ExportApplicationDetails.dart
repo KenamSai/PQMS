@@ -281,7 +281,9 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                   children: [
                     GestureDetector(
                       onTap: (() {
-                        Navigator.pushNamed(context, AppRoutes.importTransactionDetails,arguments: exportmodelDetails?.applicationId);
+                        Navigator.pushNamed(
+                            context, AppRoutes.importTransactionDetails,
+                            arguments: exportmodelDetails?.applicationId);
                         EasyLoading.show(status: "Loading...");
                       }),
                       child: Container(
@@ -305,18 +307,8 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         if (!(exportmodelDetails?.treatmentNeeded ?? true))
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                            ),
-                            height: 32,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: Center(
-                              child: GestureDetector(
-                                onTap: (() {
+                          GestureDetector(
+                            onTap: (() {
                                   Navigator.pushNamed(
                                     context,
                                     AppRoutes.exportinspection,
@@ -324,6 +316,16 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                         exportmodelDetails?.applicationId,
                                   );
                                 }),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5.0),
+                                ),
+                              ),
+                              height: 32,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: Center(
                                 child: Text(
                                   "INSPECTION",
                                   style: TextStyle(
@@ -338,18 +340,8 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.3),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
-                                    ),
-                                  ),
-                                  height: 32.0,
-                                  width: 150,
-                                  child: Center(
-                                    child: GestureDetector(
-                                      onTap: (() {
+                                GestureDetector(
+                                   onTap: (() {
                                         Navigator.pushNamed(
                                           context,
                                           AppRoutes.exportinspection,
@@ -357,6 +349,16 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                               exportmodelDetails?.applicationId,
                                         );
                                       }),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.3),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5.0),
+                                      ),
+                                    ),
+                                    height: 32.0,
+                                    width: 180,
+                                    child: Center(
                                       child: Text(
                                         "INSPECTION",
                                         style: TextStyle(
@@ -366,20 +368,22 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(context,
-                                    AppRoutes.exporttreatment,
-                                    );
-                                  },
+                                    onTap: (() {
+                                        Navigator.pushNamed(
+                                          context,
+                                          AppRoutes.exporttreatment,
+                                          arguments: exportmodelDetails?.applicationId,
+                                        );
+                                      }),
                                   child: Container(
-                                    height: 32.0,
-                                    width: 150,
                                     decoration: BoxDecoration(
                                       color: Colors.black.withOpacity(0.3),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(5.0),
                                       ),
                                     ),
+                                    height: 32.0,
+                                    width: 180,
                                     child: Center(
                                       child: Text(
                                         "TREATMENT",
@@ -463,7 +467,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
         data: requestPayload,
         options: Options(headers: requestHeaders),
       );
-      print("Data:$_response");
+    //  print("Data:$_response");
       final responseData =
           ExportApplicationDetailsModelClass.fromJson(_response.data);
       //print(responseData);

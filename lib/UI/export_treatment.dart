@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 
 class ExportTreatmentForm extends StatefulWidget {
@@ -22,6 +24,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
 
   @override
   Widget build(BuildContext context) {
+    final String id = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -61,7 +64,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
               child: Container(
                 child: Center(
                   child: Text(
-                    "Import Treatment Form",
+                    "Export Treatment Form",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 23,
@@ -79,7 +82,25 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                     Card(
                       child: Column(
                         children: [
-                          Text("Application Number:"),
+                          //Text("Application Number  :$id"),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Container(
+                              alignment: Alignment.topLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: "Application Number    ",
+                                    style:
+                                        TextStyle(color: Colors.green.shade600),
+                                    children: [
+                                      TextSpan(
+                                        text: "$id",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                          ),
                           TextReusable(
                             data: "Duty Officer",
                             controller: _DutyOfficer,
@@ -96,12 +117,10 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                           TextReusable(
                             data: "Duration(Hrs)",
                             controller: _Duration,
-                            
                           ),
                           TextReusable(
                             data: "Temperature(DegC)",
                             controller: _Temperature,
-                            
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -156,7 +175,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                                   label: RichText(
                                     text: TextSpan(
                                         text:
-                                            "Completed Date of Supervision?Treatment",
+                                            """Completed Date of Supervision/Treatment""",
                                         style: TextStyle(
                                             color: Colors.green.shade600),
                                         children: [
@@ -185,7 +204,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                                 }),
                           ),
                           TextReusable(
-                            data: "Done BY",
+                            data: "Done By",
                             controller: _DoneBy,
                             requiredData: "*",
                           ),
@@ -218,7 +237,45 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                     "SAVE",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {},
+                  onPressed: ()async {
+                    // print("id$id");
+                    // print("date${_CompletedDate.text}");
+                    final Response = exporttreatmentresponsemodelclass(
+                        applicationId: id.toString(),
+                        chemicals: _Chemicals.text,
+                        completionDate: _CompletedDate.text,
+                        treatmentDate: _TreatmentDate.text,
+                        doneby: _DoneBy.text,
+                        dosage: _Dosage.text,
+                        durationHrs: _Duration.text,
+                        dutyofficer: _DutyOfficer.text,
+                        temperatureDegC: _Temperature.text,
+                        treatmentRemarks: _TreatmentRemarks.text);
+
+                        print(Response.applicationId);
+                         print(Response.chemicals);
+                          print(Response.completionDate);
+                           print(Response.treatmentDate);
+                            print(Response.doneby);
+                             print(Response.dosage);
+                              print(Response.durationHrs);
+                              print(Response.dutyofficer);
+                               print(Response.temperatureDegC);
+                                print(Response.treatmentRemarks);
+                    _Chemicals.clear();
+                    _CompletedDate.clear();
+                    _TreatmentDate.clear();
+                    _DoneBy.clear();
+                    _Dosage.clear();
+                    _Duration.clear();
+                    _DutyOfficer.clear();
+                    _Temperature.clear();
+                    _TreatmentRemarks.clear();
+                    final DatabaseHelper _databaseService =
+                        DatabaseHelper.instance;
+                        final DBdetails=await _databaseService.insertInto(Response.toJson(), "ExportTreatment");
+                        print("teja: $DBdetails");
+                  },
                 ),
               ),
             ),
@@ -228,11 +285,3 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
     );
   }
 }
-
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-
-//     _date.text = "";
-//   }
-// }
