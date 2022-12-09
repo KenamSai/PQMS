@@ -21,6 +21,7 @@ class AppRoutes {
   static const exportinspectionsaved="/exportinspectionsaved";
    static const exporttreatmentsaved="/exporttreatmentsaved";
    static const exporttreatmentSubmission="/exporttreatmentSubmission";
+   static const exportinspectionSubmission="/exportinspectionSubmission";
   static const importinspectionsaved = "/importinspectionsaved";
   static const importtreatmentsaved="/importtreatmentsaved";
   static const importinspectionformsubmit="/importinspectionformsubmit";

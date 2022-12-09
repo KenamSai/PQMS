@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 
 class exportInspectionSaved extends StatefulWidget {
   const exportInspectionSaved({super.key});
@@ -27,6 +28,9 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
               inspectionRemarks: element["InspectionRemarks"],
               noofSamples: element["NoofSamples"],
               sampleSize: element["SampleSize"],
+              userimage1: element["userimage1"],
+               userimage2: element["userimage2"],
+                userimage3: element["userimage3"]
             ),
           );
         });
@@ -105,7 +109,7 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
                         final data = ListData[index];
                         return GestureDetector(
                           onTap: () {
-                            
+                            Navigator.pushNamed(context,AppRoutes.exportinspectionSubmission,arguments: data);
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
