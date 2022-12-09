@@ -1,37 +1,53 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
-class ExportTreatmentSubmit extends StatefulWidget {
-  const ExportTreatmentSubmit({super.key});
+class exportInspectionSubmission extends StatefulWidget {
+  const exportInspectionSubmission({super.key});
 
   @override
-  State<ExportTreatmentSubmit> createState() => ExportTreatmentSubmitState();
+  State<exportInspectionSubmission> createState() =>
+      _exportInspectionSubmissionState();
 }
 
-class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
+class _exportInspectionSubmissionState
+    extends State<exportInspectionSubmission> {
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)?.settings.arguments
-        as exporttreatmentresponsemodelclass;
-    //print(id.applicationId);
-    TextEditingController _DutyOfficer =
-        TextEditingController(text: id.dutyofficer);
-    TextEditingController _Chemicals =
-        TextEditingController(text: id.chemicals);
-    TextEditingController _Dosage = TextEditingController(text: id.dosage);
-    TextEditingController _Duration =
-        TextEditingController(text: id.durationHrs);
-    TextEditingController _Temperature =
-        TextEditingController(text: id.temperatureDegC);
-    TextEditingController _TreatmentDate =
-        TextEditingController(text: id.treatmentDate);
-    TextEditingController _CompletedDate =
-        TextEditingController(text: id.completionDate);
-    TextEditingController _DoneBy = TextEditingController(text: id.doneby);
-    TextEditingController _TreatmentRemarks =
-        TextEditingController(text: id.treatmentRemarks);
+        as exportResponseinspectionModelClass;
+    TextEditingController _DutyOfficer = TextEditingController(
+      text: id.dutyofficer,
+    );
+    TextEditingController _NoOfSamples = TextEditingController(
+      text: id.noofSamples,
+    );
+    TextEditingController _SampleSize = TextEditingController(
+      text: id.sampleSize,
+    );
+    TextEditingController _InspectionPlace = TextEditingController(
+      text: id.inspectionPlace,
+    );
+    TextEditingController _CompletedDate = TextEditingController(
+      text: id.inspectionDate,
+    );
+    TextEditingController _Remarks = TextEditingController(
+      text: id.inspectionRemarks,
+    );
+    // TextEditingController _userimage1 = TextEditingController(
+    //   text: id.userimage1,
+    // );
+    // TextEditingController _userimage2 = TextEditingController(
+    //   text: id.userimage2,
+    // );
+    // TextEditingController _userimage3 = TextEditingController(
+    //   text: id.userimage3,
+    // );
 
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +62,8 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.popUntil(context, ModalRoute.withName(AppRoutes.dashboardpage));
+              Navigator.popUntil(
+                  context, ModalRoute.withName(AppRoutes.dashboardpage));
             },
             child: Icon(
               Icons.home,
@@ -72,7 +89,7 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
               child: Container(
                 child: Center(
                   child: Text(
-                    "Export Treatment Form",
+                    "Export Inspection Form",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 23,
@@ -115,53 +132,20 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                             readType: true,
                           ),
                           TextReusable(
-                            data: "Chemicals",
-                            controller: _Chemicals,
+                            data: "No Of Samples",
+                            controller: _NoOfSamples,
                             readType: true,
                           ),
                           TextReusable(
-                            data: "Dosage",
-                            controller: _Dosage,
+                            data: "Sample Size",
+                            controller: _SampleSize,
                             readType: true,
                           ),
                           TextReusable(
-                            data: "Duration(Hrs)",
-                            controller: _Duration,
+                            data: "Inspection PLace",
+                            controller: _InspectionPlace,
                             readType: true,
-                          ),
-                          TextReusable(
-                            data: "Temperature(DegC)",
-                            controller: _Temperature,
-                            readType: true,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: TextField(
-                              readOnly: true,
-                              controller: _TreatmentDate,
-                              decoration: InputDecoration(
-                                suffixIcon: Icon(
-                                  Icons.calendar_today,
-                                  color: Colors.green.shade400,
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.green.shade400),
-                                ),
-                                label: RichText(
-                                  text: TextSpan(
-                                      text: "Treatment Date",
-                                      style: TextStyle(
-                                          color: Colors.green.shade600),
-                                      children: [
-                                        TextSpan(
-                                          text: "*",
-                                          style: TextStyle(color: Colors.red),
-                                        )
-                                      ]),
-                                ),
-                              ),
-                            ),
+                            requiredData: "*",
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -179,8 +163,7 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                                 ),
                                 label: RichText(
                                   text: TextSpan(
-                                      text:
-                                          """Completed Date of Supervision/Treatment""",
+                                      text: "Completed Inspection Date",
                                       style: TextStyle(
                                           color: Colors.green.shade600),
                                       children: [
@@ -194,16 +177,9 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                             ),
                           ),
                           TextReusable(
-                            data: "Done By",
+                            data: "Inspection Remarks",
                             readType: true,
-                            controller: _DoneBy,
-                            requiredData: "*",
-                          ),
-                          TextReusable(
-                            readType: true,
-                            maxlines: 5,
-                            data: "Treatment Remarks",
-                            controller: _TreatmentRemarks,
+                            controller: _Remarks,
                             requiredData: "*",
                           ),
                         ],
@@ -212,6 +188,67 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                     SizedBox(
                       height: 10,
                     ),
+                    Card(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: RichText(
+                              text: TextSpan(
+                                  text: "Capture Image",
+                                  style:
+                                      TextStyle(color: Colors.green.shade600),
+                                  children: [
+                                    TextSpan(
+                                      text: "*",
+                                      style: TextStyle(color: Colors.red),
+                                    )
+                                  ]),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                id.userimage1 == ""
+                                    ? Icon(
+                                        Icons.camera_enhance,
+                                        size: 50,
+                                      )
+                                    : Image.file(
+                                        width: 100,
+                                        height: 100,
+                                        File(
+                                          id.userimage1 ?? "",
+                                        ),
+                                      ),
+                                id.userimage2 == ""
+                                    ? Icon(
+                                        Icons.camera_enhance,
+                                        size: 50,
+                                      )
+                                    : Image.file(
+                                        width: 100,
+                                        height: 100,
+                                        File(id.userimage2 ?? ""),
+                                      ),
+                                id.userimage3 == ""
+                                    ? Icon(
+                                        Icons.camera_enhance,
+                                        size: 50,
+                                      )
+                                    : Image.file(
+                                        width: 100,
+                                        height: 100,
+                                        File(id.userimage3 ?? ""),
+                                      )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -231,16 +268,16 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                   ),
                   onPressed: () async {
                     setState(() {
-                      id.applicationId = "";
-                      id.chemicals='';
-                      id.completionDate='';
-                      id.treatmentDate='';
-                      id.doneby='';
-                      id.dosage='';
-                      id.dutyofficer='';
-                      id.temperatureDegC='';
-                      id.treatmentRemarks='';
-                      id.durationHrs='';
+                      // id.applicationId = "";
+                      // id.chemicals='';
+                      // id.completionDate='';
+                      // id.treatmentDate='';
+                      // id.doneby='';
+                      // id.dosage='';
+                      // id.dutyofficer='';
+                      // id.temperatureDegC='';
+                      // id.treatmentRemarks='';
+                      // id.durationHrs='';
                     });
                   },
                 ),

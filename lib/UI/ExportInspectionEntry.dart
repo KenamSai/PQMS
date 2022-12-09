@@ -259,6 +259,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     _InspectionPlace.clear();
                     _date.clear();
                     _InspectionRemarks.clear();
+                   
                   
                    
 
