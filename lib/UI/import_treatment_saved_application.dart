@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/import_treatment_response.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 
 
 class ImportTreatmentSavedApplications extends StatefulWidget {
@@ -85,39 +86,44 @@ class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplic
                       itemCount: importdata.length,
                       itemBuilder: (context, index) {
                         final data = importdata[index];
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10.0),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, AppRoutes.importtreatmentformsubmit,arguments: data);
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
                             ),
-                          ),
-                          child: Column(
-                            children: [
-                              RowComponent(
-                                "Application Id",
-                                data.applicationId,
-                              ),
-                              RowComponent(
-                                "Duty Officer",
-                                data.Dutyofficer,
-                              ),
-                              RowComponent(
-                                "Treatment Date",
-                                data.TreatmentDate,
-                              ),
-                              RowComponent(
-                                "Completed Date",
-                                data.CompletedDate,
-                              ),
-                              RowComponent(
-                                "Treatment Remarks",
-                                data.TreatmentRemarks,
-                              ),
-                              RowComponent(
-                                "Application Saved Date",
-                                data.CompletedDate,
-                              ),
-                            ],
+                            child: Column(
+                              children: [
+                                RowComponent(
+                                  "Application Id",
+                                  data.applicationId,
+                                ),
+                                RowComponent(
+                                  "Duty Officer",
+                                  data.Dutyofficer,
+                                ),
+                                RowComponent(
+                                  "Treatment Date",
+                                  data.TreatmentDate,
+                                ),
+                                RowComponent(
+                                  "Completed Date",
+                                  data.CompletedDate,
+                                ),
+                                RowComponent(
+                                  "Treatment Remarks",
+                                  data.TreatmentRemarks,
+                                ),
+                                RowComponent(
+                                  "Application Saved Date",
+                                  data.CompletedDate,
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },

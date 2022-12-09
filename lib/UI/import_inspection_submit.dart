@@ -91,7 +91,7 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
                                         TextStyle(color: Colors.green.shade600),
                                     children: [
                                       TextSpan(
-                                        // text: "$id",
+                                        text: "${args.applicationId}",
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ]),
@@ -117,6 +117,34 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
                       ),
                     )
                   ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                ),
+                child: TextButton(
+                  child: Text(
+                    "SUBMIT",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      args.applicationId = "";
+                      args.Dutyofficer='';
+                      args.NoofSamples='';
+                      args.SampleSize='';
+                      args.InspectionPlace='';
+                      args.InspectionDate='';
+                      args.InspectionRemarks='';
+                      
+                    });
+                  },
                 ),
               ),
             ),

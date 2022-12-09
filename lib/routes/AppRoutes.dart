@@ -21,17 +21,9 @@ class AppRoutes {
   static const exportinspectionsaved="/exportinspectionsaved";
    static const exporttreatmentsaved="/exporttreatmentsaved";
    static const exporttreatmentSubmission="/exporttreatmentSubmission";
-
-
-  static const exportApplnDetails = "/exportApplnDetails";
-  static const importTransactionDetails = "/importTransactionDetails";
-  static const exportinspection = "/ExportInspectionEntry";
-  static const importinspection = "/ImportInspectionEntry";
-  static const importtreatment = "/importtreatment";
-  static const exporttreatment = "/exporttreatment";
-  static const exportinspectionsaved = "/exportinspectionsaved";
-  static const exporttreatmentsaved = "/exporttreatmentsaved";
   static const importinspectionsaved = "/importinspectionsaved";
   static const importtreatmentsaved="/importtreatmentsaved";
   static const importinspectionformsubmit="/importinspectionformsubmit";
+  static const importtreatmentformsubmit="/importtreatmentformsubmit";
+
 }
