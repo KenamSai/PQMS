@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:pqms/ModelClass/common_request.dart';
 import 'package:pqms/ModelClass/importApplModelClass.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
@@ -317,7 +316,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                             Radius.circular(5.0),
                           ),
                         ),
-                        width: 380,
+                        width: MediaQuery.of(context).size.width*0.9,
                         height: 32.0,
                         child: Center(
                           child: Text(
@@ -341,7 +340,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                               ),
                             ),
                             height: 32.0,
-                            width: 380,
+                            width: MediaQuery.of(context).size.width*0.9,
                             child: Center(
                               child: Text(
                                 "INSPECTION",
@@ -354,55 +353,59 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                       ]
                     else
                       ...[
-                          Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          Container(
+                            width: MediaQuery.of(context).size.width*0.9,
+                            child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () {
-                             Navigator.pushNamed(context, AppRoutes.importinspection,arguments: modelDetails?.applicationId);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
+                            onTap: () {
+                               Navigator.pushNamed(context, AppRoutes.importinspection,arguments: modelDetails?.applicationId);
+                            },
+                            child: Container(
+                              
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5.0),
+                                ),
+                              ),
+                              height: 32.0,
+                              width: MediaQuery.of(context).size.width*0.4,
+                              child: Center(
+                                child: Text(
+                                  "INSPECTION",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             ),
-                            height: 32.0,
-                            width: 183,
-                            child: Center(
-                              child: Text(
-                                "INSPECTION",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15),
-                              ),
-                            ),
-                          ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                              Navigator.pushNamed(context,AppRoutes.importtreatment,arguments: modelDetails?.applicationId);
-                          },
-                          child: Container(
-                            width: 183,
-                            height: 32.0,
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
+                            onTap: () {
+                                Navigator.pushNamed(context,AppRoutes.importtreatment,arguments: modelDetails?.applicationId);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width*0.4,
+                              height: 32.0,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5.0),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "TREATMENT",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             ),
-                            child: Center(
-                              child: Text(
-                                "TREATMENT",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15),
-                              ),
-                            ),
-                          ),
                         ),
                       ],
-                    )
+                    ),
+                          )
                       ],
                   
                   ],

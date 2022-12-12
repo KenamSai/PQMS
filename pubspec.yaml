@@ -51,6 +51,26 @@ dependencies:
   path_provider: ^2.0.11
   sqflite: ^2.2.1
   provider: ^6.0.4
+  flutter_launcher_icons: ^0.11.0
+
+flutter_icons:
+  image_path: "assets/appLogo.png" 
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/appLogo.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/appLogo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/appLogo.png"
 
 
 dev_dependencies:

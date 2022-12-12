@@ -23,7 +23,7 @@ class _SideBarState extends State<SideBar> {
   Future<void> initial() async {
     String temp =
         await SharedPreferencesClass().readTheData(PreferenceConst.username);
-    print("temp:" + temp);
+    //print("temp:" + temp);
     setState(() {
       role = temp;
     });
@@ -58,14 +58,14 @@ class _SideBarState extends State<SideBar> {
             ],
           ),
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                Colors.green.shade900,
-                Colors.green.shade700,
-                Colors.green.shade600
-              ])),
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Colors.green.shade900,
+                  Colors.green.shade800
+                ]),
+          ),
         ),
         ListTile(
           onTap: (() {
@@ -96,15 +96,18 @@ class _SideBarState extends State<SideBar> {
         ),
         ListTile(
           onTap: () {
-            showDialog(context: context, builder:(context) {
-              return reusableAlert(
-                title: "UAT-PQMS",
-                message: "Do you want to exit from app?",
-                icon: Icons.error,
-                Yes: "Yes",
-                No: "No",);
-            },);
-            
+            showDialog(
+              context: context,
+              builder: (context) {
+                return reusableAlert(
+                  title: "UAT-PQMS",
+                  message: "Do you want to exit from app?",
+                  icon: Icons.error,
+                  Yes: "Yes",
+                  No: "No",
+                );
+              },
+            );
           },
           leading: Image.asset(
             "assets/exit.png",

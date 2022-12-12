@@ -357,7 +357,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                       ),
                                     ),
                                     height: 32.0,
-                                    width: 180,
+                                    width: MediaQuery.of(context).size.width*0.4,
                                     child: Center(
                                       child: Text(
                                         "INSPECTION",
@@ -383,7 +383,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                       ),
                                     ),
                                     height: 32.0,
-                                    width: 180,
+                                    width: MediaQuery.of(context).size.width*0.4,
                                     child: Center(
                                       child: Text(
                                         "TREATMENT",

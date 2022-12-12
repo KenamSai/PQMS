@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/importModelClass.dart';
 import 'package:pqms/routes/AppRoutes.dart';
-import 'package:pqms/sharedpreference/sharedpreference.dart';
 
 class ImportListItem extends StatelessWidget {
   const ImportListItem({super.key, required this.userInfo});
@@ -12,8 +11,6 @@ class ImportListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        // SharedPreferencesClass().writeTheData("id", userInfo?.applicationId);
-        //SharedPreferencesClass().clearTheData();
          await EasyLoading.show(status: "Loading...");
 
         Navigator.pushNamed(
