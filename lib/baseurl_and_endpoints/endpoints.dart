@@ -4,5 +4,6 @@ class EndPoints{
   static const login = "mobileLogin";
   static const  ImportAppDetails="getIroAppDetails";
   static const importtransactindetails="gettransactionsByAppId";
+  static const importinspectionsubmit="saveIpIroInspectorAction";
   
 }

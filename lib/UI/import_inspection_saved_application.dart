@@ -172,6 +172,9 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
             Dutyofficer: element["Dutyofficer"],
             InspectionPlace: element["InspectionPlace"],
             InspectionRemarks: element["InspectionRemarks"],
+            userimage1: element["userimage1"],
+            userimage2: element["userimage2"],
+            userimage3: element["userimage3"]
              
           );
           importdata.add(model);
