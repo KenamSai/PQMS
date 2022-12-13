@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/import_inspection_response.dart';
@@ -254,6 +256,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                       userimage2: imageData2.path,
                       userimage3: imageData3.path,
                     );
+                     final bytes = File(imageData1.path).readAsBytesSync();
                     _DutyOfficer.clear();
                     _NoOfsamples.clear();
                     _Samplesize.clear();
