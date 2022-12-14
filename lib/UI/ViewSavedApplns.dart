@@ -25,8 +25,8 @@ class _ViewSavedApplicationState extends State<ViewSavedApplication> {
             onTap: null,
             child: Image.asset(
               "assets/logout.png",
-              height: 30,
-              width: 30,
+              height: 20,
+              width: 20,
               color: Colors.white,
             ),
           ),
@@ -53,7 +53,7 @@ class _ViewSavedApplicationState extends State<ViewSavedApplication> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

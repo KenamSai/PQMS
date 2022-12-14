@@ -36,7 +36,7 @@ class _ImportListState extends State<ImportList> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -61,7 +61,7 @@ class _ImportListState extends State<ImportList> {
                   "Import Release Order",
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                   // fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                   textAlign: TextAlign.center,

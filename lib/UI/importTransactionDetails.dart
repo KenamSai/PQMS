@@ -40,7 +40,7 @@ class _ImportTransactionDetailsState extends State<ImportTransactionDetails> {
             },
             child: Icon(
               Icons.home,
-              size: 40,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -65,7 +65,7 @@ class _ImportTransactionDetailsState extends State<ImportTransactionDetails> {
                   " Transaction Details",
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    //fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                   textAlign: TextAlign.center,

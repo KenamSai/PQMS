@@ -43,7 +43,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -61,14 +61,14 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
         child: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Container(
                 child: Center(
                   child: Text(
                     "Import Treatment Form",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 23,
+                      fontSize: 20,
                       color: Colors.white,
                     ),
                   ),

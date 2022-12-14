@@ -25,8 +25,8 @@ class _ImportSavedApplicationState extends State<ImportSavedApplication> {
             onTap: null,
             child: Image.asset(
               "assets/logout.png",
-              height: 30,
-              width: 30,
+              height: 20,
+              width: 20,
               color: Colors.white,
             ),
           ),

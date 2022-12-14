@@ -1,13 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/import_inspection_response.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pqms/reusable/imagecallback.dart';
-
 
 class ImportInspectionEntry extends StatefulWidget {
   const ImportInspectionEntry({super.key});
@@ -23,14 +23,16 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
   TextEditingController _InspectionPlace = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _InspectionRemarks = TextEditingController();
-  
+
+  String? _currentAddress;
+  Position? _currentPosition;
 
   @override
   Widget build(BuildContext context) {
     XFile imageData1 = XFile("");
     XFile imageData2 = XFile("");
     XFile imageData3 = XFile("");
-     final String id = ModalRoute.of(context)?.settings.arguments as String;
+    final String id = ModalRoute.of(context)?.settings.arguments as String;
     // final productId = ModalRoute.of(context)!.settings.arguments as String?;
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +51,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -67,14 +69,14 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
         child: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Container(
                 child: Center(
                   child: Text(
                     "Import Inspection Entry",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 23,
+                      fontSize: 20,
                       color: Colors.white,
                     ),
                   ),
@@ -89,7 +91,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     Card(
                       child: Column(
                         children: [
-                           Padding(
+                          Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: Container(
                               alignment: Alignment.topLeft,
@@ -107,7 +109,6 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                               ),
                             ),
                           ),
-                         
                           TextReusable(
                             data: "Duty Officer",
                             controller: _DutyOfficer,
@@ -150,6 +151,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                                   ),
                                 ),
                                 onTap: () async {
+                                  _getCurrentPosition();
                                   final selectedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
@@ -178,7 +180,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     SizedBox(
                       height: 10,
                     ),
-                     Card(
+                    Card(
                       child: Column(
                         children: [
                           Padding(
@@ -243,7 +245,20 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     "SAVE",
                     style: TextStyle(color: Colors.white),
                   ),
-                        onPressed: ()async {
+                  onPressed: () async {
+                    _getCurrentPosition();
+
+                    if (_currentPosition != null &&
+                        _currentPosition!.latitude != null &&
+                        _currentPosition!.longitude != null) {
+                      print('LAT: ${_currentPosition?.latitude ?? ""}');
+                      print('LAT: ${_currentPosition?.longitude ?? ""}');
+                      print('ADDRESS: ${_currentAddress ?? ""}');
+                    } else {
+                      _getCurrentPosition();
+                      print("please wait till location is fetched");
+                    }
+
                     final data = ImportResponseinspectionModelClass(
                       applicationId: id,
                       Dutyofficer: _DutyOfficer.text,
@@ -256,7 +271,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                       userimage2: imageData2.path,
                       userimage3: imageData3.path,
                     );
-                     final bytes = File(imageData1.path).readAsBytesSync();
+                    final bytes = File(imageData1.path).readAsBytesSync();
                     _DutyOfficer.clear();
                     _NoOfsamples.clear();
                     _Samplesize.clear();
@@ -266,10 +281,12 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
 
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
-                     final details=await _databaseService.insertInto(data.toJson(), DatabaseHelper.ImportInspectiontable);
-                     print("dbdata:$details");
-                     final Entries = await _databaseService.queryAllRows(DatabaseHelper.ImportInspectiontable);
-                     print(Entries);
+                    final details = await _databaseService.insertInto(
+                        data.toJson(), DatabaseHelper.ImportInspectiontable);
+                    print("dbdata:$details");
+                    final Entries = await _databaseService
+                        .queryAllRows(DatabaseHelper.ImportInspectiontable);
+                    print(Entries);
                   },
                 ),
               ),
@@ -282,8 +299,62 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     _date.text = "";
+  }
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.locality}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 }
