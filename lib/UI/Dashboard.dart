@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/reusable/Card_Component.dart';
 import 'package:pqms/UI/SideBar.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
 
 import 'package:pqms/routes/AppRoutes.dart';
@@ -41,7 +42,7 @@ class _DashboardState extends State<Dashboard> {
       drawer: SideBar(),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.green[900],
+       backgroundColor: customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
         ),

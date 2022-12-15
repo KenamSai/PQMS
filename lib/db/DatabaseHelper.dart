@@ -12,6 +12,8 @@ class DatabaseHelper {
   static final ImportInspectiontable = 'ImportInspectionEntry';
   static final exporttreatmenttable = 'ExportTreatment';
   static final ImportTreatmenttable = 'ImportTreatmenttable';
+  static final AgencyList="AgencyList";
+  static final DutyOfficers="DutyOfficers";
   // static final tableContact = 'contact';
 
   // make this a singleton class
@@ -104,6 +106,18 @@ DoneBy varchar(255),
 TreatmentRemarks varchar(255)
 );
   ''');
+    await db.execute('''
+CREATE TABLE DutyOfficers
+(
+  Name varchar(255),
+  UserId varchar(255)
+);''');
+    await db.execute('''
+CREATE TABLE AgencyList
+(
+  agencyList varchar(255)
+  );
+''');
   }
 
   // Helper methods

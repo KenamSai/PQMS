@@ -1,8 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pqms/ModelClass/DonebyModelClass.dart';
+import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
 import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
+
+import '../ModelClass/DutyOfficers.dart';
 
 class ExportTreatmentForm extends StatefulWidget {
   const ExportTreatmentForm({super.key});
@@ -21,6 +28,11 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   TextEditingController _CompletedDate = TextEditingController();
   TextEditingController _DoneBy = TextEditingController();
   TextEditingController _TreatmentRemarks = TextEditingController();
+  List<DataAgencyList> dataAgency = [];
+  DataAgencyList? selectedValue;
+    List<Data> DutyOfficersList = [];
+  int? DutyOfficerId;
+  Data? selectedValuetype;
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +113,49 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                               ),
                             ),
                           ),
-                          TextReusable(
-                            data: "Duty Officer",
-                            controller: _DutyOfficer,
-                            requiredData: "*",
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: "DutyOfficer",
+                                      style: TextStyle(color: Colors.green),
+                                      children: [
+                                        TextSpan(
+                                          text: " *",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: DropdownButton<Data>(
+                                    value: selectedValuetype,
+                                    underline: Container(
+                                      height: 1,
+                                      color: Colors.black.withOpacity(0.3),
+                                    ),
+                                    isExpanded: true,
+                                    onChanged: (changedValue) {
+                                      setState(() {
+                                        selectedValuetype = changedValue;
+                                      });
+                                    },
+                                    items: DutyOfficersList.map((Data value) {
+                                      return new DropdownMenuItem<Data>(
+                                        value: value,
+                                        child: Text(value.name ?? ""),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           TextReusable(
                             data: "Chemicals",
@@ -123,7 +174,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                             controller: _Temperature,
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(6.0),
                             child: TextField(
                                 readOnly: true,
                                 controller: _TreatmentDate,
@@ -163,7 +214,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                                 }),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(6.0),
                             child: TextField(
                                 readOnly: true,
                                 controller: _CompletedDate,
@@ -203,13 +254,56 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                                   }
                                 }),
                           ),
-                          TextReusable(
-                            data: "Done By",
-                            controller: _DoneBy,
-                            requiredData: "*",
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: "Done by",
+                                      style: TextStyle(color: Colors.green),
+                                      children: [
+                                        TextSpan(
+                                          text: " *",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: DropdownButton<DataAgencyList>(
+                                  
+                                    value: selectedValue,
+                                    underline: Container(
+                                      height: 1,
+                                      color: Colors.black.withOpacity(0.3),
+                                    ),
+                                    isExpanded: true,
+                                    onChanged: ((value) {
+                                      setState(() {
+                                        selectedValue = value;
+                                      });
+                                    }),
+                                    items:
+                                        dataAgency.map((DataAgencyList value) {
+                                      return new DropdownMenuItem<
+                                          DataAgencyList>(
+                                        value: value,
+                                        child: Text(
+                                          value.fumigationAgent ?? "",
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           TextReusable(
-                            maxlines: 5,
                             data: "Treatment Remarks",
                             controller: _TreatmentRemarks,
                             requiredData: "*",
@@ -237,31 +331,22 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                     "SAVE",
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: ()async {
+                  onPressed: () async {
                     // print("id$id");
                     // print("date${_CompletedDate.text}");
                     final Response = exporttreatmentresponsemodelclass(
+    
                         applicationId: id.toString(),
                         chemicals: _Chemicals.text,
                         completionDate: _CompletedDate.text,
                         treatmentDate: _TreatmentDate.text,
-                        doneby: _DoneBy.text,
+                        doneby: selectedValue!.fumigationAgent,
                         dosage: _Dosage.text,
                         durationHrs: _Duration.text,
-                        dutyofficer: _DutyOfficer.text,
+                        dutyofficer: selectedValuetype!.name,
                         temperatureDegC: _Temperature.text,
                         treatmentRemarks: _TreatmentRemarks.text);
 
-                        print(Response.applicationId);
-                         print(Response.chemicals);
-                          print(Response.completionDate);
-                           print(Response.treatmentDate);
-                            print(Response.doneby);
-                             print(Response.dosage);
-                              print(Response.durationHrs);
-                              print(Response.dutyofficer);
-                               print(Response.temperatureDegC);
-                                print(Response.treatmentRemarks);
                     _Chemicals.clear();
                     _CompletedDate.clear();
                     _TreatmentDate.clear();
@@ -273,8 +358,9 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                     _TreatmentRemarks.clear();
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
-                        final DBdetails=await _databaseService.insertInto(Response.toJson(), "ExportTreatment");
-                        print("teja: $DBdetails");
+                    final DBdetails = await _databaseService.insertInto(
+                        Response.toJson(), "ExportTreatment");
+                    print("teja: $DBdetails");
                   },
                 ),
               ),
@@ -284,4 +370,70 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    getAgencyList();
+    getDutyOffcersList();
+  }
+  void getAgencyList() async {
+    String requestUrl = "https://pqms-uat.cgg.gov.in/pqms/agenciesList";
+    final token =
+        await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final username =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    final requestHeaders = {
+      "clientId": "Client123Cgg",
+      "token": token.toString(),
+      "userName": username.toString(),
+    };
+    final _dioObject = Dio();
+    try {
+      final _response = await _dioObject.post(
+        requestUrl,
+        options: Options(headers: requestHeaders),
+      );
+      final dataResponse = DonebyModelClass.fromJson(_response.data);
+      setState(() {
+        dataAgency = dataResponse.data!;
+      });
+
+    } catch (e) {}
+  }
+  getDutyOffcersList() async {
+
+    String requestUrl =
+        "https://pqms-uat.cgg.gov.in/pqms/getEmployeeListByRole";
+    final requestPayLoad = {
+      "actionType": "Duty officer",
+      "appLevel": 1,
+      "formType": 3,
+      "forwoardToRoleName": "Duty officer"
+    };
+    final token =
+        await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final username =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    final requestHeaders = {
+      "clientId": "Client123Cgg",
+      "token": token.toString(),
+      "userName": username.toString(),
+    };
+    final _dioObject = Dio();
+    try {
+      final _response = await _dioObject.post(
+        requestUrl,
+        data: requestPayLoad,
+        options: Options(headers: requestHeaders),
+      );
+      final dataResponse = employDetails.fromJson(_response.data);
+      setState(() {
+        DutyOfficersList = dataResponse.data!;
+      });
+    } on DioError catch (e) {
+      print("error");
+    }
+}
 }

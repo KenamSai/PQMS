@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pqms/ModelClass/employDetails.dart';
+import 'package:pqms/ModelClass/DutyOfficers.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
@@ -25,7 +27,6 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   TextEditingController _date = TextEditingController();
   TextEditingController _InspectionRemarks = TextEditingController();
   List<Data> DutyOfficersList = [];
-  int? DutyOfficerId;
   Data? selectedValue;
   @override
   void initState() {
@@ -152,14 +153,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                     items: DutyOfficersList.map((Data value) {
                                       return new DropdownMenuItem<Data>(
                                         value: value,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              DutyOfficerId = value.id;
-                                            });
-                                          },
-                                          child: Text(value.name ?? ""),
-                                        ),
+                                        child: Text(value.name ?? ""),
                                       );
                                     }).toList(),
                                   ),
@@ -310,11 +304,11 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                       userimage2: imageData2.path,
                       userimage3: imageData3.path,
                     );
-                    _NoOfsamples.clear();
-                    _Samplesize.clear();
-                    _InspectionPlace.clear();
-                    _date.clear();
-                    _InspectionRemarks.clear();
+                    // _NoOfsamples.clear();
+                    // _Samplesize.clear();
+                    // _InspectionPlace.clear();
+                    // _date.clear();
+                    // _InspectionRemarks.clear();
 
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
@@ -342,7 +336,6 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       ),
     );
   }
-
   getDutyOffcersList() async {
     _date.text = "";
     String requestUrl =
@@ -371,13 +364,26 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       );
       final dataResponse = employDetails.fromJson(_response.data);
       setState(() {
-        DutyOfficersList = dataResponse.data!;
-        //  DutyOfficersList.insert(0,Data(id : 0 ,name : "Select"));
-        // selectedServer  = DutyOfficersList[0];
+         DutyOfficersList = dataResponse.data!;
       });
-      // print(DutyOfficersList.length);
-    } catch (e) {
+    
+
+
+
+// // ignore: unused_local_variable
+// Iterable l = json.decode(_response.data);
+// List<Data> posts = List<Data>.from(l.map((model)=> Data.fromJson(model)));
+
+//         final DatabaseHelper _databaseService =
+//                         DatabaseHelper.instance;
+//         final DBdetails = await _databaseService.insertInto(
+//                         posts.data.toJson(), DatabaseHelper.DutyOfficers);
+//                         print(DBdetails);
+
+      
+    } on DioError catch (e) {
       print("error");
     }
   }
+ 
 }

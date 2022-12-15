@@ -1,11 +1,11 @@
 import 'dart:io';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/routes/AppRoutes.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
 
 class exportInspectionSubmission extends StatefulWidget {
   const exportInspectionSubmission({super.key});
@@ -39,15 +39,6 @@ class _exportInspectionSubmissionState
     TextEditingController _Remarks = TextEditingController(
       text: id.inspectionRemarks,
     );
-    // TextEditingController _userimage1 = TextEditingController(
-    //   text: id.userimage1,
-    // );
-    // TextEditingController _userimage2 = TextEditingController(
-    //   text: id.userimage2,
-    // );
-    // TextEditingController _userimage3 = TextEditingController(
-    //   text: id.userimage3,
-    // );
 
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +54,9 @@ class _exportInspectionSubmissionState
           GestureDetector(
             onTap: () {
               Navigator.popUntil(
-                  context, ModalRoute.withName(AppRoutes.dashboardpage));
+                context,
+                ModalRoute.withName(AppRoutes.dashboardpage),
+              );
             },
             child: Icon(
               Icons.home,
@@ -267,18 +260,59 @@ class _exportInspectionSubmissionState
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    setState(() {
-                      // id.applicationId = "";
-                      // id.chemicals='';
-                      // id.completionDate='';
-                      // id.treatmentDate='';
-                      // id.doneby='';
-                      // id.dosage='';
-                      // id.dutyofficer='';
-                      // id.temperatureDegC='';
-                      // id.treatmentRemarks='';
-                      // id.durationHrs='';
-                    });
+                    final requestUrl =
+                        "https://pqms-uat.cgg.gov.in/pqms/saveExportPermitAction";
+                    final requestPayLoad = {
+                      "role": "Inspector",
+                      "applicationId": id.applicationId.toString(),
+                      "noOfSamples": id.noofSamples.toString(),
+                      "sampleSize": id.sampleSize.toString(),
+                      "inspectionPlace": id.inspectionPlace.toString(),
+                      "inspectionDate": id.inspectionDate.toString(),
+                      "remarks": id.inspectionRemarks.toString(),
+                      "action": "forward",
+                      "employeeId": id.dutyofficer.toString(),//pass id not name
+                      "forwardToRole": "Duty officer",
+                      "inptLocation": "17.436858,78.361197",
+                      "deviceId": "",
+                      "inspctArea": "",
+                      "inptDoc1": "",
+                      "inptDoc2": "",
+                      "inptDoc3": ""
+                    };
+                    final token = await SharedPreferencesClass()
+                        .readTheData(PreferenceConst.token);
+                    final username = await SharedPreferencesClass()
+                        .readTheData(PreferenceConst.username);
+                    final requestHeaders = {
+                      "clientId": "Client123Cgg",
+                      "token": token.toString(),
+                      "userName": username.toString(),
+                    };
+                    final _dioObject = Dio();
+                    try {
+                      final _response = await _dioObject.post(
+                        requestUrl,
+                        data: requestPayLoad,
+                        options: Options(headers: requestHeaders),
+                      );
+                      print("response: ${_response.data["status_Message"]}");
+                    } on DioError catch (e) {
+                      print("error");
+                    }
+                    // setState(() {
+                    //   getApifinalSubmit();
+                    //   // id.applicationId = "";
+                    //   // id.chemicals='';
+                    //   // id.completionDate='';
+                    //   // id.treatmentDate='';
+                    //   // id.doneby='';
+                    //   // id.dosage='';
+                    //   // id.dutyofficer='';
+                    //   // id.temperatureDegC='';
+                    //   // id.treatmentRemarks='';
+                    //   // id.durationHrs='';
+                    // });
                   },
                 ),
               ),
