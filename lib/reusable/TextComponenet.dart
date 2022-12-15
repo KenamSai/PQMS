@@ -15,7 +15,7 @@ class TextComponent extends StatelessWidget {
       TextData,
       textAlign: TextAlign.center,
       style: TextStyle(
-          color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),
+          color: Colors.white, fontSize: fontSize),
     );
   }
 }

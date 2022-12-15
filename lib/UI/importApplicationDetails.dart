@@ -36,7 +36,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -54,14 +54,16 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
         child: Column(
           children: [
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Container(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  "    Import Application Details",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
+                child: Center(
+                  child: Text(
+                    "    Import Application Details",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
@@ -420,19 +422,19 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
 
   RowComponent(var data, var value) {
     return Padding(
-      padding: const EdgeInsets.only(top: 4, left: 10, bottom: 3),
+      padding: const EdgeInsets.only(top: 5, left: 10, bottom: 5),
       child: Row(
         children: [
           Expanded(
             child: Text(
               data.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              style: TextStyle(fontWeight: FontWeight.bold,),
             ),
           ),
           Expanded(
             child: Text(
               value.toString(),
-              style: TextStyle(fontSize: 17),
+             // style: TextStyle(fontSize: 17),
             ),
           )
         ],

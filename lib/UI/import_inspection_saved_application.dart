@@ -24,22 +24,22 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text("UAT-PQMS"),
-        backgroundColor: Colors.green[900],
+         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 22, 99, 24),
+        title: Text('UAT-PQMS'
+        ),
         actions: [
           GestureDetector(
-            onTap: () {
-              Navigator.popUntil(
-                context,
-                ModalRoute.withName("/Dashboard"),
-              );
-            },
-            child: Icon(
-              Icons.home,
-              size: 40,
+            onTap: null,
+            child: Image.asset(
+              "assets/logout.png",
+              height: 20,
+              width: 20,
               color: Colors.white,
             ),
+          ),
+          SizedBox(
+            width: 20,
           )
         ],
       ),

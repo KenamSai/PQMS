@@ -26,7 +26,7 @@ class CardComponent extends StatelessWidget {
                         title: Text(
                           TextData,
                           style:
-                              TextStyle(color: Colors.green[900], fontSize: 22),
+                              TextStyle(color: Colors.green[900], fontSize: 20),
                         ),
                       ),
                     );

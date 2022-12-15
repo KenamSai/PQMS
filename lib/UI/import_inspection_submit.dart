@@ -24,7 +24,7 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
   String? imagePreview1;
   String? imagePreview2;
   String? imagePreview3;
-   String? _currentAddress;
+  String? _currentAddress;
   Position? _currentPosition;
   
         
