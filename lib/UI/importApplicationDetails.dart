@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/importApplModelClass.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -25,7 +26,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("UAT-PQMS"),
-        backgroundColor: Colors.green[900],
+        backgroundColor: customColors.colorPQMS,
         actions: [
           GestureDetector(
             onTap: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/import_treatment_response.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
 
@@ -25,7 +26,7 @@ class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplic
     return Scaffold(
       appBar: AppBar(
          centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 22, 99, 24),
+        backgroundColor: customColors.colorPQMS,
         title: Text('UAT-PQMS'
         ),
         actions: [

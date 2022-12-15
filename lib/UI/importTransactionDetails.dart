@@ -5,6 +5,7 @@ import 'package:pqms/ModelClass/transaction_response.dart';
 import 'package:pqms/UI/import_transaction_listitem.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -29,7 +30,7 @@ class _ImportTransactionDetailsState extends State<ImportTransactionDetails> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("UAT-PQMS"),
-        backgroundColor: Colors.green[900],
+        backgroundColor: customColors.colorPQMS,
         actions: [
           GestureDetector(
             onTap: () {
