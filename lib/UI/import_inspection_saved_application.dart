@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/import_inspection_response.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
 
@@ -25,7 +26,7 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
     return Scaffold(
       appBar: AppBar(
          centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 22, 99, 24),
+        backgroundColor: customColors.colorPQMS,
         title: Text('UAT-PQMS'
         ),
         actions: [
@@ -123,6 +124,14 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
                                   "Application Saved Date",
                                   data.InspectionDate,
                                 ),
+                                RowComponent(
+                                  "Inspection Location",
+                                  data.inptLocation,
+                                ),
+                                // RowComponent(
+                                //   "Inspection Area",
+                                //   data.inspctArea,
+                                // ),
                               ],
                             ),
                           ),
@@ -172,6 +181,8 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
             Dutyofficer: element["Dutyofficer"],
             InspectionPlace: element["InspectionPlace"],
             InspectionRemarks: element["InspectionRemarks"],
+            inptLocation: element["inptLocation"],
+            inspctArea: element["inspctArea"],
             userimage1: element["userimage1"],
             userimage2: element["userimage2"],
             userimage3: element["userimage3"]

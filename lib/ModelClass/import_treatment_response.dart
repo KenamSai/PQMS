@@ -9,6 +9,8 @@ class ImportTreatmentModelClass {
   String? CompletedDate;
   String? DoneBy;
   String? TreatmentRemarks;
+  String? TreatmentLocation;
+  String? TreatmentArea;
   
 
   ImportTreatmentModelClass(
@@ -21,7 +23,10 @@ class ImportTreatmentModelClass {
       this.TreatmentDate,
       this.CompletedDate,
       this.DoneBy,
-      this.TreatmentRemarks});
+      this.TreatmentRemarks,
+      this.TreatmentLocation,
+      this.TreatmentArea
+      });
 
   ImportTreatmentModelClass.fromJson(Map<String, dynamic> json) {
     applicationId = json['applicationId'];
@@ -34,6 +39,8 @@ class ImportTreatmentModelClass {
     CompletedDate = json['CompletedDate'];
     DoneBy = json['DoneBy'];
     TreatmentRemarks = json['TreatmentRemarks'];
+    TreatmentLocation = json['TreatmentLocation'];
+    TreatmentArea = json['TreatmentArea'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,7 +54,8 @@ class ImportTreatmentModelClass {
     data['TreatmentDate'] = this.TreatmentDate;
     data['CompletedDate'] = this.CompletedDate;
     data['DoneBy'] = this.DoneBy;
-    data['TreatmentRemarks'] = this.TreatmentRemarks;
+    data['TreatmentLocation'] = this.TreatmentLocation;
+    data['TreatmentArea'] = this.TreatmentArea;
     return data;
   }
 }

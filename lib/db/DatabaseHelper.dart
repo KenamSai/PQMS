@@ -70,6 +70,8 @@ SampleSize varchar(255),
 InspectionPlace varchar(255),
 InspectionDate varchar(255),
 InspectionRemarks varchar(255),
+inptLocation varchar(255),
+inspctArea varchar(255),
 userimage1 varchar(255),
 userimage2 varchar(255),
 userimage3 varchar(255)
@@ -103,7 +105,9 @@ Temperature varchar(255),
 TreatmentDate varchar(255),
 CompletedDate varchar(255),
 DoneBy varchar(255),
-TreatmentRemarks varchar(255)
+TreatmentRemarks varchar(255),
+TreatmentLocation varchar(255),
+TreatmentArea varchar(255)
 );
   ''');
     await db.execute('''

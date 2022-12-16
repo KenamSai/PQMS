@@ -1,13 +1,22 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/import_inspection_response.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pqms/reusable/imagecallback.dart';
+import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
+
+import '../ModelClass/DutyOfficers.dart';
 
 class ImportInspectionEntry extends StatefulWidget {
   const ImportInspectionEntry({super.key});
@@ -23,6 +32,8 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
   TextEditingController _InspectionPlace = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _InspectionRemarks = TextEditingController();
+  List<Data> DutyOfficersList = [];
+  Data? selectedValue;
 
   String? _currentAddress;
   Position? _currentPosition;
@@ -37,7 +48,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.green[900],
+        backgroundColor: customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
           style: TextStyle(
@@ -109,11 +120,55 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                               ),
                             ),
                           ),
-                          TextReusable(
-                            data: "Duty Officer",
-                            controller: _DutyOfficer,
-                            requiredData: "*",
+                            Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: "DutyOfficer",
+                                      style: TextStyle(color: Colors.green),
+                                      children: [
+                                        TextSpan(
+                                          text: " *",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: DropdownButton<Data>(
+                                    value: selectedValue,
+                                    underline: Container(
+                                      height: 1,
+                                      color: Colors.black.withOpacity(0.3),
+                                    ),
+                                    isExpanded: true,
+                                    onChanged: (changedValue) {
+                                      setState(() {
+                                        selectedValue = changedValue;
+                                      });
+                                    },
+                                    items: DutyOfficersList.map((Data value) {
+                                      return new DropdownMenuItem<Data>(
+                                        value: value,
+                                        child: Text(value.name ?? ""),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                          // TextReusable(
+                          //   data: "Duty Officer",
+                          //   controller: _DutyOfficer,
+                          //   requiredData: "*",
+                          // ),
                           TextReusable(
                             data: "No Samples",
                             controller: _NoOfsamples,
@@ -151,7 +206,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                                   ),
                                 ),
                                 onTap: () async {
-                                  _getCurrentPosition();
+                                  // _getCurrentPosition();
                                   final selectedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
@@ -246,27 +301,29 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    _getCurrentPosition();
+                   // _getCurrentPosition();
 
-                    if (_currentPosition != null &&
-                        _currentPosition!.latitude != null &&
-                        _currentPosition!.longitude != null) {
-                      print('LAT: ${_currentPosition?.latitude ?? ""}');
-                      print('LAT: ${_currentPosition?.longitude ?? ""}');
-                      print('ADDRESS: ${_currentAddress ?? ""}');
-                    } else {
-                      _getCurrentPosition();
-                      print("please wait till location is fetched");
-                    }
+                    // if (_currentPosition != null &&
+                    //     _currentPosition!.latitude != null &&
+                    //     _currentPosition!.longitude != null) {
+                    //   print('LAT: ${_currentPosition?.latitude ?? ""}');
+                    //   print('LAT: ${_currentPosition?.longitude ?? ""}');
+                    //   print('ADDRESS: ${_currentAddress ?? ""}');
+                    // } else {
+                    //   _getCurrentPosition();
+                    //   print("please wait till location is fetched");
+                    // }
 
                     final data = ImportResponseinspectionModelClass(
                       applicationId: id,
-                      Dutyofficer: _DutyOfficer.text,
+                      Dutyofficer:  selectedValue?.name.toString(),
                       NoofSamples: _NoOfsamples.text,
                       SampleSize: _Samplesize.text,
                       InspectionPlace: _InspectionPlace.text,
                       InspectionDate: _date.text,
                       InspectionRemarks: _InspectionRemarks.text,
+                      inptLocation:_currentPosition!.latitude.toString()+","+_currentPosition!.longitude.toString(),
+                      inspctArea: _currentAddress,
                       userimage1: imageData1.path,
                       userimage2: imageData2.path,
                       userimage3: imageData3.path,
@@ -286,7 +343,18 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     print("dbdata:$details");
                     final Entries = await _databaseService
                         .queryAllRows(DatabaseHelper.ImportInspectiontable);
-                    print(Entries);
+                    print(Entries.length);
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return reusableAlert(
+                          title: "Message",
+                          message: "Data submitted Successfully!",
+                          icon: Icons.done_outline_sharp,
+                          
+                        );
+                      },
+                    );
                   },
                 ),
               ),
@@ -296,10 +364,61 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
       ),
     );
   }
+  getDutyOffcersList() async {
+    _date.text = "";
+    String requestUrl =BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
+    final requestPayLoad = {
+      "actionType": "Duty officer",
+      "appLevel": 1,
+      "formType": 3,
+      "forwoardToRoleName": "Duty officer"
+    };
+    final token =
+        await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final username =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    final requestHeaders = {
+      "clientId": "Client123Cgg",
+      "token": token.toString(),
+      "userName": username.toString(),
+    };
+    final _dioObject = Dio();
+    try {
+      final _response = await _dioObject.post(
+        requestUrl,
+        data: requestPayLoad,
+        options: Options(headers: requestHeaders),
+      );
+      final dataResponse = employDetails.fromJson(_response.data);
+      setState(() {
+         DutyOfficersList = dataResponse.data!;
+      });
+    
+
+
+
+// // ignore: unused_local_variable
+// Iterable l = json.decode(_response.data);
+// List<Data> posts = List<Data>.from(l.map((model)=> Data.fromJson(model)));
+
+//         final DatabaseHelper _databaseService =
+//                         DatabaseHelper.instance;
+//         final DBdetails = await _databaseService.insertInto(
+//                         posts.data.toJson(), DatabaseHelper.DutyOfficers);
+//                         print(DBdetails);
+
+      
+    } on DioError catch (e) {
+      print("error");
+    }
+  }
 
   @override
   void initState() {
+     _getCurrentPosition();
+      getDutyOffcersList();
     _date.text = "";
+
   }
 
   Future<bool> _handleLocationPermission() async {
