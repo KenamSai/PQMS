@@ -4,6 +4,7 @@ import 'package:pqms/UI/ExportApplicationDetails.dart';
 import 'package:pqms/UI/ExportInspectionEntry.dart';
 import 'package:pqms/UI/ExportReleaseOrder.dart';
 import 'package:pqms/UI/ExportSavedApplications.dart';
+import 'package:pqms/UI/RetrieveDutyOfficersData.dart';
 import 'package:pqms/UI/SplashScreen.dart';
 import 'package:pqms/UI/ViewSavedApplns.dart';
 import 'package:pqms/UI/exportInspectionSaved.dart';
@@ -54,6 +55,7 @@ class AppPages {
       AppRoutes.importinspectionformsubmit:(context) => ImportInspectionSubmit(),
       AppRoutes.importtreatmentformsubmit:(context) => ImportTreatmentSubmit(),
       AppRoutes.exportinspectionSubmission:(context) => exportInspectionSubmission(),
+      AppRoutes.dutydata:(context) => RetrieveDutyOfficersData(),
       
     };
   }

@@ -26,5 +26,6 @@ class AppRoutes {
   static const importtreatmentsaved="/importtreatmentsaved";
   static const importinspectionformsubmit="/importinspectionformsubmit";
   static const importtreatmentformsubmit="/importtreatmentformsubmit";
+  static const dutydata="/duty";
 
 }

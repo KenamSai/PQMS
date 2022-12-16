@@ -1,15 +1,16 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/DutyOfficers.dart';
+import 'package:pqms/ModelClass/DutyOfficersResponse.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
+import 'package:pqms/UI/RetrieveDutyOfficersData.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pqms/reusable/imagecallback.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -30,9 +31,28 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   Data? selectedValue;
   @override
   void initState() {
-    // TODO: implement initState
-
     getDutyOffcersList();
+    // List<DutyOfficersResponse> ListData = [];
+    // if (ListData.isEmpty) {
+    //   DatabaseHelper.instance.queryAllRows("DutyOfficers").then((value) {
+    //     setState(() {
+    //       value.forEach((element) {
+    //         ListData.add(
+    //           DutyOfficersResponse(
+    //             name: element["Name"],
+    //             userId: element["UserId"],
+    //           ),
+    //         );
+    //         print(ListData);
+    //       });
+    //     });
+    //   }).catchError((error) {
+    //     print(error);
+    //   });
+    // } else {
+    //   print("API Called");
+    //   getDutyOffcersList();
+    // }
   }
 
   @override
@@ -265,7 +285,6 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 ImgPickerCamera(
                                   callbackValue: (imageData) {
                                     imageData3 = imageData;
-                                    //print("path3:${imageData3.path}");
                                   },
                                 ),
                               ],
@@ -294,7 +313,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                   onPressed: () async {
                     final data = exportResponseinspectionModelClass(
                       applicationId: id,
-                      dutyofficer: selectedValue?.name.toString(),
+                      dutyofficer: selectedValue?.id.toString(),
                       noofSamples: _NoOfsamples.text,
                       inspectionDate: _date.text,
                       sampleSize: _Samplesize.text,
@@ -304,11 +323,6 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                       userimage2: imageData2.path,
                       userimage3: imageData3.path,
                     );
-                    // _NoOfsamples.clear();
-                    // _Samplesize.clear();
-                    // _InspectionPlace.clear();
-                    // _date.clear();
-                    // _InspectionRemarks.clear();
 
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
@@ -322,11 +336,9 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                           title: "Message",
                           message: "Data submitted Successfully!",
                           icon: Icons.done_outline_sharp,
-                          
                         );
                       },
                     );
-              
                   },
                 ),
               ),
@@ -336,6 +348,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       ),
     );
   }
+
   getDutyOffcersList() async {
     _date.text = "";
     String requestUrl =
@@ -364,26 +377,18 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       );
       final dataResponse = employDetails.fromJson(_response.data);
       setState(() {
-         DutyOfficersList = dataResponse.data!;
+        DutyOfficersList = dataResponse.data!;
       });
-    
-
-
-
-// // ignore: unused_local_variable
-// Iterable l = json.decode(_response.data);
-// List<Data> posts = List<Data>.from(l.map((model)=> Data.fromJson(model)));
-
-//         final DatabaseHelper _databaseService =
-//                         DatabaseHelper.instance;
-//         final DBdetails = await _databaseService.insertInto(
-//                         posts.data.toJson(), DatabaseHelper.DutyOfficers);
-//                         print(DBdetails);
-
-      
+      final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+      DutyOfficersList.forEach((element) async {
+        final Response =
+            DutyOfficersResponse(name: element.name, userId: element.id);
+        final DbCOunt = await _databaseHelper.insertInto(
+            Response.toJson(), DatabaseHelper.DutyOfficers);
+        print("count=$DbCOunt");
+      });
     } on DioError catch (e) {
       print("error");
     }
   }
- 
 }

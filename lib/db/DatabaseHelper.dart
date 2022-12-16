@@ -110,7 +110,7 @@ TreatmentRemarks varchar(255)
 CREATE TABLE DutyOfficers
 (
   Name varchar(255),
-  UserId varchar(255)
+  UserId INTEGER
 );''');
     await db.execute('''
 CREATE TABLE AgencyList
