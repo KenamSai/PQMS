@@ -21,6 +21,7 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
         value.forEach((element) {
           ListData.add(
             exportResponseinspectionModelClass(
+              dutyofficerId: element["DutyOfficerId"],
               applicationId: element["applicationId"],
               inspectionDate: element["InspectionDate"],
               dutyofficer: element["Dutyofficer"],

@@ -4,13 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/DutyOfficers.dart';
 import 'package:pqms/ModelClass/DutyOfficersResponse.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
-import 'package:pqms/UI/RetrieveDutyOfficersData.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pqms/reusable/imagecallback.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
-import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -28,31 +27,16 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   TextEditingController _date = TextEditingController();
   TextEditingController _InspectionRemarks = TextEditingController();
   List<Data> DutyOfficersList = [];
-  Data? selectedValue;
+  String? selectedValue;
+  int? DutyOfficerId;
   @override
   void initState() {
-    getDutyOffcersList();
-    // List<DutyOfficersResponse> ListData = [];
-    // if (ListData.isEmpty) {
-    //   DatabaseHelper.instance.queryAllRows("DutyOfficers").then((value) {
-    //     setState(() {
-    //       value.forEach((element) {
-    //         ListData.add(
-    //           DutyOfficersResponse(
-    //             name: element["Name"],
-    //             userId: element["UserId"],
-    //           ),
-    //         );
-    //         print(ListData);
-    //       });
-    //     });
-    //   }).catchError((error) {
-    //     print(error);
-    //   });
-    // } else {
-    //   print("API Called");
-    //   getDutyOffcersList();
-    // }
+    dbRetrieve().then((value) {
+      //print(DutyOfficersList.length);
+      if (DutyOfficersList.isEmpty) {
+        getDutyOffcersList();
+      }
+    });
   }
 
   @override
@@ -142,7 +126,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 1,
+                                  flex: 3,
                                   child: RichText(
                                     text: TextSpan(
                                       text: "DutyOfficer",
@@ -157,9 +141,11 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 2,
-                                  child: DropdownButton<Data>(
-                                    value: selectedValue,
+                                  flex: 6,
+                                  child: DropdownButton<String>(
+                                    value: selectedValue != ""
+                                        ? selectedValue
+                                        : "",
                                     underline: Container(
                                       height: 1,
                                       color: Colors.black.withOpacity(0.3),
@@ -168,16 +154,47 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                     onChanged: (changedValue) {
                                       setState(() {
                                         selectedValue = changedValue;
+                                        if (selectedValue != "") {
+                                          DutyOfficersList.forEach((element) {
+                                            if (selectedValue == element.name) {
+                                              DutyOfficerId = element.id;
+                                            }
+                                          });
+                                        }
                                       });
                                     },
-                                    items: DutyOfficersList.map((Data value) {
-                                      return new DropdownMenuItem<Data>(
-                                        value: value,
-                                        child: Text(value.name ?? ""),
+                                    items:
+                                        DutyOfficersList.map((DutyOfficerName) {
+                                      return new DropdownMenuItem<String>(
+                                        value: DutyOfficerName.name,
+                                        child: Text(DutyOfficerName.name ?? ""),
                                       );
                                     }).toList(),
                                   ),
                                 ),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    onPressed: (() {
+                                      DutyOfficersList.forEach((element) async {
+                                        final count = await DatabaseHelper
+                                            .instance
+                                            .delete(element.id ?? 0,
+                                                DatabaseHelper.DutyOfficers);
+                                        print("deletion Count in db:$count");
+                                      });
+                                      setState(() {
+                                        DutyOfficersList.clear();
+                                        //selectedValue="";
+                                      });
+                                      getDutyOffcersList();
+                                    }),
+                                    icon: Icon(
+                                      Icons.repeat_outlined,
+                                      color: customColors.colorPQMS,
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -313,7 +330,8 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                   onPressed: () async {
                     final data = exportResponseinspectionModelClass(
                       applicationId: id,
-                      dutyofficer: selectedValue?.id.toString(),
+                      dutyofficer: selectedValue?.toString(),
+                      dutyofficerId: DutyOfficerId,
                       noofSamples: _NoOfsamples.text,
                       inspectionDate: _date.text,
                       sampleSize: _Samplesize.text,
@@ -381,14 +399,40 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       });
       final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
       DutyOfficersList.forEach((element) async {
-        final Response =
-            DutyOfficersResponse(name: element.name, userId: element.id);
+        final Response = DutyOfficersResponse(
+          name: element.name,
+          userId: element.id,
+        );
         final DbCOunt = await _databaseHelper.insertInto(
             Response.toJson(), DatabaseHelper.DutyOfficers);
         print("count=$DbCOunt");
       });
+      setState(() {
+        DutyOfficersList.clear();
+        print("count:${DutyOfficersList.length}");
+      });
+      dbRetrieve();
     } on DioError catch (e) {
       print("error");
     }
+  }
+
+  dbRetrieve() async {
+    await DatabaseHelper.instance
+        .queryAllRows(DatabaseHelper.DutyOfficers)
+        .then((value) {
+      setState(() {
+        value.forEach((element) {
+          DutyOfficersList.add(
+            Data(
+              id: element["UserId"],
+              name: element["Name"],
+            ),
+          );
+        });
+      });
+    }).catchError((error) {
+      print(error);
+    });
   }
 }

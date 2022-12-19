@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -271,14 +272,15 @@ class _exportInspectionSubmissionState
                       "inspectionDate": id.inspectionDate.toString(),
                       "remarks": id.inspectionRemarks.toString(),
                       "action": "forward",
-                      "employeeId": id.dutyofficer.toString(),//pass id not name
+                      "employeeId":
+                          id.dutyofficerId, //pass id not name
                       "forwardToRole": "Duty officer",
                       "inptLocation": "17.436858,78.361197",
                       "deviceId": "",
                       "inspctArea": "",
-                      "inptDoc1": "",
-                      "inptDoc2": "",
-                      "inptDoc3": ""
+                      "inptDoc1": id.userimage1,
+                      "inptDoc2": id.userimage2,
+                      "inptDoc3": id.userimage3
                     };
                     final token = await SharedPreferencesClass()
                         .readTheData(PreferenceConst.token);
@@ -321,5 +323,16 @@ class _exportInspectionSubmissionState
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    DatabaseHelper.instance
+        .queryAllRows(DatabaseHelper.DutyOfficers)
+        .then((value) {
+      setState(() {
+        value.forEach((element) {});
+      });
+    });
   }
 }

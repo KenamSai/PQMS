@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 class DatabaseHelper {
   static final _databaseName = "PQMS.db";
   static final _databaseVersion = 1;
-  static final colId = "id";
+  static final colId = "UserId";
 
   static final ExportInspectiontable = 'ExportInspectionEntry';
   static final ImportInspectiontable = 'ImportInspectionEntry';
@@ -50,6 +50,7 @@ class DatabaseHelper {
 (
 applicationId varchar(255),
 Dutyofficer varchar(255),
+DutyOfficerId INTEGER,
 NoofSamples varchar(255),
 SampleSize varchar(255),
 InspectionPlace varchar(255),
