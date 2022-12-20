@@ -330,7 +330,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                   onPressed: () async {
                     final data = exportResponseinspectionModelClass(
                       applicationId: id,
-                      dutyofficer: selectedValue?.toString(),
+                      dutyofficer: selectedValue,
                       dutyofficerId: DutyOfficerId,
                       noofSamples: _NoOfsamples.text,
                       inspectionDate: _date.text,

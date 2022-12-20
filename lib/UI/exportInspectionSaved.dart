@@ -81,7 +81,7 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  "Export Inspectiontion Details",
+                  "Export Inspection Details",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,

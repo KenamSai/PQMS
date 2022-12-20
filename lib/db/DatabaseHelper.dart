@@ -7,6 +7,7 @@ class DatabaseHelper {
   static final _databaseName = "PQMS.db";
   static final _databaseVersion = 1;
   static final colId = "UserId";
+  static final AgencyId="id";
 
   static final ExportInspectiontable = 'ExportInspectionEntry';
   static final ImportInspectiontable = 'ImportInspectionEntry';
@@ -33,14 +34,16 @@ class DatabaseHelper {
   insertProduct() {}
 
   // this opens the database (and creates it if it doesn't exist)
-  _initDatabase() async {
+ _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     print("document path ${documentsDirectory.path}");
     //saikrish/desktop/app/
     String path = join(documentsDirectory.path, _databaseName);
     //saikrish/desktop/app/cgg.db
-    return await openDatabase(path,
+    final openDb =  await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreate);
+        openDb.batch();
+        return openDb;
   }
 
   // SQL code to create the database table
@@ -84,6 +87,7 @@ userimage3 varchar(255)
 (
 applicationId varchar(255),
 Dutyofficer varchar(255),
+DutyOfficerId INTEGER,
 Chemicals varchar(255),
 Dosage varchar(255),
 Duration varchar(255),
@@ -91,6 +95,7 @@ Temperature varchar(255),
 CompletionDate varchar(255),
 TreatmentDate varchar(255),
 Doneby varchar(255),
+AgencyId INTEGER,
 TreatmentRemarks varchar(255)
 );
           ''');
@@ -120,7 +125,8 @@ CREATE TABLE DutyOfficers
     await db.execute('''
 CREATE TABLE AgencyList
 (
-  agencyList varchar(255)
+  fumigationAgent varchar(255),
+  id INTEGER
   );
 ''');
   }
@@ -179,6 +185,11 @@ CREATE TABLE AgencyList
   Future<int> delete(int value, String tableName) async {
     Database db = await instance.database;
     return await db.delete(tableName, where: '$colId = ?', whereArgs: [value]);
+  }
+
+   Future<int> Agencydelete(int value, String tableName) async {
+    Database db = await instance.database;
+    return await db.delete(tableName, where: '$AgencyId = ?', whereArgs: [value]);
   }
 
   // Future<int> deleteContact(int id) async {

@@ -1,6 +1,6 @@
 class DonebyModelResponseTreatment {
   String? fumigationAgent;
-  String? id;
+  int? id;
 
   DonebyModelResponseTreatment({this.fumigationAgent, this.id});
 
