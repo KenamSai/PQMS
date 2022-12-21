@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pqms/ModelClass/DonebyModelClass.dart';
+import 'package:pqms/ModelClass/DonebyModelResponseTreatment.dart';
 import 'package:pqms/ModelClass/ExportApplicationModelClass.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -15,6 +18,9 @@ class ExportApplicationDetails extends StatefulWidget {
 }
 
 class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
+  List<DataAgencyList> AgencyList = [];
+  List<DonebyModelResponseTreatment> AgencyNameID = [];
+  String? selectedAgencyName;
   DataApplicationDetails? exportmodelDetails;
   @override
   Widget build(BuildContext context) {
@@ -309,13 +315,12 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                         if (!(exportmodelDetails?.treatmentNeeded ?? true))
                           GestureDetector(
                             onTap: (() {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.exportinspection,
-                                    arguments:
-                                        exportmodelDetails?.applicationId,
-                                  );
-                                }),
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.exportinspection,
+                                arguments: exportmodelDetails?.applicationId,
+                              );
+                            }),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.3),
@@ -341,14 +346,14 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
-                                   onTap: (() {
-                                        Navigator.pushNamed(
-                                          context,
-                                          AppRoutes.exportinspection,
-                                          arguments:
-                                              exportmodelDetails?.applicationId,
-                                        );
-                                      }),
+                                  onTap: (() {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.exportinspection,
+                                      arguments:
+                                          exportmodelDetails?.applicationId,
+                                    );
+                                  }),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.black.withOpacity(0.3),
@@ -357,7 +362,8 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                       ),
                                     ),
                                     height: 32.0,
-                                    width: MediaQuery.of(context).size.width*0.4,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
                                     child: Center(
                                       child: Text(
                                         "INSPECTION",
@@ -368,13 +374,14 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                   ),
                                 ),
                                 GestureDetector(
-                                    onTap: (() {
-                                        Navigator.pushNamed(
-                                          context,
-                                          AppRoutes.exporttreatment,
-                                          arguments: exportmodelDetails?.applicationId,
-                                        );
-                                      }),
+                                  onTap: (() {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.exporttreatment,
+                                      arguments:
+                                          exportmodelDetails?.applicationId,
+                                    );
+                                  }),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.black.withOpacity(0.3),
@@ -383,7 +390,8 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                                       ),
                                     ),
                                     height: 32.0,
-                                    width: MediaQuery.of(context).size.width*0.4,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
                                     child: Center(
                                       child: Text(
                                         "TREATMENT",
@@ -450,7 +458,6 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
     final requestPayload = {
       "data": id, //pass id
     };
-    // print("dataID:$dataId");
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);
     final username =
@@ -467,10 +474,8 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
         data: requestPayload,
         options: Options(headers: requestHeaders),
       );
-    //  print("Data:$_response");
       final responseData =
           ExportApplicationDetailsModelClass.fromJson(_response.data);
-      //print(responseData);
       setState(() {
         if (responseData.statusCode == 200) {
           exportmodelDetails = responseData.data;

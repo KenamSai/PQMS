@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
 
 class ExportTreatmentSubmit extends StatefulWidget {
   const ExportTreatmentSubmit({super.key});
@@ -46,7 +50,8 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.popUntil(context, ModalRoute.withName(AppRoutes.dashboardpage));
+              Navigator.popUntil(
+                  context, ModalRoute.withName(AppRoutes.dashboardpage));
             },
             child: Icon(
               Icons.home,
@@ -230,18 +235,88 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    setState(() {
-                      id.applicationId = "";
-                      id.chemicals='';
-                      id.completionDate='';
-                      id.treatmentDate='';
-                      id.doneby='';
-                      id.dosage='';
-                      id.dutyofficer='';
-                      id.temperatureDegC='';
-                      id.treatmentRemarks='';
-                      id.durationHrs='';
-                    });
+                    final requestUrl =
+                        "https://pqms-uat.cgg.gov.in/pqms//saveExportPermitAction";
+                    final requestPayLoad = {
+                      "role": "Inspector",
+                      "action": "Forward",
+                      "applicationId": id.applicationId,
+                      "chemicals": id.chemicals,
+                      "dosage": id.dosage,
+                      "duration": id.durationHrs,
+                      "temperature": id.temperatureDegC,
+                      "treatmentDate": id.treatmentDate,
+                      "completedDateofSupervision": id.completionDate,
+                      "doneByAgency": id.agencyId,
+                      "remarks": id.treatmentRemarks,
+                      "employeeId": id.dutyofficerId,
+                      "forwardToRole": "Duty officer"
+                    };
+                    print("payLoad:  $requestPayLoad");
+                    final String token =
+                        await SharedPreferencesClass().readTheData(
+                      PreferenceConst.token,
+                    );
+                    final String username =
+                        await SharedPreferencesClass().readTheData(
+                      PreferenceConst.username,
+                    );
+                    print(token);
+                    print(username);
+                    final requestHeaders = {
+                      "clientId": "Client123Cgg",
+                      "token": token.toString(),
+                      "userName": username.toString()
+                    };
+                    final _dioObject = Dio();
+                    try {
+                      final Response = await _dioObject.post(
+                        requestUrl,
+                        data: requestPayLoad,
+                        options: Options(headers: requestHeaders),
+                      );
+                      if (Response.data["status_Code"]== 200) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(
+                                "Message",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              icon: Icon(
+                                Icons.done_all_outlined,
+                                color: Colors.green,
+                                size: 50,
+                              ),
+                              content: Text(
+                                "${Response.data["status_Message"]}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "OK",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    } on DioError catch (e) {
+                      print("error");
+                    }
                   },
                 ),
               ),

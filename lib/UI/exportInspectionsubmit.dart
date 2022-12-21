@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -39,6 +42,9 @@ class _exportInspectionSubmissionState
     TextEditingController _Remarks = TextEditingController(
       text: id.inspectionRemarks,
     );
+    String image1 = "";
+    String image2 = "";
+    String image3 = "";
 
     return Scaffold(
       appBar: AppBar(
@@ -260,25 +266,43 @@ class _exportInspectionSubmissionState
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
+                    final deviceId = await _getId();
+                    //print("id:  $deviceId");
+                    if (id.userimage1!.isNotEmpty) {
+                      final bytes1 = File("${id.userimage1}").readAsBytesSync();
+                      image1 = base64Encode(bytes1);
+                    }
+                    if (id.userimage2!.isNotEmpty) {
+                      final bytes2 = File("${id.userimage2}").readAsBytesSync();
+                      image2 = base64Encode(bytes2);
+                    }
+                    if (id.userimage3!.isNotEmpty) {
+                      final bytes3 = File("${id.userimage3}").readAsBytesSync();
+                      image3 = base64Encode(bytes3);
+                    }
+
                     final requestUrl =
                         "https://pqms-uat.cgg.gov.in/pqms/saveExportPermitAction";
                     final requestPayLoad = {
                       "role": "Inspector",
-                      "applicationId": id.applicationId.toString(),
-                      "noOfSamples": id.noofSamples.toString(),
-                      "sampleSize": id.sampleSize.toString(),
-                      "inspectionPlace": id.inspectionPlace.toString(),
-                      "inspectionDate": id.inspectionDate.toString(),
-                      "remarks": id.inspectionRemarks.toString(),
+                      "applicationId": id.applicationId,
+                      "noOfSamples": id.noofSamples,
+                      "sampleSize": id.sampleSize,
+                      "inspectionPlace": id.inspectionPlace,
+                      "inspectionDate": id.inspectionDate,
+                      "remarks": id.inspectionRemarks,
                       "action": "forward",
-                      "employeeId": id.dutyofficer.toString(),//pass id not name
+                      "employeeId": id.dutyofficerId, //pass id not name
                       "forwardToRole": "Duty officer",
                       "inptLocation": "17.436858,78.361197",
-                      "deviceId": "",
+                      "deviceId": deviceId,
                       "inspctArea": "",
-                      "inptDoc1": "",
-                      "inptDoc2": "",
-                      "inptDoc3": ""
+                      "inptDoc1":
+                          id.userimage1!.isNotEmpty ? image1 : id.userimage1,
+                      "inptDoc2":
+                          id.userimage2!.isNotEmpty ? image2 : id.userimage2,
+                      "inptDoc3":
+                          id.userimage3!.isNotEmpty ? image3 : id.userimage3
                     };
                     final token = await SharedPreferencesClass()
                         .readTheData(PreferenceConst.token);
@@ -296,23 +320,11 @@ class _exportInspectionSubmissionState
                         data: requestPayLoad,
                         options: Options(headers: requestHeaders),
                       );
-                      print("response: ${_response.data["status_Message"]}");
+                      print(
+                          "response: ${_response.data["status_Message"]},${_response.statusCode}");
                     } on DioError catch (e) {
                       print("error");
                     }
-                    // setState(() {
-                    //   getApifinalSubmit();
-                    //   // id.applicationId = "";
-                    //   // id.chemicals='';
-                    //   // id.completionDate='';
-                    //   // id.treatmentDate='';
-                    //   // id.doneby='';
-                    //   // id.dosage='';
-                    //   // id.dutyofficer='';
-                    //   // id.temperatureDegC='';
-                    //   // id.treatmentRemarks='';
-                    //   // id.durationHrs='';
-                    // });
                   },
                 ),
               ),
@@ -321,5 +333,18 @@ class _exportInspectionSubmissionState
         ),
       ),
     );
+  }
+
+  @override
+  Future<String?> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.id; // unique ID on Android
+    }
   }
 }

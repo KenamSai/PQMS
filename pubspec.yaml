@@ -55,6 +55,7 @@ dependencies:
   fbroadcast: ^2.0.0
   geolocator: ^9.0.2
   geocoding: ^2.0.5
+  device_info_plus: ^8.0.0
   
   
   

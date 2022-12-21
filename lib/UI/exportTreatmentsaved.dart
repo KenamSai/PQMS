@@ -30,6 +30,8 @@ class _exportTreatmentSavedState extends State<exportTreatmentSaved> {
               temperatureDegC: element["Temperature"],
               treatmentDate: element["TreatmentDate"],
               treatmentRemarks: element["TreatmentRemarks"],
+              dutyofficerId: element["DutyOfficerId"],
+              agencyId: element["AgencyId"]
             ),
           );
         });

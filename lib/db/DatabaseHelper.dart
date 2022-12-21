@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 class DatabaseHelper {
   static final _databaseName = "PQMS.db";
   static final _databaseVersion = 1;
+  static final colId = "UserId";
+  static final AgencyId="id";
   static final colId = "id";
   static final ImportInspectioncolId = "applicationId";
   static final ImportTreatmentcolId = "applicationId";
@@ -52,6 +54,7 @@ class DatabaseHelper {
 (
 applicationId varchar(255),
 Dutyofficer varchar(255),
+DutyOfficerId INTEGER,
 NoofSamples varchar(255),
 SampleSize varchar(255),
 InspectionPlace varchar(255),
@@ -86,6 +89,7 @@ userimage3 varchar(255)
 (
 applicationId varchar(255),
 Dutyofficer varchar(255),
+DutyOfficerId INTEGER,
 Chemicals varchar(255),
 Dosage varchar(255),
 Duration varchar(255),
@@ -93,6 +97,7 @@ Temperature varchar(255),
 CompletionDate varchar(255),
 TreatmentDate varchar(255),
 Doneby varchar(255),
+AgencyId INTEGER,
 TreatmentRemarks varchar(255)
 );
           ''');
@@ -122,7 +127,8 @@ CREATE TABLE DutyOfficers
     await db.execute('''
 CREATE TABLE AgencyList
 (
-  agencyList varchar(255)
+  fumigationAgent varchar(255),
+  id INTEGER
   );
 ''');
   }
@@ -181,6 +187,11 @@ CREATE TABLE AgencyList
   Future<int> delete(String value, String tableName) async {
     Database db = await instance.database;
     return await db.delete(tableName, where: '$colId = ?', whereArgs: [value]);
+  }
+
+   Future<int> Agencydelete(int value, String tableName) async {
+    Database db = await instance.database;
+    return await db.delete(tableName, where: '$AgencyId = ?', whereArgs: [value]);
   }
 
   Future<int> ImportInspectiondelete(String value, String tableName) async {
