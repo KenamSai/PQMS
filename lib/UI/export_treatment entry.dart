@@ -10,7 +10,6 @@ import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../ModelClass/DutyOfficers.dart';
 
@@ -325,20 +324,22 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                                     onChanged: (changedValue) {
                                       setState(() {
                                         selectedAgencyName = changedValue;
-                                        // if (selectedAgencyName != "") {
-                                        //   AgencyNameID.forEach((element) {
-                                        //     if (selectedAgencyName == element.fumigationAgent) {
-                                        //       AgencyId = element.id;
-                                        //     }
-                                        //   });
-                                        // }
+                                        if (selectedAgencyName != "") {
+                                          AgencyNameID.forEach((element) {
+                                            if (selectedAgencyName ==
+                                                element.fumigationAgent) {
+                                              AgencyId = element.id;
+                                              //print("AgencyId:  $AgencyId");
+                                            }
+                                          });
+                                        }
                                       });
                                     },
-                                    items:
-                                        AgencyNameID.map((AgencyName) {
+                                    items: AgencyNameID.map((AgencyName) {
                                       return new DropdownMenuItem<String>(
                                         value: AgencyName.fumigationAgent,
-                                        child: Text(AgencyName.fumigationAgent?? ""),
+                                        child: Text(
+                                            AgencyName.fumigationAgent ?? ""),
                                       );
                                     }).toList(),
                                   ),
@@ -376,16 +377,19 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                   ),
                   onPressed: () async {
                     final Response = exporttreatmentresponsemodelclass(
-                        applicationId: id.toString(),
-                        chemicals: _Chemicals.text,
-                        completionDate: _CompletedDate.text,
-                        treatmentDate: _TreatmentDate.text,
-                        dutyofficerId: DutyOfficerId,
-                        dosage: _Dosage.text,
-                        durationHrs: _Duration.text,
-                        dutyofficer: selectedValue,
-                        temperatureDegC: _Temperature.text,
-                        treatmentRemarks: _TreatmentRemarks.text);
+                      applicationId: id.toString(),
+                      chemicals: _Chemicals.text,
+                      completionDate: _CompletedDate.text,
+                      treatmentDate: _TreatmentDate.text,
+                      dutyofficerId: DutyOfficerId,
+                      dosage: _Dosage.text,
+                      durationHrs: _Duration.text,
+                      dutyofficer: selectedValue,
+                      temperatureDegC: _Temperature.text,
+                      treatmentRemarks: _TreatmentRemarks.text,
+                      doneby: selectedAgencyName,
+                      agencyId: AgencyId,
+                    );
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
                     final DBdetails = await _databaseService.insertInto(
@@ -409,9 +413,9 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
       }
     });
     dbRetrieveAgencyList().then((value) {
-      print("agent length: ${AgencyNameID.length}");
+      //print("agent length: ${AgencyNameID.length}");
       if (AgencyNameID.isEmpty) {
-         getAgencyList();
+        getAgencyList();
       }
     });
   }
@@ -525,23 +529,17 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
         AgencyList = _response.data!;
         //print(AgencyList.length);
       });
-
-
-
-
-
-
       final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
-  
-       
-      
       AgencyList.forEach((element) async {
         final Response = DonebyModelResponseTreatment(
             fumigationAgent: element.fumigationAgent, id: element.id);
         final DbCOunt = await _databaseHelper.insertInto(
             Response.toJson(), DatabaseHelper.AgencyList);
-        print("Agency count=$DbCOunt");
-        dbRetrieveAgencyList();
+        //print("Agency count=$DbCOunt");
+        if (AgencyList.length == DbCOunt) {
+          print("Agency count=$DbCOunt");
+          dbRetrieveAgencyList();
+        }
       });
     } on DioError catch (e) {
       print("error");

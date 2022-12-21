@@ -10,6 +10,7 @@ class exporttreatmentresponsemodelclass {
   String? completionDate;
   String? doneby;
   String? treatmentRemarks;
+  int? agencyId;
 
   exporttreatmentresponsemodelclass({
     this.applicationId,
@@ -23,6 +24,7 @@ class exporttreatmentresponsemodelclass {
     this.doneby,
     this.treatmentRemarks,
     this.dutyofficerId,
+    this.agencyId
   });
 
   exporttreatmentresponsemodelclass.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class exporttreatmentresponsemodelclass {
     completionDate = json['CompletionDate'];
     doneby = json['Doneby'];
     treatmentRemarks = json['TreatmentRemarks'];
+    agencyId=json["AgencyId"];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +55,7 @@ class exporttreatmentresponsemodelclass {
     data['CompletionDate'] = this.completionDate;
     data['Doneby'] = this.doneby;
     data['TreatmentRemarks'] = this.treatmentRemarks;
+    data["AgencyId"]=this.agencyId;
     return data;
   }
 }

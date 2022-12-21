@@ -34,16 +34,14 @@ class DatabaseHelper {
   insertProduct() {}
 
   // this opens the database (and creates it if it doesn't exist)
- _initDatabase() async {
+  _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     print("document path ${documentsDirectory.path}");
     //saikrish/desktop/app/
     String path = join(documentsDirectory.path, _databaseName);
     //saikrish/desktop/app/cgg.db
-    final openDb =  await openDatabase(path,
+    return await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreate);
-        openDb.batch();
-        return openDb;
   }
 
   // SQL code to create the database table
