@@ -21,10 +21,8 @@ class ImportTreatmentForm extends StatefulWidget {
   @override
   State<ImportTreatmentForm> createState() => _ImportTreatmentForm();
 }
- 
 
 class _ImportTreatmentForm extends State<ImportTreatmentForm> {
-  
   TextEditingController _Dutyofficer = TextEditingController();
   TextEditingController _Chemicals = TextEditingController();
   TextEditingController _Dosage = TextEditingController();
@@ -36,10 +34,10 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   TextEditingController _TreatmentRemarks = TextEditingController();
   String? _currentAddress;
   Position? _currentPosition;
-  
-   List<DataAgencyList> dataAgency = [];
+
+  List<DataAgencyList> dataAgency = [];
   DataAgencyList? selectedValue;
-    List<Data> DutyOfficersList = [];
+  List<Data> DutyOfficersList = [];
   int? DutyOfficerId;
   Data? selectedValuetype;
 
@@ -121,7 +119,6 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                               ),
                             ),
                           ),
-                          
                           Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: Row(
@@ -177,12 +174,10 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                           TextReusable(
                             data: "Duration(Hrs)",
                             controller: _Duration,
-                            
                           ),
                           TextReusable(
                             data: "Temperature(DegC)",
                             controller: _Temperature,
-                            
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -249,7 +244,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                   ),
                                 ),
                                 onTap: () async {
-                                //  _getCurrentPosition();
+                                  //  _getCurrentPosition();
                                   final selectedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
@@ -288,7 +283,6 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                 Expanded(
                                   flex: 2,
                                   child: DropdownButton<DataAgencyList>(
-                                  
                                     value: selectedValue,
                                     underline: Container(
                                       height: 1,
@@ -346,7 +340,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                   ),
                   onPressed: () async {
                     //_getCurrentPosition();
-                    final data= ImportTreatmentModelClass(
+                    final data = ImportTreatmentModelClass(
                       applicationId: id,
                       Dutyofficer: selectedValuetype!.name,
                       Chemicals: _Chemicals.text,
@@ -357,7 +351,9 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                       CompletedDate: _CompletedDate.text,
                       DoneBy: _DoneBy.text,
                       TreatmentRemarks: _TreatmentRemarks.text,
-                      TreatmentLocation: _currentPosition!.latitude.toString()+","+_currentPosition!.longitude.toString(),
+                      TreatmentLocation: _currentPosition!.latitude.toString() +
+                          "," +
+                          _currentPosition!.longitude.toString(),
                       TreatmentArea: _currentAddress,
                     );
                     _Dutyofficer.clear();
@@ -369,12 +365,15 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                     _CompletedDate.clear();
                     _DoneBy.clear();
                     _TreatmentRemarks.clear();
-                   
-                    final DatabaseHelper _databaseService = DatabaseHelper.instance;
 
-                    final details = await _databaseService.insertInto(data.toJson(),DatabaseHelper.ImportTreatmenttable);
+                    final DatabaseHelper _databaseService =
+                        DatabaseHelper.instance;
+
+                    final details = await _databaseService.insertInto(
+                        data.toJson(), DatabaseHelper.ImportTreatmenttable);
                     print("dbdata:$details");
-                    final entries = await _databaseService.queryAllRows(DatabaseHelper.ImportTreatmenttable);
+                    final entries = await _databaseService
+                        .queryAllRows(DatabaseHelper.ImportTreatmenttable);
                     print(entries);
                     // final DatabaseHelper _databaseService =
                     //     DatabaseHelper.instance;
@@ -391,17 +390,41 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
       ),
     );
   }
+
   @override
   void initState() {
     // TODO: implement initState
 
     _TreatmentDate.text = "";
-    _CompletedDate.text="";
-     _getCurrentPosition();
-     getAgencyList();
+    _CompletedDate.text = "";
+
+    _getCurrentPosition();
+    getAgencyList();
     getDutyOffcersList();
-    
   }
+
+   void _checkPermission(BuildContext context, Function callback) async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if(permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    if(permission == LocationPermission.denied) {
+     // showDialog(context: context, barrierDismissible: false, builder: (context) => PermissionDialog(isDenied: true, onPressed: () async {
+        Navigator.pop(context);
+        await Geolocator.requestPermission();
+        _checkPermission(context, callback);
+    //  }));
+    }else if(permission == LocationPermission.deniedForever) {
+     // showDialog(context: context, barrierDismissible: false, builder: (context) => PermissionDialog(isDenied: false, onPressed: () async {
+        Navigator.pop(context);
+        await Geolocator.openAppSettings();
+        _checkPermission(context, callback);
+      //}));
+    }else {
+      callback();
+    }
+  }
+
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -410,7 +433,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
-              'Location services are disabled. Please enable the services')));
+              'Location services adre disabled. Please enable the services')));
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -457,9 +480,10 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
       debugPrint(e);
     });
   }
+
   /////////////////////////////////////////////////////////////////////////
-   void getAgencyList() async {
-    String requestUrl = BaseUrl.uat_base_url+EndPoints.agenciesList;
+  void getAgencyList() async {
+    String requestUrl = BaseUrl.uat_base_url + EndPoints.agenciesList;
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);
     final username =
@@ -479,12 +503,11 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
       setState(() {
         dataAgency = dataResponse.data!;
       });
-
     } catch (e) {}
   }
-  getDutyOffcersList() async {
 
-    String requestUrl =BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
+  getDutyOffcersList() async {
+    String requestUrl = BaseUrl.uat_base_url + EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -514,9 +537,5 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     } on DioError catch (e) {
       print("error");
     }
+  }
 }
-}
-
-
-
-   

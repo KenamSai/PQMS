@@ -18,8 +18,10 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
      @override
   void initState() {
     super.initState();
-
-    showrecords();
+    setState(() {
+       showrecords();
+    });
+   
   }
   @override
   Widget build(BuildContext context) {
@@ -128,6 +130,19 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
                                   "Inspection Location",
                                   data.inptLocation,
                                 ),
+                                RowComponent(
+                                  "No of Samples",
+                                  data.NoofSamples,
+                                ),
+                                RowComponent(
+                                  "Sample Size",
+                                  data.SampleSize,
+                                ),
+                                RowComponent(
+                                  "Quantity Found",
+                                  data.QuantityFound,
+                                ),
+
                                 // RowComponent(
                                 //   "Inspection Area",
                                 //   data.inspctArea,
@@ -178,9 +193,12 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
           var model = ImportResponseinspectionModelClass(
             applicationId: element["applicationId"],
             InspectionDate: element["InspectionDate"],
+            NoofSamples: element["NoofSamples"],
+            SampleSize: element["SampleSize"],
             Dutyofficer: element["Dutyofficer"],
             InspectionPlace: element["InspectionPlace"],
             InspectionRemarks: element["InspectionRemarks"],
+            QuantityFound: element["QuantityFound"],
             inptLocation: element["inptLocation"],
             inspctArea: element["inspctArea"],
             userimage1: element["userimage1"],

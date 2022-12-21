@@ -1,6 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/import_treatment_response.dart';
+import 'package:pqms/ModelClass/import_treatment_submit.dart';
+import 'package:pqms/ModelClass/import_treatment_submit_response.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import '../baseurl_and_endpoints/endpoints.dart';
+import '../sharedpreference/sharedpreference.dart';
 
 class ImportTreatmentSubmit extends StatefulWidget {
   const ImportTreatmentSubmit({super.key});
@@ -12,8 +21,8 @@ class ImportTreatmentSubmit extends StatefulWidget {
 class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments
-        as ImportTreatmentModelClass;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as ImportTreatmentModelClass;
     //print(id.applicationId);
     TextEditingController _DutyOfficer =
         TextEditingController(text: args.Dutyofficer);
@@ -229,18 +238,18 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
+                    submitDetails(args);
                     setState(() {
-                      args.applicationId = "";
-                      args.Dutyofficer="";
-                      args.Chemicals='';
-                      args.Dosage='';
-                      args.Duration='';
-                      args.Temperature='';
-                      args.TreatmentDate='';
-                      args.CompletedDate='';
-                      args.DoneBy='';
-                      args.TreatmentRemarks='';
-                     
+                      // args.applicationId = "";
+                      // args.Dutyofficer="";
+                      // args.Chemicals='';
+                      // args.Dosage='';
+                      // args.Duration='';
+                      // args.Temperature='';
+                      // args.TreatmentDate='';
+                      // args.CompletedDate='';
+                      // args.DoneBy='';
+                      // args.TreatmentRemarks='';
                     });
                   },
                 ),
@@ -250,5 +259,72 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
         ),
       ),
     );
+  }
+
+  Future<void> submitDetails(ImportTreatmentModelClass args) async {
+    final requestUrl = BaseUrl.uat_base_url + EndPoints.importinspectionsubmit;
+
+    //print("img64"+img64);
+    final importtreatmentSubmit = ImportTreatmentSubmitModel();
+
+    importtreatmentSubmit.role = "Inspector";
+    importtreatmentSubmit.action = "Forward";
+    importtreatmentSubmit.applicationId = args.applicationId.toString();
+    importtreatmentSubmit.chemicals = args.Chemicals.toString();
+    importtreatmentSubmit.dosage = args.Dosage.toString();
+    importtreatmentSubmit.duration = args.Duration.toString();
+    importtreatmentSubmit.temperature = args.Temperature.toString();
+    importtreatmentSubmit.treatmentDate = args.TreatmentDate;
+    importtreatmentSubmit.completedDateofSupervision = args.CompletedDate;
+    importtreatmentSubmit.doneByAgency = args.DoneBy.toString();
+    importtreatmentSubmit.remarks = args.TreatmentRemarks.toString();
+    importtreatmentSubmit.employeeId = "1852"; 
+    importtreatmentSubmit.forwardToRole = "Duty officer";
+
+    importtreatmentSubmit.toJson();
+    print(importtreatmentSubmit.toJson());
+
+    final requestPayload = importtreatmentSubmit.toJson();
+    final token =
+        await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final username =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    Map<String, String> requestHeaders = {
+      'clientId': 'Client123Cgg',
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+      "token": token.toString(),
+      "userName": username.toString(),
+    };
+    final _dioObject = Dio();
+
+    try {
+      final _response = await _dioObject.post(requestUrl,
+          data: requestPayload, options: Options(headers: requestHeaders));
+      //converting response from json to model cls
+      final importtreatmentSubmitresponse =
+          ImportTreatmentSubmitResponse.fromJson(_response.data);
+      print(_response.data);
+
+      if (importtreatmentSubmitresponse.statusCode == 200) {
+        DatabaseHelper.instance.ImportTreatmentdelete(
+            args.applicationId!, DatabaseHelper.ImportTreatmenttable);
+        var value = args.applicationId;
+        print("application id+$value");
+        reusableAlert(
+            title: "UAT-PQMS",
+            message: "Data Submitted Successfully",
+            icon: Icons.android);
+         Navigator.of(context).pop();
+                print("Data Submitted");
+      } else if (importtreatmentSubmitresponse.statusCode == 204) {
+        print("NOt submitted");
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400 || e.response?.statusCode == 500) {
+        print(e.message);
+        //Alert
+      }
+    }
   }
 }

@@ -18,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
-  TextEditingController _username =  TextEditingController(text: "Tejasvi_IOS");
+  TextEditingController _username =  TextEditingController(text: "Ashok_Android");
   TextEditingController _password =  TextEditingController(text: "PQMS@2022");
   @override
   Widget build(BuildContext context) {

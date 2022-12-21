@@ -32,11 +32,13 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
   TextEditingController _InspectionPlace = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _InspectionRemarks = TextEditingController();
+  TextEditingController _QuantityFound=TextEditingController();
   List<Data> DutyOfficersList = [];
   Data? selectedValue;
+  //BuildContext context
 
-  String? _currentAddress;
-  Position? _currentPosition;
+   String? _currentAddress;
+   Position? _currentPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +172,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                           //   requiredData: "*",
                           // ),
                           TextReusable(
+                            maxlines: 1,
                             data: "No Samples",
                             controller: _NoOfsamples,
                           ),
@@ -224,10 +227,15 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                                 }),
                           ),
                           TextReusable(
-                            maxlines: 5,
+                            maxlines: 3,
                             data: "Inspection Remarks",
                             controller: _InspectionRemarks,
                             requiredData: "*",
+                          ),
+                          TextReusable(
+                            data: "Quantity Found",
+                            controller: _QuantityFound,
+                            
                           ),
                         ],
                       ),
@@ -301,18 +309,19 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                   // _getCurrentPosition();
+                   
+                 //  _getCurrentPosition();
 
-                    // if (_currentPosition != null &&
-                    //     _currentPosition!.latitude != null &&
-                    //     _currentPosition!.longitude != null) {
-                    //   print('LAT: ${_currentPosition?.latitude ?? ""}');
-                    //   print('LAT: ${_currentPosition?.longitude ?? ""}');
-                    //   print('ADDRESS: ${_currentAddress ?? ""}');
-                    // } else {
-                    //   _getCurrentPosition();
-                    //   print("please wait till location is fetched");
-                    // }
+                    if (_currentPosition != null &&
+                        _currentPosition!.latitude != null &&
+                        _currentPosition!.longitude != null) {
+                      print('LAT: ${_currentPosition?.latitude ?? ""}');
+                      print('LAT: ${_currentPosition?.longitude ?? ""}');
+                      print('ADDRESS: ${_currentAddress ?? ""}');
+                    } else {
+                      _getCurrentPosition();
+                      print("please wait till location is fetched");
+                    }
 
                     final data = ImportResponseinspectionModelClass(
                       applicationId: id,
@@ -322,6 +331,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                       InspectionPlace: _InspectionPlace.text,
                       InspectionDate: _date.text,
                       InspectionRemarks: _InspectionRemarks.text,
+                      QuantityFound:_QuantityFound.text,
                       inptLocation:_currentPosition!.latitude.toString()+","+_currentPosition!.longitude.toString(),
                       inspctArea: _currentAddress,
                       userimage1: imageData1.path,
@@ -335,6 +345,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     _InspectionPlace.clear();
                     _date.clear();
                     _InspectionRemarks.clear();
+                    _QuantityFound.clear();
 
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
@@ -397,15 +408,6 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
 
 
 
-// // ignore: unused_local_variable
-// Iterable l = json.decode(_response.data);
-// List<Data> posts = List<Data>.from(l.map((model)=> Data.fromJson(model)));
-
-//         final DatabaseHelper _databaseService =
-//                         DatabaseHelper.instance;
-//         final DBdetails = await _databaseService.insertInto(
-//                         posts.data.toJson(), DatabaseHelper.DutyOfficers);
-//                         print(DBdetails);
 
       
     } on DioError catch (e) {
@@ -415,11 +417,17 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
 
   @override
   void initState() {
-     _getCurrentPosition();
+   // _checkPermission( );
+  
+    _getCurrentPosition();
+  // _handleLocationPermission();
       getDutyOffcersList();
     _date.text = "";
 
   }
+ 
+                        
+  
 
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
@@ -429,7 +437,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
-              'Location services are disabled. Please enable the services')));
+              'Location services adre disabled. Please enable the services')));
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -476,4 +484,5 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
       debugPrint(e);
     });
   }
+
 }
