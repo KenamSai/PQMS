@@ -8,6 +8,7 @@ import 'package:pqms/ModelClass/import_inspection_submit_response.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/deviceID.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/reusable/text_reusable_form.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -281,12 +282,12 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
     importinspectionSubmit.applicationId = args.applicationId.toString();
     importinspectionSubmit.role = "Inspector";
     importinspectionSubmit.remarks = args.InspectionRemarks.toString();
-    importinspectionSubmit.employeeId = "1852";
+    importinspectionSubmit.employeeId = args.DutyOfficerId.toString();
     importinspectionSubmit.forwardToRole = "Duty officer";
     importinspectionSubmit.inspectionDate = args.InspectionDate.toString();
     importinspectionSubmit.sampleSize = args.SampleSize.toString();
     importinspectionSubmit.inptLocation = args.inptLocation.toString(); //get latlang
-    importinspectionSubmit.deviceId = "7b1fe3550ff840b2";
+    importinspectionSubmit.deviceId = await Utils().getDeviceId();
     importinspectionSubmit.inspctArea =args.inspctArea;
     importinspectionSubmit.inptDoc1 = imagePreview1.isNotEmpty? img1: " ";
     importinspectionSubmit.inptDoc2 = imagePreview2.isNotEmpty? img2: " ";

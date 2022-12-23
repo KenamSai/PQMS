@@ -4,6 +4,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/DonebyModelClass.dart';
+import 'package:pqms/ModelClass/DonebyModelResponseTreatment.dart';
+import 'package:pqms/ModelClass/DutyOfficersResponse.dart';
 import 'package:pqms/ModelClass/import_treatment_response.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
@@ -35,11 +37,13 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   String? _currentAddress;
   Position? _currentPosition;
 
-  List<DataAgencyList> dataAgency = [];
-  DataAgencyList? selectedValue;
   List<Data> DutyOfficersList = [];
   int? DutyOfficerId;
-  Data? selectedValuetype;
+  String? selectedValue;
+  List<DataAgencyList> AgencyList = [];
+  List<DonebyModelResponseTreatment> AgencyNameID = [];
+  String? selectedAgencyName;
+  int? AgencyId;
 
   @override
   Widget build(BuildContext context) {
@@ -119,12 +123,12 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                               ),
                             ),
                           ),
-                          Padding(
+                            Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 1,
+                                  flex: 3,
                                   child: RichText(
                                     text: TextSpan(
                                       text: "DutyOfficer",
@@ -139,9 +143,11 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 2,
-                                  child: DropdownButton<Data>(
-                                    value: selectedValuetype,
+                                  flex: 6,
+                                  child: DropdownButton<String>(
+                                    value: selectedValue != ""
+                                        ? selectedValue
+                                        : "",
                                     underline: Container(
                                       height: 1,
                                       color: Colors.black.withOpacity(0.3),
@@ -149,17 +155,48 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                     isExpanded: true,
                                     onChanged: (changedValue) {
                                       setState(() {
-                                        selectedValuetype = changedValue;
+                                        selectedValue = changedValue;
+                                        if (selectedValue != "") {
+                                          DutyOfficersList.forEach((element) {
+                                            if (selectedValue == element.name) {
+                                              DutyOfficerId = element.id;
+                                            }
+                                          });
+                                        }
                                       });
                                     },
-                                    items: DutyOfficersList.map((Data value) {
-                                      return new DropdownMenuItem<Data>(
-                                        value: value,
-                                        child: Text(value.name ?? ""),
+                                    items:
+                                        DutyOfficersList.map((DutyOfficerName) {
+                                      return new DropdownMenuItem<String>(
+                                        value: DutyOfficerName.name,
+                                        child: Text(DutyOfficerName.name ?? ""),
                                       );
                                     }).toList(),
                                   ),
                                 ),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    onPressed: (() {
+                                      DutyOfficersList.forEach((element) async {
+                                        final count = await DatabaseHelper
+                                            .instance
+                                            .delete(element.id ?? 0,
+                                                DatabaseHelper.DutyOfficers);
+                                        print("deletion Count in db:$count");
+                                      });
+                                      setState(() {
+                                        DutyOfficersList.clear();
+                                        //selectedValue="";
+                                      });
+                                      getDutyOffcersList();
+                                    }),
+                                    icon: Icon(
+                                      Icons.repeat_outlined,
+                                      color: customColors.colorPQMS,
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -247,6 +284,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                   //  _getCurrentPosition();
                                   final selectedDate = await showDatePicker(
                                     context: context,
+                                    
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime(2000),
                                     lastDate: DateTime(2101),
@@ -262,14 +300,14 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                 }),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(6.0),
+                            padding: const EdgeInsets.all(3.0),
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 1,
+                                  flex: 3,
                                   child: RichText(
                                     text: TextSpan(
-                                      text: "Done by",
+                                      text: "Doneby",
                                       style: TextStyle(color: Colors.green),
                                       children: [
                                         TextSpan(
@@ -281,31 +319,39 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 2,
-                                  child: DropdownButton<DataAgencyList>(
-                                    value: selectedValue,
+                                  flex: 6,
+                                  child: DropdownButton<String>(
+                                    value: selectedAgencyName != ""
+                                        ? selectedAgencyName
+                                        : "",
                                     underline: Container(
                                       height: 1,
                                       color: Colors.black.withOpacity(0.3),
                                     ),
                                     isExpanded: true,
-                                    onChanged: ((value) {
+                                    onChanged: (changedValue) {
                                       setState(() {
-                                        selectedValue = value;
+                                        selectedAgencyName = changedValue;
+                                        if (selectedAgencyName != "") {
+                                          AgencyNameID.forEach((element) {
+                                            if (selectedAgencyName ==
+                                                element.fumigationAgent) {
+                                              AgencyId = element.id;
+                                              //print("AgencyId:  $AgencyId");
+                                            }
+                                          });
+                                        }
                                       });
-                                    }),
-                                    items:
-                                        dataAgency.map((DataAgencyList value) {
-                                      return new DropdownMenuItem<
-                                          DataAgencyList>(
-                                        value: value,
+                                    },
+                                    items: AgencyNameID.map((AgencyName) {
+                                      return new DropdownMenuItem<String>(
+                                        value: AgencyName.fumigationAgent,
                                         child: Text(
-                                          value.fumigationAgent ?? "",
-                                        ),
+                                            AgencyName.fumigationAgent ?? ""),
                                       );
                                     }).toList(),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -342,14 +388,16 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                     //_getCurrentPosition();
                     final data = ImportTreatmentModelClass(
                       applicationId: id,
-                      Dutyofficer: selectedValuetype!.name,
+                      Dutyofficer: selectedValue,
+                      DutyOfficerId:DutyOfficerId,
                       Chemicals: _Chemicals.text,
                       Dosage: _Dosage.text,
                       Duration: _Duration.text,
                       Temperature: _Temperature.text,
                       TreatmentDate: _TreatmentDate.text,
                       CompletedDate: _CompletedDate.text,
-                      DoneBy: _DoneBy.text,
+                      DoneBy: selectedAgencyName,
+                      agencyId: AgencyId,
                       TreatmentRemarks: _TreatmentRemarks.text,
                       TreatmentLocation: _currentPosition!.latitude.toString() +
                           "," +
@@ -364,6 +412,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                     _TreatmentDate.clear();
                     _CompletedDate.clear();
                     _DoneBy.clear();
+                    
                     _TreatmentRemarks.clear();
 
                     final DatabaseHelper _databaseService =
@@ -399,8 +448,18 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     _CompletedDate.text = "";
 
     _getCurrentPosition();
-    getAgencyList();
-    getDutyOffcersList();
+    dbRetrieve().then((value) {
+      //print(DutyOfficersList.length);
+      if (DutyOfficersList.isEmpty) {
+        getDutyOffcersList();
+      }
+    });
+    dbRetrieveAgencyList().then((value) {
+      //print("agent length: ${AgencyNameID.length}");
+      if (AgencyNameID.isEmpty) {
+        getAgencyList();
+      }
+    });
   }
 
    void _checkPermission(BuildContext context, Function callback) async {
@@ -482,32 +541,9 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   }
 
   /////////////////////////////////////////////////////////////////////////
-  void getAgencyList() async {
-    String requestUrl = BaseUrl.uat_base_url + EndPoints.agenciesList;
-    final token =
-        await SharedPreferencesClass().readTheData(PreferenceConst.token);
-    final username =
-        await SharedPreferencesClass().readTheData(PreferenceConst.username);
-    final requestHeaders = {
-      "clientId": "Client123Cgg",
-      "token": token.toString(),
-      "userName": username.toString(),
-    };
-    final _dioObject = Dio();
-    try {
-      final _response = await _dioObject.post(
-        requestUrl,
-        options: Options(headers: requestHeaders),
-      );
-      final dataResponse = DonebyModelClass.fromJson(_response.data);
-      setState(() {
-        dataAgency = dataResponse.data!;
-      });
-    } catch (e) {}
-  }
-
-  getDutyOffcersList() async {
-    String requestUrl = BaseUrl.uat_base_url + EndPoints.getEmployeeListByRole;
+ getDutyOffcersList() async {
+    String requestUrl =BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
+       
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -533,6 +569,99 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
       final dataResponse = employDetails.fromJson(_response.data);
       setState(() {
         DutyOfficersList = dataResponse.data!;
+      });
+      final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+      DutyOfficersList.forEach((element) async {
+        final Response = DutyOfficersResponse(
+          name: element.name,
+          userId: element.id,
+        );
+        final DbCOunt = await _databaseHelper.insertInto(
+            Response.toJson(), DatabaseHelper.DutyOfficers);
+        print("count=$DbCOunt");
+      });
+      setState(() {
+        DutyOfficersList.clear();
+        print("count:${DutyOfficersList.length}");
+      });
+      dbRetrieve();
+    } on DioError catch (e) {
+      print("error");
+    }
+  }
+
+  dbRetrieve() async {
+    await DatabaseHelper.instance
+        .queryAllRows(DatabaseHelper.DutyOfficers)
+        .then((value) {
+      setState(() {
+        value.forEach((element) {
+          DutyOfficersList.add(
+            Data(
+              id: element["UserId"],
+              name: element["Name"],
+            ),
+          );
+        });
+      });
+    }).catchError((error) {
+      print(error);
+    });
+  }
+
+  dbRetrieveAgencyList() async {
+    await DatabaseHelper.instance
+        .queryAllRows(DatabaseHelper.AgencyList)
+        .then((value) {
+      setState(() {
+        value.forEach((element) {
+          AgencyNameID.add(
+            DonebyModelResponseTreatment(
+              fumigationAgent: element["fumigationAgent"],
+              id: element["id"],
+            ),
+          );
+        });
+      });
+    }).catchError((error) {
+      print(error);
+    });
+  }
+
+  getAgencyList() async {
+    String requestUrl =BaseUrl.uat_base_url+EndPoints.agenciesList;
+    
+    final token =
+        await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final username =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    final requestHeaders = {
+      "clientId": "Client123Cgg",
+      "token": token.toString(),
+      "userName": username.toString(),
+    };
+    final _dioObject = Dio();
+    try {
+      final Response = await _dioObject.post(
+        requestUrl,
+        options: Options(headers: requestHeaders),
+      );
+      final _response = DonebyModelClass.fromJson(Response.data);
+      setState(() {
+        AgencyList = _response.data!;
+        //print(AgencyList.length);
+      });
+      final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+      AgencyList.forEach((element) async {
+        final Response = DonebyModelResponseTreatment(
+            fumigationAgent: element.fumigationAgent, id: element.id);
+        final DbCOunt = await _databaseHelper.insertInto(
+            Response.toJson(), DatabaseHelper.AgencyList);
+        //print("Agency count=$DbCOunt");
+        if (AgencyList.length == DbCOunt) {
+          print("Agency count=$DbCOunt");
+          dbRetrieveAgencyList();
+        }
       });
     } on DioError catch (e) {
       print("error");

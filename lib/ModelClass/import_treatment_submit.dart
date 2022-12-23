@@ -10,7 +10,7 @@ class ImportTreatmentSubmitModel {
   String? completedDateofSupervision;
   String? doneByAgency;
   String? remarks;
-  String? employeeId;
+  int? employeeId;
   String? forwardToRole;
 
   ImportTreatmentSubmitModel(

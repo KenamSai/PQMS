@@ -7,5 +7,5 @@ class EndPoints{
   static const importinspectionsubmit="saveIpIroInspectorAction";
   static const agenciesList = "agenciesList";
   static const getEmployeeListByRole = "getEmployeeListByRole";
-  
+  static const AppVersion = "getCurrentAppVersion";
 }

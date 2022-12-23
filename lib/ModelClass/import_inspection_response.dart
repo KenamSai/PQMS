@@ -1,6 +1,7 @@
 class ImportResponseinspectionModelClass {
   String? applicationId;
   String? Dutyofficer;
+  int? DutyOfficerId;
   String? NoofSamples;
   String? SampleSize;
   String? InspectionPlace;
@@ -16,6 +17,7 @@ class ImportResponseinspectionModelClass {
   ImportResponseinspectionModelClass(
       {this.applicationId,
       this.Dutyofficer,
+      this.DutyOfficerId,
       this.NoofSamples,
       this.SampleSize,
       this.InspectionPlace,
@@ -31,6 +33,7 @@ class ImportResponseinspectionModelClass {
   ImportResponseinspectionModelClass.fromJson(Map<String, dynamic> json) {
     applicationId = json['applicationId'];
     Dutyofficer = json['Dutyofficer'];
+    DutyOfficerId=json['DutyOfficerId'];
     NoofSamples = json['NoofSamples'];
     SampleSize = json['SampleSize'];
     InspectionPlace = json['InspectionPlace'];
@@ -48,6 +51,7 @@ class ImportResponseinspectionModelClass {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['applicationId'] = this.applicationId;
     data['Dutyofficer'] = this.Dutyofficer;
+    data['DutyOfficerId']=this.DutyOfficerId;
     data['NoofSamples'] = this.NoofSamples;
     data['SampleSize'] = this.SampleSize;
     data['InspectionPlace'] = this.InspectionPlace;
