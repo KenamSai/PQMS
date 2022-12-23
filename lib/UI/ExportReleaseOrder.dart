@@ -103,9 +103,9 @@ class _ExportList extends State<ExportList> {
                           ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: exportList.length,
+                            itemCount: exportSearchedList.length,
                             itemBuilder: (context, index) {
-                              final userDataa = exportList[index];
+                              final userDataa = exportSearchedList[index];
                               return ExportListItem(
                                 userInfo: userDataa,
                               );
@@ -167,13 +167,25 @@ class _ExportList extends State<ExportList> {
   }
 
   _runFilter(String value) {
+    List<ExportData> results = [];
     if (value.isEmpty) {
-      setState(() {
-        
-      });
+      results = exportList;
+    } else {
+      print("entered value is:  $value");
+      results = exportList
+          .where(
+            (element) =>
+                element.applicationId!.toLowerCase().startsWith(
+                      value.toLowerCase(),
+                    ) ||
+                element.commodity!.toLowerCase().startsWith(
+                      value.toLowerCase(),
+                    ),
+          )
+          .toList();
     }
-    else{
-      
-    }
+    setState(() {
+      exportSearchedList = results;
+    });
   }
 }

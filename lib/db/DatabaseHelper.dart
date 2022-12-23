@@ -188,7 +188,7 @@ CREATE TABLE AgencyList
 
   // // Deletes the row specified by the id. The number of affected rows is
   // // returned. This should be 1 as long as the row exists.
-  Future<int> delete(String value, String tableName) async {
+  Future<int> delete(int value, String tableName) async {
     Database db = await instance.database;
     return await db.delete(tableName, where: '$colId = ?', whereArgs: [value]);
   }
