@@ -39,7 +39,7 @@ class DatabaseHelper {
   // this opens the database (and creates it if it doesn't exist)
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    print("document path ${documentsDirectory.path}");
+    //print("document path ${documentsDirectory.path}");
     //saikrish/desktop/app/
     String path = join(documentsDirectory.path, _databaseName);
     //saikrish/desktop/app/cgg.db
@@ -59,6 +59,8 @@ NoofSamples varchar(255),
 SampleSize varchar(255),
 InspectionPlace varchar(255),
 InspectionDate varchar(255),
+inptLocation varchar(255),
+inspctArea varchar(255),
 InspectionRemarks varchar(255),
 userimage1 varchar(255),
 userimage2 varchar(255),
@@ -188,6 +190,10 @@ CREATE TABLE AgencyList
   // // Deletes the row specified by the id. The number of affected rows is
   // // returned. This should be 1 as long as the row exists.
   Future<int> delete(int  value, String tableName) async {
+    Database db = await instance.database;
+    return await db.delete(tableName, where: '$colId = ?', whereArgs: [value]);
+  }
+    Future<int> deleteTheRequired(String value, String tableName,String colId) async {
     Database db = await instance.database;
     return await db.delete(tableName, where: '$colId = ?', whereArgs: [value]);
   }

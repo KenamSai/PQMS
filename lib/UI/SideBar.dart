@@ -58,18 +58,18 @@ class _SideBarState extends State<SideBar> {
             ],
           ),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  Colors.green.shade900,
-                  Colors.green.shade800
-                ]),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: ExactAssetImage("assets/bg.png"),
+            ),
           ),
         ),
         ListTile(
           onTap: (() {
-            Navigator.popUntil(context, ModalRoute.withName("/Dashboard"));
+            Navigator.popUntil(
+              context,
+              ModalRoute.withName("/Dashboard"),
+            );
           }),
           leading: Icon(
             Icons.space_dashboard_rounded,

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/DutyOfficers.dart';
 import 'package:pqms/ModelClass/DutyOfficersResponse.dart';
@@ -21,6 +23,8 @@ class ExportInspectionEntry extends StatefulWidget {
 }
 
 class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
+  String? _currentAddress;
+  Position? _currentPosition;
   TextEditingController _NoOfsamples = TextEditingController();
   TextEditingController _Samplesize = TextEditingController();
   TextEditingController _InspectionPlace = TextEditingController();
@@ -31,6 +35,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   int? DutyOfficerId;
   @override
   void initState() {
+         _getCurrentPosition();
     dbRetrieve().then((value) {
       //print(DutyOfficersList.length);
       if (DutyOfficersList.isEmpty) {
@@ -49,7 +54,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.green[900],
+        backgroundColor: customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
           style: TextStyle(
@@ -63,7 +68,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -340,8 +345,13 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                       userimage1: imageData1.path,
                       userimage2: imageData2.path,
                       userimage3: imageData3.path,
+                      inspctArea: _currentAddress,
+                      inspctLocation: _currentPosition!.latitude.toString() +
+                          "," +
+                          _currentPosition!.longitude.toString(),
                     );
-
+                  print("Area:$_currentAddress");
+                  print("LAT,LONG:$_currentPosition");
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
                     final details = await _databaseService.insertInto(
@@ -433,6 +443,63 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       });
     }).catchError((error) {
       print(error);
+    });
+  }
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.locality}, ${place.postalCode}';
+            print(_currentAddress);
+      });
+    }).catchError((e) {
+      debugPrint(e);
     });
   }
 }

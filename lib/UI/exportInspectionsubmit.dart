@@ -61,7 +61,7 @@ class _exportInspectionSubmissionState
             onTap: () {
               Navigator.popUntil(
                 context,
-                ModalRoute.withName(AppRoutes.dashboardpage),
+                ModalRoute.withName(AppRoutes.exportinspection),
               );
             },
             child: Icon(
@@ -320,8 +320,54 @@ class _exportInspectionSubmissionState
                         data: requestPayLoad,
                         options: Options(headers: requestHeaders),
                       );
-                      print(
-                          "response: ${_response.data["status_Message"]},${_response.statusCode}");
+                      if (_response.data["status_Code"] == 200) {
+                       final value= await DatabaseHelper.instance.deleteTheRequired(
+                            id.applicationId ?? "",
+                            DatabaseHelper.ExportInspectiontable,
+                            "applicationId");
+                            print("count:$value");
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(
+                                "Message",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              icon: Icon(
+                                Icons.done_all_outlined,
+                                color: Colors.green,
+                                size: 50,
+                              ),
+                              content: Text(
+                                "${_response.data["status_Message"]}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.popUntil(
+                                      context,
+                                      ModalRoute.withName(
+                                          AppRoutes.exportinspectionsaved),
+                                    );
+                                  },
+                                  child: Text(
+                                    "OK",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      }
                     } on DioError catch (e) {
                       print("error");
                     }

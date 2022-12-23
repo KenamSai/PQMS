@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import '../reusable/Card_Component.dart';
@@ -17,7 +18,7 @@ class _ExportSavedApplicationState extends State<ExportSavedApplication> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 27, 92, 29),
+        backgroundColor: customColors.colorPQMS,
         title: Text('UAT-PQMS'
         ),
         actions: [
@@ -25,8 +26,8 @@ class _ExportSavedApplicationState extends State<ExportSavedApplication> {
             onTap: null,
             child: Image.asset(
               "assets/logout.png",
-              height: 30,
-              width: 30,
+              height: 25,
+              width: 25,
               color: Colors.white,
             ),
           ),

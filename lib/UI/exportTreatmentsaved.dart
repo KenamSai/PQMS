@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
 class exportTreatmentSaved extends StatefulWidget {
@@ -47,7 +48,7 @@ class _exportTreatmentSavedState extends State<exportTreatmentSaved> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("UAT-PQMS"),
-        backgroundColor: Colors.green[900],
+        backgroundColor: customColors.colorPQMS,
         actions: [
           GestureDetector(
             onTap: () {
@@ -58,7 +59,7 @@ class _exportTreatmentSavedState extends State<exportTreatmentSaved> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )

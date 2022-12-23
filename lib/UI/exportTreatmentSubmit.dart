@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -275,7 +276,12 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                         data: requestPayLoad,
                         options: Options(headers: requestHeaders),
                       );
-                      if (Response.data["status_Code"]== 200) {
+                      if (Response.data["status_Code"] == 200) {
+                          final value= await DatabaseHelper.instance.deleteTheRequired(
+                            id.applicationId ?? "",
+                            DatabaseHelper.exporttreatmenttable,
+                            "applicationId");
+                            print("Treatment count:$value");
                         showDialog(
                           context: context,
                           builder: (context) {
@@ -301,7 +307,11 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Navigator.popUntil(
+                                      context,
+                                      ModalRoute.withName(
+                                          AppRoutes.exporttreatmentsaved),
+                                    );
                                   },
                                   child: Text(
                                     "OK",

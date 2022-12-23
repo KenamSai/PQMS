@@ -7,22 +7,27 @@ class exportResponseinspectionModelClass {
   String? inspectionPlace;
   String? inspectionDate;
   String? inspectionRemarks;
+  String? inspctArea;
+  String? inspctLocation;
   String? userimage1;
   String? userimage2;
   String? userimage3;
 
-  exportResponseinspectionModelClass(
-      {this.applicationId,
-      this.dutyofficer,
-      this.dutyofficerId,
-      this.noofSamples,
-      this.sampleSize,
-      this.inspectionPlace,
-      this.inspectionDate,
-      this.inspectionRemarks,
-      this.userimage1,
-      this.userimage2,
-      this.userimage3});
+  exportResponseinspectionModelClass({
+    this.applicationId,
+    this.dutyofficer,
+    this.dutyofficerId,
+    this.noofSamples,
+    this.sampleSize,
+    this.inspectionPlace,
+    this.inspectionDate,
+    this.inspectionRemarks,
+    this.userimage1,
+    this.userimage2,
+    this.userimage3,
+    this.inspctArea,
+    this.inspctLocation,
+  });
 
   exportResponseinspectionModelClass.fromJson(Map<String, dynamic> json) {
     applicationId = json['applicationId'];
@@ -35,7 +40,9 @@ class exportResponseinspectionModelClass {
     userimage1 = json['userimage1'];
     userimage2 = json['userimage2'];
     userimage3 = json['userimage3'];
-    dutyofficerId=json["DutyOfficerId"];
+    dutyofficerId = json["DutyOfficerId"];
+    inspctArea=json["inspctArea"];
+    inspctLocation=json["inptLocation"];
   }
 
   Map<String, dynamic> toJson() {
@@ -50,7 +57,9 @@ class exportResponseinspectionModelClass {
     data['userimage1'] = this.userimage1;
     data['userimage2'] = this.userimage2;
     data['userimage3'] = this.userimage3;
-    data["DutyOfficerId"]=this.dutyofficerId;
+    data["DutyOfficerId"] = this.dutyofficerId;
+    data["inptLocation"]=this.inspctLocation;
+    data["inspctArea"]=this.inspctArea;
     return data;
   }
 }
