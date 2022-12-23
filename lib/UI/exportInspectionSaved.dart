@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
 class exportInspectionSaved extends StatefulWidget {
@@ -21,18 +22,19 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
         value.forEach((element) {
           ListData.add(
             exportResponseinspectionModelClass(
-              dutyofficerId: element["DutyOfficerId"],
-              applicationId: element["applicationId"],
-              inspectionDate: element["InspectionDate"],
-              dutyofficer: element["Dutyofficer"],
-              inspectionPlace: element["InspectionPlace"],
-              inspectionRemarks: element["InspectionRemarks"],
-              noofSamples: element["NoofSamples"],
-              sampleSize: element["SampleSize"],
-              userimage1: element["userimage1"],
-               userimage2: element["userimage2"],
-                userimage3: element["userimage3"]
-            ),
+                dutyofficerId: element["DutyOfficerId"],
+                applicationId: element["applicationId"],
+                inspectionDate: element["InspectionDate"],
+                dutyofficer: element["Dutyofficer"],
+                inspectionPlace: element["InspectionPlace"],
+                inspectionRemarks: element["InspectionRemarks"],
+                noofSamples: element["NoofSamples"],
+                sampleSize: element["SampleSize"],
+                userimage1: element["userimage1"],
+                userimage2: element["userimage2"],
+                userimage3: element["userimage3"],
+                inspctArea: element["inspctArea"],
+                inspctLocation: element["inptLocation"]),
           );
         });
       });
@@ -43,12 +45,11 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
 
   @override
   Widget build(BuildContext context) {
-    //  final dbHelper = DatabaseHelper.instance;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text("UAT-PQMS"),
-        backgroundColor: Colors.green[900],
+        backgroundColor: customColors.colorPQMS,
         actions: [
           GestureDetector(
             onTap: () {
@@ -110,7 +111,9 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
                         final data = ListData[index];
                         return GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context,AppRoutes.exportinspectionSubmission,arguments: data);
+                            Navigator.pushNamed(
+                                context, AppRoutes.exportinspectionSubmission,
+                                arguments: data);
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
@@ -139,6 +142,10 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
                                 RowComponent(
                                   "Remarks",
                                   data.inspectionRemarks,
+                                ),
+                                RowComponent(
+                                  "Location",
+                                  data.inspctLocation,
                                 ),
                               ],
                             ),

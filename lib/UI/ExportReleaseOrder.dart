@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/exportListModel.dart';
 import 'package:pqms/UI/ExportListItem.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
-
 
 class ExportList extends StatefulWidget {
   const ExportList({super.key});
@@ -15,14 +15,14 @@ class ExportList extends StatefulWidget {
 }
 
 class _ExportList extends State<ExportList> {
-  List<ExportData> exportList=[];
-   //late ExportList_Model modelDataa;
+  List<ExportData> exportList = [];
+  List<ExportData> exportSearchedList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.green[900],
+        backgroundColor: customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
           style: TextStyle(
@@ -51,35 +51,71 @@ class _ExportList extends State<ExportList> {
             image: ExactAssetImage("assets/bg.png"),
           ),
         ),
-        child: SingleChildScrollView(
-          physics: ScrollPhysics(),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                cursorColor: customColors.colorPQMS,
+                onChanged: (value) => _runFilter(value),
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                  hintText: "  Application Id or Commodity",
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                Text(
                   "Export Release Order",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 18,
                   ),
                   textAlign: TextAlign.center,
                 ),
-              ),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: exportList.length,
-                itemBuilder: (context, index) {
-                  final userDataa = exportList[index];
-                  return ExportListItem(
-                    userInfo: userDataa,
-                  );
-                },
-              )
-            ],
-          ),
+              ],
+            ),
+            exportList.isEmpty
+                ? Expanded(
+                    flex: 10,
+                    child: Center(
+                      child: Text(
+                        "No Application Available",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  )
+                : Expanded(
+                    flex: 18,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: exportList.length,
+                            itemBuilder: (context, index) {
+                              final userDataa = exportList[index];
+                              return ExportListItem(
+                                userInfo: userDataa,
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+          ],
         ),
       ),
     );
@@ -97,12 +133,13 @@ class _ExportList extends State<ExportList> {
     final requestPayload = {
       "data": "Inspector",
     };
-    final token=await SharedPreferencesClass().readTheData(PreferenceConst.token);
-    final username=await SharedPreferencesClass().readTheData(PreferenceConst.username);
+    final token =
+        await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final username =
+        await SharedPreferencesClass().readTheData(PreferenceConst.username);
     final requestHeaders = {
       "clientId": "Client123Cgg",
-      "token":
-          token.toString(),
+      "token": token.toString(),
       "userName": username.toString(),
     };
     final _dioObject = Dio();
@@ -114,16 +151,29 @@ class _ExportList extends State<ExportList> {
       );
       print(_response);
       final responseData = ExportList_Model.fromJson(_response.data);
-      print(responseData);
+      //print(responseData);
       setState(() {
-         if (responseData.statusCode == 200)
-        exportList = responseData.data!;
+        if (responseData.statusCode == 200) {
+          exportList = responseData.data!;
+          exportSearchedList = exportList;
+        }
+        ;
         EasyLoading.dismiss();
-        //print(modelDataa.data?.length);
       });
-      print("on top:${responseData.data?[0].status}");
+      // print("on top:${responseData.data?[0].status}");
     } on DioError catch (e) {
       print("error${e.message}");
+    }
+  }
+
+  _runFilter(String value) {
+    if (value.isEmpty) {
+      setState(() {
+        
+      });
+    }
+    else{
+      
     }
   }
 }

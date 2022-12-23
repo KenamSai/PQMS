@@ -5,6 +5,7 @@ import 'package:pqms/ModelClass/DonebyModelClass.dart';
 import 'package:pqms/ModelClass/DonebyModelResponseTreatment.dart';
 import 'package:pqms/ModelClass/ExportApplicationModelClass.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -28,7 +29,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("UAT-PQMS"),
-        backgroundColor: Colors.green[900],
+        backgroundColor: customColors.colorPQMS,
         actions: [
           GestureDetector(
             onTap: () {
@@ -39,7 +40,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )

@@ -44,7 +44,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.green[900],
+        backgroundColor:customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
           style: TextStyle(
@@ -58,7 +58,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )

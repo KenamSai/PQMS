@@ -5,6 +5,7 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/ModelClass/login_request.dart';
 import 'package:pqms/ModelClass/login_response.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: SizedBox(
                       width: 340,
                       child: Container(
-                        color: Colors.green[900],
+                        color: Colors.black.withOpacity(0.2),
                         child: TextButton(
                           onPressed: () {
                             if (validation()) {
@@ -127,7 +128,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             "Login",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
                           ),
                         ),
                       ),
