@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/SplashModel.dart';
 import 'package:pqms/UI/appVersion.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
@@ -58,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void getDetails() async {
-    var requestURL = "https://pqms-uat.cgg.gov.in/pqms/getCurrentAppVersion";
+    var requestURL = BaseUrl.uat_base_url+EndPoints.AppVersion;
     //conversion into form data
     FormData formData = FormData.fromMap({
       "osType": "IOS",

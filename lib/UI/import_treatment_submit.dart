@@ -276,9 +276,9 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
     importtreatmentSubmit.temperature = args.Temperature.toString();
     importtreatmentSubmit.treatmentDate = args.TreatmentDate;
     importtreatmentSubmit.completedDateofSupervision = args.CompletedDate;
-    importtreatmentSubmit.doneByAgency = args.DoneBy.toString();
+    importtreatmentSubmit.doneByAgency = args.agencyId.toString();
     importtreatmentSubmit.remarks = args.TreatmentRemarks.toString();
-    importtreatmentSubmit.employeeId = "1852"; 
+    importtreatmentSubmit.employeeId = args.DutyOfficerId; 
     importtreatmentSubmit.forwardToRole = "Duty officer";
 
     importtreatmentSubmit.toJson();

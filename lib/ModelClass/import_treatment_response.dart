@@ -1,6 +1,7 @@
 class ImportTreatmentModelClass {
   String? applicationId;
   String? Dutyofficer;
+  int? DutyOfficerId;
   String? Chemicals;
   String? Dosage;
   String? Duration;
@@ -8,6 +9,7 @@ class ImportTreatmentModelClass {
   String? TreatmentDate;
   String? CompletedDate;
   String? DoneBy;
+  int? agencyId;
   String? TreatmentRemarks;
   String? TreatmentLocation;
   String? TreatmentArea;
@@ -16,6 +18,7 @@ class ImportTreatmentModelClass {
   ImportTreatmentModelClass(
       {this.applicationId,
       this.Dutyofficer,
+      this.DutyOfficerId,
       this.Chemicals,
       this.Dosage,
       this.Duration,
@@ -23,14 +26,16 @@ class ImportTreatmentModelClass {
       this.TreatmentDate,
       this.CompletedDate,
       this.DoneBy,
+      this.agencyId,
       this.TreatmentRemarks,
       this.TreatmentLocation,
-      this.TreatmentArea
+      this.TreatmentArea, 
       });
 
   ImportTreatmentModelClass.fromJson(Map<String, dynamic> json) {
     applicationId = json['applicationId'];
     Dutyofficer = json['Dutyofficer'];
+    DutyOfficerId=json['DutyOfficerId'];
     Chemicals = json['Chemicals'];
     Dosage = json['Dosage'];
     Duration = json['Duration'];
@@ -38,6 +43,7 @@ class ImportTreatmentModelClass {
     TreatmentDate = json['TreatmentDate'];
     CompletedDate = json['CompletedDate'];
     DoneBy = json['DoneBy'];
+    agencyId=json['agencyId'];
     TreatmentRemarks = json['TreatmentRemarks'];
     TreatmentLocation = json['TreatmentLocation'];
     TreatmentArea = json['TreatmentArea'];
@@ -47,13 +53,16 @@ class ImportTreatmentModelClass {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['applicationId'] = this.applicationId;
     data['Dutyofficer'] = this.Dutyofficer;
+    data['DutyOfficerId']=this.DutyOfficerId;
     data['Chemicals'] = this.Chemicals;
     data['Dosage'] = this.Dosage;
     data['Duration'] = this.Duration;
     data['Temperature'] = this.Temperature;
     data['TreatmentDate'] = this.TreatmentDate;
     data['CompletedDate'] = this.CompletedDate;
+    data['TreatmentRemarks']=this.TreatmentRemarks;
     data['DoneBy'] = this.DoneBy;
+    data['agencyId']=this.agencyId;
     data['TreatmentLocation'] = this.TreatmentLocation;
     data['TreatmentArea'] = this.TreatmentArea;
     return data;

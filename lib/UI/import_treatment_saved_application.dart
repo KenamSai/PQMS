@@ -179,7 +179,9 @@ class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplic
             DoneBy: element["DoneBy"],
             TreatmentRemarks: element["TreatmentRemarks"],
             TreatmentLocation: element["TreatmentLocation"],
-            TreatmentArea: element["TreatmentArea"]
+            TreatmentArea: element["TreatmentArea"],
+            DutyOfficerId:element["DutyOfficerId"],
+            agencyId: element["AgencyId"]
           );
           importdata.add(model);
           

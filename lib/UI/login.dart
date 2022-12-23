@@ -5,6 +5,7 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/ModelClass/login_request.dart';
 import 'package:pqms/ModelClass/login_response.dart';
+import 'package:pqms/reusable/deviceID.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -162,8 +163,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> getLoginResponse() async {
     final requestUrl = BaseUrl.uat_base_url + EndPoints.login;
     final loginrequest = LoginRequest();
-    loginrequest.iMEI = "7b1fe3550ff840b2";
-    loginrequest.deviceId = "7b1fe3550ff840b2";
+    loginrequest.iMEI =  await Utils().getDeviceId();
+    loginrequest.deviceId = await Utils().getDeviceId();
+    print(loginrequest.deviceId);
     loginrequest.username = _username.text.toString().trim();
     loginrequest.password = _password.text.toString().trim();
     loginrequest.toJson();

@@ -8,7 +8,7 @@ class DatabaseHelper {
   static final _databaseVersion = 1;
   static final colId = "UserId";
   static final AgencyId="id";
-  static final colId = "id";
+  //static final colId = "id";
   static final ImportInspectioncolId = "applicationId";
   static final ImportTreatmentcolId = "applicationId";
 
@@ -70,6 +70,7 @@ userimage3 varchar(255)
  (
 applicationId varchar(255),
 Dutyofficer varchar(255),
+DutyOfficerId INTEGER,
 NoofSamples varchar(255),
 SampleSize varchar(255),
 InspectionPlace varchar(255),
@@ -106,6 +107,7 @@ TreatmentRemarks varchar(255)
 (
 applicationId varchar(255),
 Dutyofficer varchar(255),
+DutyOfficerId INTEGER,
 Chemicals varchar(255),
 Dosage varchar(255),
 Duration varchar(255),
@@ -113,6 +115,7 @@ Temperature varchar(255),
 TreatmentDate varchar(255),
 CompletedDate varchar(255),
 DoneBy varchar(255),
+AgencyId INTEGER,
 TreatmentRemarks varchar(255),
 TreatmentLocation varchar(255),
 TreatmentArea varchar(255)
@@ -184,7 +187,7 @@ CREATE TABLE AgencyList
 
   // // Deletes the row specified by the id. The number of affected rows is
   // // returned. This should be 1 as long as the row exists.
-  Future<int> delete(String value, String tableName) async {
+  Future<int> delete(int  value, String tableName) async {
     Database db = await instance.database;
     return await db.delete(tableName, where: '$colId = ?', whereArgs: [value]);
   }

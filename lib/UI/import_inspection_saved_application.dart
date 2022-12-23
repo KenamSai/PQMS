@@ -18,8 +18,34 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
      @override
   void initState() {
     super.initState();
-    setState(() {
-       showrecords();
+    DatabaseHelper.instance
+        .queryAllRows(DatabaseHelper.ImportInspectiontable)
+        .then((value) {
+      setState(() {
+        for (var element in value) {
+          var model = ImportResponseinspectionModelClass(
+            applicationId: element["applicationId"],
+            InspectionDate: element["InspectionDate"],
+            NoofSamples: element["NoofSamples"],
+            SampleSize: element["SampleSize"],
+            Dutyofficer: element["Dutyofficer"],
+            DutyOfficerId: element["DutyOfficerId"],
+            InspectionPlace: element["InspectionPlace"],
+            InspectionRemarks: element["InspectionRemarks"],
+            QuantityFound: element["QuantityFound"],
+            inptLocation: element["inptLocation"],
+            inspctArea: element["inspctArea"],
+            userimage1: element["userimage1"],
+            userimage2: element["userimage2"],
+            userimage3: element["userimage3"]
+             
+          );
+          importdata.add(model);
+          //print(userData);
+        }
+      });
+    }).catchError((error) {
+      print(error);
     });
    
   }
@@ -142,6 +168,10 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
                                   "Quantity Found",
                                   data.QuantityFound,
                                 ),
+                                 RowComponent(
+                                  "Employ ID ",
+                                  data.DutyOfficerId,
+                                ),
 
                                 // RowComponent(
                                 //   "Inspection Area",
@@ -184,36 +214,7 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
       ),
     );
   }
-  void showrecords() {
-  DatabaseHelper.instance
-        .queryAllRows(DatabaseHelper.ImportInspectiontable)
-        .then((value) {
-      setState(() {
-        for (var element in value) {
-          var model = ImportResponseinspectionModelClass(
-            applicationId: element["applicationId"],
-            InspectionDate: element["InspectionDate"],
-            NoofSamples: element["NoofSamples"],
-            SampleSize: element["SampleSize"],
-            Dutyofficer: element["Dutyofficer"],
-            InspectionPlace: element["InspectionPlace"],
-            InspectionRemarks: element["InspectionRemarks"],
-            QuantityFound: element["QuantityFound"],
-            inptLocation: element["inptLocation"],
-            inspctArea: element["inspctArea"],
-            userimage1: element["userimage1"],
-            userimage2: element["userimage2"],
-            userimage3: element["userimage3"]
-             
-          );
-          importdata.add(model);
-          //print(userData);
-        }
-      });
-    }).catchError((error) {
-      print(error);
-    });
-  }
+ 
 
 }
 
