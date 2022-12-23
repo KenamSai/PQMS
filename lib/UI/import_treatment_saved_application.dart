@@ -17,9 +17,10 @@ class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplic
 
      @override
   void initState() {
-    super.initState();
+   
 
     showrecords();
+     super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -169,9 +170,16 @@ class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplic
           var model = ImportTreatmentModelClass(
             applicationId: element["applicationId"],
             Dutyofficer: element["Dutyofficer"],
+            Chemicals: element["Chemicals"],
+            Dosage: element["Dosage"],
+            Duration: element["Duration"],
+            Temperature: element["Temperature"],
             TreatmentDate: element["TreatmentDate"],
             CompletedDate: element["CompletedDate"],
+            DoneBy: element["DoneBy"],
             TreatmentRemarks: element["TreatmentRemarks"],
+            TreatmentLocation: element["TreatmentLocation"],
+            TreatmentArea: element["TreatmentArea"]
           );
           importdata.add(model);
           

@@ -27,7 +27,7 @@ class reusableAlert extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-          color: titleTextColor ?? Colors.blue,
+          color: titleTextColor ?? Colors.green,
         ),
       ),
       icon: Icon(

@@ -6,6 +6,7 @@ class ImportResponseinspectionModelClass {
   String? InspectionPlace;
   String? InspectionDate;
   String? InspectionRemarks;
+  String? QuantityFound;
   String? inptLocation;
   String? inspctArea;
   String? userimage1;
@@ -20,6 +21,7 @@ class ImportResponseinspectionModelClass {
       this.InspectionPlace,
       this.InspectionDate,
       this.InspectionRemarks,
+      this.QuantityFound,
       this.inptLocation,
       this.inspctArea,
       this.userimage1,
@@ -34,6 +36,7 @@ class ImportResponseinspectionModelClass {
     InspectionPlace = json['InspectionPlace'];
     InspectionDate = json['InspectionDate'];
     InspectionRemarks = json['InspectionRemarks'];
+    QuantityFound=json['QuantityFound'];
     inptLocation=json['inptLocation'];
     inspctArea=json['inspctArea'];
     userimage1 = json['userimage1'];
@@ -50,6 +53,7 @@ class ImportResponseinspectionModelClass {
     data['InspectionPlace'] = this.InspectionPlace;
     data['InspectionDate'] = this.InspectionDate;
     data['InspectionRemarks'] = this.InspectionRemarks;
+    data['QuantityFound']=this.QuantityFound;
     data['inptLocation']=this.inptLocation;
     data['inspctArea']=this.inspctArea;
     data['userimage1'] = this.userimage1;
