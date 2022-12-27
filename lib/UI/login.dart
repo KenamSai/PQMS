@@ -225,19 +225,22 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       //converting response from json to model cls
       final loginResponse = LoginResponse.fromJson(_response.data);
-      //  print(_response.data);
-      //  print(loginResponse.statusCode);
-      //   print(loginResponse.data?.userName);
+
       if (loginResponse.statusCode == 200) {
         await SharedPreferencesClass().writeTheData(
             PreferenceConst.username, loginResponse.data?.userName);
         await SharedPreferencesClass()
             .writeTheData(PreferenceConst.token, loginResponse.data?.token);
 
+        await SharedPreferencesClass().writeTheData(
+            PreferenceConst.upcomingId, loginResponse.data!.userId);
+        if (await SharedPreferencesClass()
+                .readTheData(PreferenceConst.actualId) ==
+            null) {
+          await SharedPreferencesClass().writeTheData(
+              PreferenceConst.actualId, loginResponse.data!.userId);
+        }
         EasyLoading.dismiss();
-
-        // String read = await SharedPreferencesClass().readTheData(PreferenceConst.username);
-        //    print("login name:$read");
         Navigator.pushNamed(context, AppRoutes.dashboardpage);
       } else if (loginResponse.statusCode == 204) {
         EasyLoading.dismiss();
