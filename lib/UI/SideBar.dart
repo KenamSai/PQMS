@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
-import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -97,6 +96,26 @@ class _SideBarState extends State<SideBar> {
         ),
         ListTile(
           onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AppAlertDailog(title: "UAP-PQMS", message: "Do you want to exit from app?",
+                 icon: Icons.error,yestitle: "Yes",notitle: "No",
+                 YesonPressed: (() {
+                   SystemNavigator.pop();
+                 }),
+                 NoonPressed: () {
+                    Navigator.of(context).pop(false);
+                 },);
+                // return reusableAlert(
+                //   title: "UAT-PQMS",
+                //   message: "Do you want to exit from app?",
+                //   icon: Icons.error,
+                //   Yes: "Yes",
+                //   No: "No",
+                // );
+              },
+            );
           },
           leading: Image.asset(
             "assets/exit.png",
@@ -117,7 +136,7 @@ class _SideBarState extends State<SideBar> {
                   yestitle: "Yes",
                   notitle: "NO",
                   YesonPressed: () {
-                   Navigator.pushNamed(context, AppRoutes.Login);
+                   Navigator.popUntil(context, ModalRoute.withName(AppRoutes.Login) );
                   },
                   NoonPressed: () {
                     Navigator.of(context).pop(false);
