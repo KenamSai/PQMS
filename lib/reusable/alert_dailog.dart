@@ -11,8 +11,8 @@ class AppAlertDailog extends StatelessWidget {
     this.titleTextColor,
     this.iconColor,
     this.yestitle,
-    this.notitle, 
-    this.YesonPressed, 
+    this.notitle,
+    this.YesonPressed,
     this.NoonPressed,
   });
 
@@ -25,11 +25,10 @@ class AppAlertDailog extends StatelessWidget {
   final String? yestitle;
   final String? notitle;
   final void Function()? YesonPressed;
-    final void Function()? NoonPressed;
+  final void Function()? NoonPressed;
 
   @override
   Widget build(BuildContext context) {
-    
     return AlertDialog(
       title: Text(
         title,
@@ -53,11 +52,18 @@ class AppAlertDailog extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ElevatedButton(onPressed: this.YesonPressed!, child: Text(yestitle!),
-            style: ButtonStyle(
-                    backgroundColor:MaterialStateProperty.all<Color>(customColors.colorred),
-            ),),
-            ElevatedButton(onPressed: this.NoonPressed!, child: Text(notitle!))
+            ElevatedButton(
+              onPressed: this.YesonPressed!,
+              child: Text(yestitle!),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(customColors.colorred),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: this.NoonPressed!,
+              child: Text(notitle!),
+            )
           ],
         )
       ],

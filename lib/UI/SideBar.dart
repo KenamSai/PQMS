@@ -97,26 +97,6 @@ class _SideBarState extends State<SideBar> {
         ),
         ListTile(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AppAlertDailog(
-                  title: "UAT-PQMS",
-                  message: "Do you want to exit from app?",
-                  icon: Icons.error,
-                  // titleTextColor: customColors.colorPQMS,
-                  // Yes: "Yes",
-                  // No: "No",
-                );
-                // return reusableAlert(
-                //   title: "UAT-PQMS",
-                //   message: "Do you want to exit from app?",
-                //   icon: Icons.error,
-                //   Yes: "Yes",
-                //   No: "No",
-                // );
-              },
-            );
           },
           leading: Image.asset(
             "assets/exit.png",
@@ -140,8 +120,6 @@ class _SideBarState extends State<SideBar> {
                    Navigator.pushNamed(context, AppRoutes.Login);
                   },
                   NoonPressed: () {
-                    // print("OnPressed called no");
-
                     Navigator.of(context).pop(false);
                   },
                 );
