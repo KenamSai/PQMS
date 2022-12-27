@@ -17,10 +17,11 @@ class ImportList extends StatefulWidget {
 class _ImportListState extends State<ImportList> {
   // importListModelClass? responseData;
   List<Data> dataList = [];
+  List<Data> importsearchlist=[];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: customColors.colorPQMS,
@@ -52,35 +53,71 @@ class _ImportListState extends State<ImportList> {
             image: ExactAssetImage("assets/bg.png"),
           ),
         ),
-        child: SingleChildScrollView(
-          physics: ScrollPhysics(),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                cursorColor: customColors.colorPQMS,
+                onChanged: (value) => _runFilter(value),
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                  hintText: "  Application Id or Commodity",
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                Text(
                   "Import Release Order",
                   style: TextStyle(
                     color: Colors.white,
-                   // fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                   textAlign: TextAlign.center,
                 ),
-              ),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: dataList.length,
-                itemBuilder: (context, index) {
-                  final userData = dataList[index];
-                  return ImportListItem(
-                    userInfo: userData,
-                  );
-                },
-              )
-            ],
-          ),
+              ],
+            ),
+            dataList.isEmpty
+                ? Expanded(
+                    flex: 10,
+                    child: Center(
+                      child: Text(
+                        "No Application Available",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  )
+                : Expanded(
+                    flex: 18,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: importsearchlist.length,
+                            itemBuilder: (context, index) {
+                              final userDataa = importsearchlist[index];
+                              return ImportListItem(
+                                userInfo: userDataa,
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+          ],
         ),
       ),
     );
@@ -120,14 +157,38 @@ class _ImportListState extends State<ImportList> {
       setState(() {
         //this.responseData = responseData;
         //print(responseData.data?.length);
-        if (responseData.statusCode == 200) {
+          if (responseData.statusCode == 200) {
           dataList = responseData.data!;
-          EasyLoading.dismiss();
-        } else {}
+          importsearchlist = dataList;
+        }
+        ;
+        EasyLoading.dismiss();
       });
       //print("${responseData.data?[0].status}");
     } on DioError catch (e) {
       print("error${e.message}");
     }
+  }
+   _runFilter(String value) {
+    List<Data> results = [];
+    if (value.isEmpty) {
+      results = dataList;
+    } else {
+      print("entered value is:  $value");
+      results = dataList
+          .where(
+            (element) =>
+                element.applicationId!.toLowerCase().startsWith(
+                      value.toLowerCase(),
+                    ) ||
+                element.commodity!.toLowerCase().startsWith(
+                      value.toLowerCase(),
+                    ),
+          )
+          .toList();
+    }
+    setState(() {
+      importsearchlist = results;
+    });
   }
 }

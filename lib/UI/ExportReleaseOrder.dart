@@ -36,7 +36,7 @@ class _ExportList extends State<ExportList> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )

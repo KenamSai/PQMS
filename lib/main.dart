@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );
   }
