@@ -1,4 +1,6 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -41,19 +43,49 @@ Conditions""",
           views: [
             Container(
               child: WebView(
-                initialUrl: "https://www.cgg.gov.in/mgov-privacy-policy/?depot_name="+"AGRICULTURE and  FARMERS WELFARE, GOVERNMENT OF INDIA",
-                javascriptMode: JavascriptMode.unrestricted,
-              ),
-            ),
-           Container(
-              child: WebView(
-                initialUrl: "https://www.cgg.gov.in/mgov-terms-conditions/?depot_name="+"AGRICULTURE "+"and"+" FARMERS WELFARE, GOVERNMENT OF INDIA"+ "&"+" capital=NEW DELHI, INDIA",
+                gestureRecognizers: Set()
+                  ..add(
+                    Factory<VerticalDragGestureRecognizer>(
+                      () => VerticalDragGestureRecognizer(),
+                    ),
+                  ),
+                initialUrl:
+                    "https://www.cgg.gov.in/mgov-privacy-policy/?depot_name=" +
+                        "AGRICULTURE and  FARMERS WELFARE, GOVERNMENT OF INDIA",
                 javascriptMode: JavascriptMode.unrestricted,
               ),
             ),
             Container(
               child: WebView(
-                initialUrl: "https://www.cgg.gov.in/mgov-copyright-policy/?depot_name="+"AGRICULTURE "+"and"+" FARMERS WELFARE, GOVERNMENT OF INDIA & depot_email=info@cgg.gov.in",
+                gestureRecognizers: Set()
+                  ..add(
+                    Factory<VerticalDragGestureRecognizer>(
+                      () => VerticalDragGestureRecognizer(),
+                    ),
+                  ),
+                initialUrl:
+                    "https://www.cgg.gov.in/mgov-terms-conditions/?depot_name=" +
+                        "AGRICULTURE " +
+                        "and" +
+                        " FARMERS WELFARE, GOVERNMENT OF INDIA" +
+                        "&" +
+                        " capital=NEW DELHI, INDIA",
+                javascriptMode: JavascriptMode.unrestricted,
+              ),
+            ),
+            Container(
+              child: WebView(
+                gestureRecognizers: Set()
+                  ..add(
+                    Factory<VerticalDragGestureRecognizer>(
+                      () => VerticalDragGestureRecognizer(),
+                    ),
+                  ),
+                initialUrl:
+                    "https://www.cgg.gov.in/mgov-copyright-policy/?depot_name=" +
+                        "AGRICULTURE " +
+                        "and" +
+                        " FARMERS WELFARE, GOVERNMENT OF INDIA & depot_email=info@cgg.gov.in",
                 javascriptMode: JavascriptMode.unrestricted,
               ),
             ),

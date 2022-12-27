@@ -20,8 +20,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
-  TextEditingController _username =  TextEditingController(text: "Rekha_Mobile");
-  TextEditingController _password =  TextEditingController(text: "PQMS@2022");
+  TextEditingController _username = TextEditingController(text: "Rekha_Mobile");
+  TextEditingController _password = TextEditingController(text: "PQMS@2022");
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -149,13 +149,50 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-@override
-  
+
+  @override
   bool validation() {
     if (_username.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Please enter username"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "OK",
+                  style: TextStyle(fontSize: 18, color: Colors.blue),
+                ),
+              ),
+            ],
+          );
+        },
+      );
       return false;
     } else if (_password.text.isEmpty) {
-      //showAlert();
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Please enter password"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "OK",
+                  style: TextStyle(fontSize: 18, color: Colors.blue),
+                ),
+              ),
+            ],
+          );
+        },
+      );
       return false;
     }
 
@@ -165,13 +202,13 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> getLoginResponse() async {
     final requestUrl = BaseUrl.uat_base_url + EndPoints.login;
     final loginrequest = LoginRequest();
-    loginrequest.iMEI =  await Utils().getDeviceId();
+    loginrequest.iMEI = await Utils().getDeviceId();
     loginrequest.deviceId = await Utils().getDeviceId();
     print(loginrequest.deviceId);
     loginrequest.username = _username.text.toString().trim();
     loginrequest.password = _password.text.toString().trim();
     loginrequest.toJson();
-   // print(loginrequest.toJson());
+    // print(loginrequest.toJson());
     final requestPayload = loginrequest.toJson();
     Map<String, String> requestHeaders = {
       'clientId': 'Client123Cgg',
@@ -181,32 +218,54 @@ class _LoginScreenState extends State<LoginScreen> {
     final _dioObject = Dio();
 
     try {
-      final _response = await _dioObject.post(requestUrl,
-          data: requestPayload, options: Options(headers: requestHeaders));
+      final _response = await _dioObject.post(
+        requestUrl,
+        data: requestPayload,
+        options: Options(headers: requestHeaders),
+      );
       //converting response from json to model cls
       final loginResponse = LoginResponse.fromJson(_response.data);
       //  print(_response.data);
       //  print(loginResponse.statusCode);
       //   print(loginResponse.data?.userName);
       if (loginResponse.statusCode == 200) {
-          await SharedPreferencesClass().writeTheData(
-              PreferenceConst.username, loginResponse.data?.userName);
-          await SharedPreferencesClass()
-              .writeTheData(PreferenceConst.token, loginResponse.data?.token);
+        await SharedPreferencesClass().writeTheData(
+            PreferenceConst.username, loginResponse.data?.userName);
+        await SharedPreferencesClass()
+            .writeTheData(PreferenceConst.token, loginResponse.data?.token);
 
-      EasyLoading.dismiss();
+        EasyLoading.dismiss();
 
-      // String read = await SharedPreferencesClass().readTheData(PreferenceConst.username);
-      //    print("login name:$read");
+        // String read = await SharedPreferencesClass().readTheData(PreferenceConst.username);
+        //    print("login name:$read");
         Navigator.pushNamed(context, AppRoutes.dashboardpage);
       } else if (loginResponse.statusCode == 204) {
-        //Alert
+        EasyLoading.dismiss();
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                loginResponse.statusMessage.toString(),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "OK",
+                    style: TextStyle(fontSize: 18, color: Colors.blue),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
       }
     } on DioError catch (e) {
       print(e.message);
-      if (e.response?.statusCode == 400 || e.response?.statusCode == 500) {
-        //Alert
-      }
+      if (e.response?.statusCode == 400 || e.response?.statusCode == 500) {}
     }
   }
 }
