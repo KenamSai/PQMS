@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -103,6 +104,7 @@ class _SideBarState extends State<SideBar> {
                   title: "UAT-PQMS",
                   message: "Do you want to exit from app?",
                   icon: Icons.error,
+                  titleTextColor: customColors.colorPQMS,
                   Yes: "Yes",
                   No: "No",
                 );

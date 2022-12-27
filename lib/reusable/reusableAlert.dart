@@ -50,13 +50,23 @@ class reusableAlert extends StatelessWidget {
               onPressed: (() {
                 SystemNavigator.pop();
               }),
-              child: Text(Yes ?? ""),
+              child: Container(
+                color: Colors.red,
+                child: Text(
+                  Yes ?? "",
+                ),
+              ),
             ),
             TextButton(
               onPressed: (() {
                 Navigator.pop(context);
               }),
-              child: Text(No ?? ""),
+              child: Container(
+                color: Colors.green.shade900,
+                child: Text(
+                  No ?? "",
+                ),
+              ),
             )
           ],
         )

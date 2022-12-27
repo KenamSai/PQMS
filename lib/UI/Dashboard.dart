@@ -17,7 +17,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  String? rolename ;
+  String? rolename;
 
   @override
   initState() {
@@ -42,7 +42,7 @@ class _DashboardState extends State<Dashboard> {
       drawer: SideBar(),
       appBar: AppBar(
         centerTitle: true,
-       backgroundColor: customColors.colorPQMS,
+        backgroundColor: customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
         ),
@@ -79,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
-                     // fontWeight: FontWeight.bold,
+                      // fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -112,17 +112,22 @@ class _DashboardState extends State<Dashboard> {
                   child: Column(
                     children: [
                       GestureDetector(
-                        onTap: (() async{
-                           await EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
-                          Navigator.pushNamed(context, AppRoutes.importrelease);                   
+                        onTap: (() async {
+                          await EasyLoading.show(
+                              status: "Loading...",
+                              maskType: EasyLoadingMaskType.black);
+                          Navigator.pushNamed(context, AppRoutes.importrelease);
                         }),
                         child: CardComponent(
                             TextData: "Import Release Order",
                             icon: "assets/import.png"),
                       ),
                       GestureDetector(
-                        onTap: (()async {
-                           await EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
+                        onTap: (() async {
+                          await EasyLoading.show(
+                            status: "Loading...",
+                            maskType: EasyLoadingMaskType.black,
+                          );
                           Navigator.pushNamed(context, AppRoutes.exportrelease);
                         }),
                         child: CardComponent(
@@ -131,7 +136,8 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       GestureDetector(
                         onTap: (() {
-                          Navigator.pushNamed(context, AppRoutes.ViewSavedAppln);
+                          Navigator.pushNamed(
+                              context, AppRoutes.ViewSavedAppln);
                         }),
                         child: CardComponent(
                             TextData: "View Saved Applications",

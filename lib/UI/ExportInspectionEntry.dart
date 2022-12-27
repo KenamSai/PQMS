@@ -35,7 +35,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   int? DutyOfficerId;
   @override
   void initState() {
-         _getCurrentPosition();
+    _getCurrentPosition();
     dbRetrieve().then((value) {
       //print(DutyOfficersList.length);
       if (DutyOfficersList.isEmpty) {
@@ -333,6 +333,17 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
+                    final actualId = await SharedPreferencesClass()
+                        .readTheData(PreferenceConst.actualId);
+                        print("actualId: $actualId");
+                     final upcomingId = await SharedPreferencesClass()
+                        .readTheData(PreferenceConst.upcomingId);
+                        print("upcomingId: $upcomingId");
+                        if(actualId == upcomingId)
+                        {
+                          print("same user");
+                        }
+                        else if(actualId != upcomingId){}
                     final data = exportResponseinspectionModelClass(
                       applicationId: id,
                       dutyofficer: selectedValue,
@@ -350,8 +361,8 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                           "," +
                           _currentPosition!.longitude.toString(),
                     );
-                  print("Area:$_currentAddress");
-                  print("LAT,LONG:$_currentPosition");
+                    print("Area:$_currentAddress");
+                    print("LAT,LONG:$_currentPosition");
                     final DatabaseHelper _databaseService =
                         DatabaseHelper.instance;
                     final details = await _databaseService.insertInto(
@@ -404,6 +415,13 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
         options: Options(headers: requestHeaders),
       );
       final dataResponse = employDetails.fromJson(_response.data);
+      if (dataResponse.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          new SnackBar(
+            content: Text("DutyOfficers List"),
+          ),
+        );
+      }
       setState(() {
         DutyOfficersList = dataResponse.data!;
       });
@@ -496,7 +514,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       setState(() {
         _currentAddress =
             '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.locality}, ${place.postalCode}';
-            print(_currentAddress);
+        print(_currentAddress);
       });
     }).catchError((e) {
       debugPrint(e);
