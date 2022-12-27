@@ -146,7 +146,7 @@ class _SideBarState extends State<SideBar> {
                   yestitle: "Yes",
                   notitle: "NO",
                   YesonPressed: () {
-                   Navigator.pushNamed(context, AppRoutes.Login);
+                   Navigator.popUntil(context, ModalRoute.withName(AppRoutes.Login) );
                   },
                   NoonPressed: () {
                     // print("OnPressed called no");
