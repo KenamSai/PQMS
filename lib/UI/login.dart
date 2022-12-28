@@ -234,12 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         await SharedPreferencesClass().writeTheData(
             PreferenceConst.upcomingId, loginResponse.data!.userId);
-        if (await SharedPreferencesClass()
-                .readTheData(PreferenceConst.actualId) ==
-            null) {
-          await SharedPreferencesClass().writeTheData(
-              PreferenceConst.actualId, loginResponse.data!.userId);
-        }
+
         EasyLoading.dismiss();
         Navigator.pushNamed(context, AppRoutes.dashboardpage);
       } else if (loginResponse.statusCode == 204) {

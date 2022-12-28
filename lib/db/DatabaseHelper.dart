@@ -196,6 +196,10 @@ CREATE TABLE AgencyList
     Database db = await instance.database;
     return await db.delete(tableName, where: '$colId = ?', whereArgs: [value]);
   }
+  Future<int> dropTable(String tablename)async{
+     Database db = await instance.database;
+     return await db.rawDelete("DELETE FROM $tablename");
+  }
 
    Future<int> Agencydelete(int value, String tableName) async {
     Database db = await instance.database;

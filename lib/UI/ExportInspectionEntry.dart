@@ -333,17 +333,6 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    final actualId = await SharedPreferencesClass()
-                        .readTheData(PreferenceConst.actualId);
-                        print("actualId: $actualId");
-                     final upcomingId = await SharedPreferencesClass()
-                        .readTheData(PreferenceConst.upcomingId);
-                        print("upcomingId: $upcomingId");
-                        if(actualId == upcomingId)
-                        {
-                          print("same user");
-                        }
-                        else if(actualId != upcomingId){}
                     final data = exportResponseinspectionModelClass(
                       applicationId: id,
                       dutyofficer: selectedValue,

@@ -53,17 +53,18 @@ class AppAlertDailog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ElevatedButton(
-              onPressed: this.YesonPressed!,
+              onPressed:YesonPressed,
               child: Text(yestitle!),
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(customColors.colorred),
               ),
             ),
-            ElevatedButton(
-              onPressed: this.NoonPressed!,
+            Visibility(child:    ElevatedButton(
+              onPressed: NoonPressed,
               child: Text(notitle!),
-            )
+            ) )
+        
           ],
         )
       ],
