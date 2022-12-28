@@ -8,8 +8,10 @@ import 'package:pqms/ModelClass/import_inspection_submit_response.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/deviceID.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/reusable/text_reusable_form.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -70,7 +72,7 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
             },
             child: Icon(
               Icons.home,
-              size: 40,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -233,7 +235,18 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    submitDetails(args);
+                    showDialog(context: context, builder: ((context) => AppAlertDailog(title: "UAT-PQMS",
+                     message: "Do You Want To Submit", icon: Icons.error,
+                     yestitle: "Yes",
+                     notitle: "No",
+                     YesonPressed: () {
+                       Navigator.pop(context);
+                        submitDetails(args);
+                     },
+                     NoonPressed: () {
+                       Navigator.pop(context);
+                     },) ));
+                   
 
                     // args.applicationId = "";
                     // args.Dutyofficer='';
@@ -323,9 +336,7 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
       if (importinspectionSubmitresponse.statusCode == 200) {
         DatabaseHelper.instance.ImportInspectiondelete(args.applicationId!,DatabaseHelper.ImportInspectiontable);
         var value=args.applicationId;
-        reusableAlert(title: "UAT-PQMS", message: "Data Submitted Successfully", icon: Icons.android);
-        
-        Navigator.pop(context,true);
+        showAlert();
         print("Data Submitted");
       } else if (importinspectionSubmitresponse.statusCode == 204) {
         print("NOt submitted");
@@ -337,4 +348,21 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
       }
     }
   }
+  
+   showAlert() {
+     showDialog(
+      context: context,
+      builder: (context) {
+        return SingleButtonAlertDailog(
+          title: "UAT-PQMS",
+          message: "Successfully Forwarded to Duty Officer",
+          icon: Icons.done_outline_rounded,
+          oktitle: "OK",
+          okonPressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+   }
 }

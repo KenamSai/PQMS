@@ -87,7 +87,29 @@ class _DashboardState extends State<Dashboard> {
           ),
           actions: [
             GestureDetector(
-              onTap: null,
+              onTap:() {
+                showDialog(
+              context: context,
+              builder: (context) {
+                return AppAlertDailog(
+                  iconColor: Colors.red,
+                  titleTextColor: Colors.black,
+                  title: "UAT-PQMS",
+                  message: "Do you want to logout from app?",
+                  icon: Icons.error,
+                  yestitle: "Yes",
+                  notitle: "No",
+                  YesonPressed: () {
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(AppRoutes.Login));
+                  },
+                  NoonPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                );
+              },
+            );
+              },
               child: Image.asset(
                 "assets/logout.png",
                 height: 20,

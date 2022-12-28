@@ -12,6 +12,8 @@ import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -123,7 +125,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                               ),
                             ),
                           ),
-                            Padding(
+                          Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: Row(
                               children: [
@@ -284,7 +286,6 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                   //  _getCurrentPosition();
                                   final selectedDate = await showDatePicker(
                                     context: context,
-                                    
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime(2000),
                                     lastDate: DateTime(2101),
@@ -385,51 +386,65 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    //_getCurrentPosition();
-                    final data = ImportTreatmentModelClass(
-                      applicationId: id,
-                      Dutyofficer: selectedValue,
-                      DutyOfficerId:DutyOfficerId,
-                      Chemicals: _Chemicals.text,
-                      Dosage: _Dosage.text,
-                      Duration: _Duration.text,
-                      Temperature: _Temperature.text,
-                      TreatmentDate: _TreatmentDate.text,
-                      CompletedDate: _CompletedDate.text,
-                      DoneBy: selectedAgencyName,
-                      agencyId: AgencyId,
-                      TreatmentRemarks: _TreatmentRemarks.text,
-                      TreatmentLocation: _currentPosition!.latitude.toString() +
-                          "," +
-                          _currentPosition!.longitude.toString(),
-                      TreatmentArea: _currentAddress,
-                    );
-                    _Dutyofficer.clear();
-                    _Chemicals.clear();
-                    _Dosage.clear();
-                    _Duration.clear();
-                    _Temperature.clear();
-                    _TreatmentDate.clear();
-                    _CompletedDate.clear();
-                    _DoneBy.clear();
-                    
-                    _TreatmentRemarks.clear();
+                    showDialog(
+                        context: context,
+                        builder: (context) => AppAlertDailog(
+                              title: "UAT-PQMS",
+                              message:
+                                  "Data will be stored locally! Do you want to save",
+                              icon: Icons.error,
+                              yestitle: "Yes",
+                              notitle: "No",
+                              YesonPressed: () async {
+                                final data = ImportTreatmentModelClass(
+                                  applicationId: id,
+                                  Dutyofficer: selectedValue,
+                                  DutyOfficerId: DutyOfficerId,
+                                  Chemicals: _Chemicals.text,
+                                  Dosage: _Dosage.text,
+                                  Duration: _Duration.text,
+                                  Temperature: _Temperature.text,
+                                  TreatmentDate: _TreatmentDate.text,
+                                  CompletedDate: _CompletedDate.text,
+                                  DoneBy: selectedAgencyName,
+                                  agencyId: AgencyId,
+                                  TreatmentRemarks: _TreatmentRemarks.text,
+                                  TreatmentLocation: _currentPosition!.latitude
+                                          .toString() +
+                                      "," +
+                                      _currentPosition!.longitude.toString(),
+                                  TreatmentArea: _currentAddress,
+                                );
+                                _Dutyofficer.clear();
+                                _Chemicals.clear();
+                                _Dosage.clear();
+                                _Duration.clear();
+                                _Temperature.clear();
+                                _TreatmentDate.clear();
+                                _CompletedDate.clear();
+                                _DoneBy.clear();
 
-                    final DatabaseHelper _databaseService =
-                        DatabaseHelper.instance;
+                                _TreatmentRemarks.clear();
 
-                    final details = await _databaseService.insertInto(
-                        data.toJson(), DatabaseHelper.ImportTreatmenttable);
-                    print("dbdata:$details");
-                    final entries = await _databaseService
-                        .queryAllRows(DatabaseHelper.ImportTreatmenttable);
-                    print(entries);
-                    // final DatabaseHelper _databaseService =
-                    //     DatabaseHelper.instance;
-                    //  final details=await _databaseService.insertInto(data.toJson(), DatabaseHelper.ImportInspectiontable);
-                    //  print("dbdata:$details");
-                    //  final Entries = await _databaseService.queryAllRows(DatabaseHelper.ImportInspectiontable);
-                    //  print(Entries);
+                                final DatabaseHelper _databaseService =
+                                    DatabaseHelper.instance;
+
+                                final details =
+                                    await _databaseService.insertInto(
+                                        data.toJson(),
+                                        DatabaseHelper.ImportTreatmenttable);
+                                print("dbdata:$details");
+                                final entries =
+                                    await _databaseService.queryAllRows(
+                                        DatabaseHelper.ImportTreatmenttable);
+                                print(entries);
+                                 Navigator.pop(context);
+                                 showAlert();
+                              },
+                              NoonPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),);
                   },
                 ),
               ),
@@ -462,24 +477,24 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     });
   }
 
-   void _checkPermission(BuildContext context, Function callback) async {
+  void _checkPermission(BuildContext context, Function callback) async {
     LocationPermission permission = await Geolocator.checkPermission();
-    if(permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
-    if(permission == LocationPermission.denied) {
-     // showDialog(context: context, barrierDismissible: false, builder: (context) => PermissionDialog(isDenied: true, onPressed: () async {
-        Navigator.pop(context);
-        await Geolocator.requestPermission();
-        _checkPermission(context, callback);
-    //  }));
-    }else if(permission == LocationPermission.deniedForever) {
-     // showDialog(context: context, barrierDismissible: false, builder: (context) => PermissionDialog(isDenied: false, onPressed: () async {
-        Navigator.pop(context);
-        await Geolocator.openAppSettings();
-        _checkPermission(context, callback);
+    if (permission == LocationPermission.denied) {
+      // showDialog(context: context, barrierDismissible: false, builder: (context) => PermissionDialog(isDenied: true, onPressed: () async {
+      Navigator.pop(context);
+      await Geolocator.requestPermission();
+      _checkPermission(context, callback);
+      //  }));
+    } else if (permission == LocationPermission.deniedForever) {
+      // showDialog(context: context, barrierDismissible: false, builder: (context) => PermissionDialog(isDenied: false, onPressed: () async {
+      Navigator.pop(context);
+      await Geolocator.openAppSettings();
+      _checkPermission(context, callback);
       //}));
-    }else {
+    } else {
       callback();
     }
   }
@@ -541,9 +556,9 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   }
 
   /////////////////////////////////////////////////////////////////////////
- getDutyOffcersList() async {
-    String requestUrl =BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
-       
+  getDutyOffcersList() async {
+    String requestUrl = BaseUrl.uat_base_url + EndPoints.getEmployeeListByRole;
+
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -629,8 +644,8 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   }
 
   getAgencyList() async {
-    String requestUrl =BaseUrl.uat_base_url+EndPoints.agenciesList;
-    
+    String requestUrl = BaseUrl.uat_base_url + EndPoints.agenciesList;
+
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);
     final username =
@@ -667,4 +682,21 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
       print("error");
     }
   }
+  
+   showAlert() {
+     showDialog(
+      context: context,
+      builder: (context) {
+        return SingleButtonAlertDailog(
+          title: "UAT-PQMS",
+          message: "Data Submitted Successfully",
+          icon: Icons.done_outline_rounded,
+          oktitle: "OK",
+          okonPressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+   }
 }

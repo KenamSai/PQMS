@@ -35,7 +35,7 @@ class AppAlertDailog extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-          color: titleTextColor ?? Colors.green,
+          color: titleTextColor ?? customColors.colorPQMS,
         ),
       ),
       icon: Icon(
