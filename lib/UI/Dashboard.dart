@@ -26,7 +26,7 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     usercheck();
     initial();
-    usercheck();
+  
     // print("init:$rolename");
   }
   
@@ -217,7 +217,7 @@ class _DashboardState extends State<Dashboard> {
     if (actualId == null) {
       await SharedPreferencesClass()
           .writeTheData(PreferenceConst.actualId, upcomingId);
-      print("null");
+      
     } else if (actualId != upcomingId) {
       showDialog(
         context: context,
