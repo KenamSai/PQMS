@@ -44,51 +44,6 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     Future<bool> showExitPopup() async {
       return await showDialog(
-           
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(
-                'Exit App',
-                style: TextStyle(
-                  color: Colors.green,
-                ),
-              ),
-              icon: Icon(
-                Icons.error,
-                color: Colors.black,
-                size: 50,
-              ),
-              content: Text(
-                'Do you want to exit from App?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              actions: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        //return false when click on "NO"
-                        child: Text('No'),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.green),
-                        )),
-                    ElevatedButton(
-                        onPressed: () => SystemNavigator.pop(),
-                        //return true when click on "Yes"
-                        child: Text('Yes'),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              customColors.colorred),
-                        )),
-                  ],
-                ),
-              ],
-      return await showDialog(
             //show confirm dialogue
             //the return value will be from "Yes" or "No" options
             context: context,
@@ -116,20 +71,19 @@ class _DashboardState extends State<Dashboard> {
             ),
           ) ??
           false; //if showDialouge had returned null, then return false
-          ) ??
-          false; //if showDialouge had returned null, then return false
+     //if showDialouge had returned null, then return false
     }
 
 
     return WillPopScope(
       onWillPop: showExitPopup,
-      onWillPop: showExitPopup,
+   
       child: Scaffold(
         drawer: SideBar(),
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: customColors.colorPQMS,
-          backgroundColor: customColors.colorPQMS,
+
           title: Text(
             "UAT-PQMS",
           ),
@@ -206,24 +160,12 @@ class _DashboardState extends State<Dashboard> {
                                 maskType: EasyLoadingMaskType.black);
                             Navigator.pushNamed(
                                 context, AppRoutes.importrelease);
-                          onTap: (() async {
-                            await EasyLoading.show(
-                                status: "Loading...",
-                                maskType: EasyLoadingMaskType.black);
-                            Navigator.pushNamed(
-                                context, AppRoutes.importrelease);
                           }),
                           child: CardComponent(
                               TextData: "Import Release Order",
                               icon: "assets/import.png"),
                         ),
                         GestureDetector(
-                          onTap: (() async {
-                            await EasyLoading.show(
-                                status: "Loading...",
-                                maskType: EasyLoadingMaskType.black);
-                            Navigator.pushNamed(
-                                context, AppRoutes.exportrelease);
                           onTap: (() async {
                             await EasyLoading.show(
                                 status: "Loading...",
@@ -239,8 +181,6 @@ class _DashboardState extends State<Dashboard> {
                           onTap: (() {
                             Navigator.pushNamed(
                                 context, AppRoutes.ViewSavedAppln);
-                            Navigator.pushNamed(
-                                context, AppRoutes.ViewSavedAppln);
                           }),
                           child: CardComponent(
                               TextData: "View Saved Applications",
@@ -250,6 +190,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                 )
+
               ],
             ),
           ),
