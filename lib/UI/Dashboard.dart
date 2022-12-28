@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/Card_Component.dart';
 import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -23,8 +25,74 @@ class _DashboardState extends State<Dashboard> {
   initState() {
     super.initState();
     initial();
-    
+    usercheck();
     // print("init:$rolename");
+  }
+  showAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AppAlertDailog(
+          title: "UAT-PQMS",
+          message: "Data Deleted Successfully",
+          icon: Icons.done,
+          YesonPressed: (() {
+            Navigator.pop(context);
+            
+          }),
+          yestitle: "Ok",
+        );
+      },
+    );
+  }
+  usercheck() async {
+    final actualId =
+        await SharedPreferencesClass().readTheData(PreferenceConst.actualId);
+    print("actualId  $actualId");
+    final upcomingId =
+        await SharedPreferencesClass().readTheData(PreferenceConst.upcomingId);
+    print("upcomingId  $upcomingId");
+    if (actualId == null) {
+      await SharedPreferencesClass()
+          .writeTheData(PreferenceConst.actualId, upcomingId);
+      print("null");
+    } else if (actualId != upcomingId) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AppAlertDailog(
+            title: "UAT-PQMS",
+            message:
+                "Saved Inspection/Treatment data found related to others.Do you want to clear?",
+            icon: Icons.error,
+            yestitle: "Yes",
+            YesonPressed: () async {
+              await SharedPreferencesClass()
+                  .writeTheData(PreferenceConst.actualId, upcomingId);
+
+              DatabaseHelper _databasehelper = await DatabaseHelper.instance;
+              await _databasehelper
+                  .dropTable(DatabaseHelper.ExportInspectiontable);
+              await _databasehelper
+                  .dropTable(DatabaseHelper.exporttreatmenttable);
+              await _databasehelper
+                  .dropTable(DatabaseHelper.ImportInspectiontable);
+              await _databasehelper
+                  .dropTable(DatabaseHelper.ImportTreatmenttable);
+                  Navigator.pop(context);
+              showAlert();
+            },
+            NoonPressed: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(AppRoutes.Login),
+              );
+            },
+            notitle: "NO",
+          );
+        },
+      );
+    }
   }
 
   initial() async {
