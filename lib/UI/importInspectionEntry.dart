@@ -13,8 +13,10 @@ import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/imagecallback.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 import '../ModelClass/DutyOfficers.dart';
@@ -336,9 +338,13 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                   
-                 //  _getCurrentPosition();
-
+                     showDialog(
+              context: context,
+              builder: (context) => AppAlertDailog(title: "UAT-PQMS", message: "Data will be stored locally! Do you want to save", 
+                  icon: Icons.error,
+                  yestitle: "Yes",
+                  notitle: "No",
+                  YesonPressed: ()  async {
                     if (_currentPosition != null &&
                         _currentPosition!.latitude != null &&
                         _currentPosition!.longitude != null) {
@@ -385,19 +391,15 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     print("dbdata:$details");
                     final Entries = await _databaseService
                         .queryAllRows(DatabaseHelper.ImportInspectiontable);
+                    Navigator.pop(context);
+                    showAlert();
                     
-                    
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return reusableAlert(
-                          title: "Message",
-                          message: "Data submitted Successfully!",
-                          icon: Icons.done_outline_sharp,
-                          
-                        );
-                      },
-                    );
+                  },
+                  NoonPressed: () {
+                     Navigator.of(context).pop(false);
+                  },
+                  ),);
+                  
                   },
                 ),
               ),
@@ -549,6 +551,18 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
     }).catchError((e) {
       debugPrint(e);
     });
+  }
+  
+ showAlert() {
+    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SingleButtonAlertDailog(title: "UAT-PQMS", message: "Data Submitted Successfully",
+                         icon: Icons.done_all_rounded,oktitle: "OK",okonPressed: () {
+                           Navigator.pop(context);
+                         },);
+                      },
+                    );
   }
 
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 
-class AppAlertDailog extends StatelessWidget {
-  const AppAlertDailog({
+class SingleButtonAlertDailog extends StatelessWidget {
+  const SingleButtonAlertDailog({
     super.key,
     required this.title,
     required this.message,
@@ -10,10 +10,8 @@ class AppAlertDailog extends StatelessWidget {
     this.textColor,
     this.titleTextColor,
     this.iconColor,
-    this.yestitle,
-    this.notitle,
-    this.YesonPressed,
-    this.NoonPressed,
+    required this.oktitle,
+    this.okonPressed,
   });
 
   final String title;
@@ -22,10 +20,9 @@ class AppAlertDailog extends StatelessWidget {
   final Color? textColor;
   final Color? titleTextColor;
   final Color? iconColor;
-  final String? yestitle;
-  final String? notitle;
-  final void Function()? YesonPressed;
-  final void Function()? NoonPressed;
+  final String oktitle;
+  final void Function()? okonPressed;
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +46,16 @@ class AppAlertDailog extends StatelessWidget {
         ),
       ),
       actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-              onPressed: this.YesonPressed ,
-              child: Text(yestitle ?? ""),
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(customColors.colorred),
-              ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width*0.9,
+          child: ElevatedButton(
+            onPressed: this.okonPressed ,
+            child: Text(oktitle),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(customColors.colorPQMS),
             ),
-            ElevatedButton(
-              onPressed: this.NoonPressed,
-              child: Text(notitle ?? ""),
-            )
-          ],
+          ),
         )
       ],
     );

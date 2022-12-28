@@ -231,7 +231,6 @@ class _LoginScreenState extends State<LoginScreen> {
             PreferenceConst.username, loginResponse.data?.userName);
         await SharedPreferencesClass()
             .writeTheData(PreferenceConst.token, loginResponse.data?.token);
-
         await SharedPreferencesClass().writeTheData(
             PreferenceConst.upcomingId, loginResponse.data!.userId);
         if (await SharedPreferencesClass()
