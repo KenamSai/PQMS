@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/DonebyModelClass.dart';
 import 'package:pqms/ModelClass/DonebyModelResponseTreatment.dart';
@@ -8,6 +9,9 @@ import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -44,7 +48,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor:customColors.colorPQMS,
+        backgroundColor: customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
           style: TextStyle(
@@ -376,25 +380,46 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    final Response = exporttreatmentresponsemodelclass(
-                      applicationId: id.toString(),
-                      chemicals: _Chemicals.text,
-                      completionDate: _CompletedDate.text,
-                      treatmentDate: _TreatmentDate.text,
-                      dutyofficerId: DutyOfficerId,
-                      dosage: _Dosage.text,
-                      durationHrs: _Duration.text,
-                      dutyofficer: selectedValue,
-                      temperatureDegC: _Temperature.text,
-                      treatmentRemarks: _TreatmentRemarks.text,
-                      doneby: selectedAgencyName,
-                      agencyId: AgencyId,
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AppAlertDailog(
+                          titleTextColor: customColors.colorPQMS,
+                          title: "UAT-PQMS",
+                          message: "Do you want to save data locally?",
+                          icon: Icons.error,
+                          iconColor: Colors.red,
+                          yestitle: "Yes",
+                          YesonPressed: () async {
+                            final Response = exporttreatmentresponsemodelclass(
+                              applicationId: id.toString(),
+                              chemicals: _Chemicals.text,
+                              completionDate: _CompletedDate.text,
+                              treatmentDate: _TreatmentDate.text,
+                              dutyofficerId: DutyOfficerId,
+                              dosage: _Dosage.text,
+                              durationHrs: _Duration.text,
+                              dutyofficer: selectedValue,
+                              temperatureDegC: _Temperature.text,
+                              treatmentRemarks: _TreatmentRemarks.text,
+                              doneby: selectedAgencyName,
+                              agencyId: AgencyId,
+                            );
+                            final DatabaseHelper _databaseService =
+                                DatabaseHelper.instance;
+                            final DBdetails = await _databaseService.insertInto(
+                                Response.toJson(), "ExportTreatment");
+                            print("teja: $DBdetails");
+                            Navigator.pop(context);
+                            showAlert();
+                          },
+                          notitle: "No",
+                          NoonPressed: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
                     );
-                    final DatabaseHelper _databaseService =
-                        DatabaseHelper.instance;
-                    final DBdetails = await _databaseService.insertInto(
-                        Response.toJson(), "ExportTreatment");
-                    print("teja: $DBdetails");
                   },
                 ),
               ),
@@ -421,6 +446,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   }
 
   getDutyOffcersList() async {
+     EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
     String requestUrl =
         "https://pqms-uat.cgg.gov.in/pqms/getEmployeeListByRole";
     final requestPayLoad = {
@@ -446,6 +472,14 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
         options: Options(headers: requestHeaders),
       );
       final dataResponse = employDetails.fromJson(_response.data);
+      EasyLoading.dismiss();
+       if (dataResponse.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          new SnackBar(
+            content: Text("DutyOfficers List Updated!"),
+          ),
+        );
+      }
       setState(() {
         DutyOfficersList = dataResponse.data!;
       });
@@ -505,9 +539,11 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
     }).catchError((error) {
       print(error);
     });
+    EasyLoading.dismiss();
   }
 
   getAgencyList() async {
+    EasyLoading.show(maskType: EasyLoadingMaskType.black,status: "Loading...");
     String requestUrl = "https://pqms-uat.cgg.gov.in/pqms/agenciesList";
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);
@@ -527,7 +563,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
       final _response = DonebyModelClass.fromJson(Response.data);
       setState(() {
         AgencyList = _response.data!;
-        //print(AgencyList.length);
+        
       });
       final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
       AgencyList.forEach((element) async {
@@ -544,5 +580,26 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
     } on DioError catch (e) {
       print("error");
     }
+  }
+
+  showAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SingleButtonAlertDailog(
+            title: "UAT-PQMS",
+            titleTextColor: customColors.colorPQMS,
+            message: "Data saved Successfully",
+            icon: Icons.done_outline,
+            iconColor: customColors.colorPQMS,
+            oktitle: "Ok",
+            okonPressed: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(AppRoutes.exportApplnDetails),
+              );
+            });
+      },
+    );
   }
 }

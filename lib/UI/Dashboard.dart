@@ -7,6 +7,7 @@ import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -26,10 +27,9 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     usercheck();
     initial();
-  
+
     // print("init:$rolename");
   }
-  
 
   initial() async {
     String temp =
@@ -72,19 +72,16 @@ class _DashboardState extends State<Dashboard> {
             ),
           ) ??
           false; //if showDialouge had returned null, then return false
-     //if showDialouge had returned null, then return false
+      //if showDialouge had returned null, then return false
     }
-
 
     return WillPopScope(
       onWillPop: showExitPopup,
-   
       child: Scaffold(
         drawer: SideBar(),
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: customColors.colorPQMS,
-
           title: Text(
             "UAT-PQMS",
           ),
@@ -191,7 +188,6 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                 )
-
               ],
             ),
           ),
@@ -205,8 +201,6 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  
-
   usercheck() async {
     final actualId =
         await SharedPreferencesClass().readTheData(PreferenceConst.actualId);
@@ -217,7 +211,6 @@ class _DashboardState extends State<Dashboard> {
     if (actualId == null) {
       await SharedPreferencesClass()
           .writeTheData(PreferenceConst.actualId, upcomingId);
-      
     } else if (actualId != upcomingId) {
       showDialog(
         context: context,
@@ -227,6 +220,7 @@ class _DashboardState extends State<Dashboard> {
             message:
                 "Saved Inspection/Treatment data found related to others.Do you want to clear?",
             icon: Icons.error,
+            iconColor: Colors.red,
             yestitle: "Yes",
             YesonPressed: () async {
               await SharedPreferencesClass()
@@ -241,7 +235,7 @@ class _DashboardState extends State<Dashboard> {
                   .dropTable(DatabaseHelper.ImportInspectiontable);
               await _databasehelper
                   .dropTable(DatabaseHelper.ImportTreatmenttable);
-                  Navigator.pop(context);
+              Navigator.pop(context);
               showAlert();
             },
             NoonPressed: () {
@@ -261,15 +255,15 @@ class _DashboardState extends State<Dashboard> {
     showDialog(
       context: context,
       builder: (context) {
-        return AppAlertDailog(
+        return SingleButtonAlertDailog(
           title: "UAT-PQMS",
+          iconColor:customColors.colorPQMS,
           message: "Data Deleted Successfully",
-          icon: Icons.done,
-          YesonPressed: (() {
+          icon: Icons.done_outline,
+          oktitle: "Ok",
+          okonPressed: () {
             Navigator.pop(context);
-            
-          }),
-          yestitle: "Ok",
+          },
         );
       },
     );

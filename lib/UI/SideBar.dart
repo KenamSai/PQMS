@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -99,21 +100,21 @@ class _SideBarState extends State<SideBar> {
             showDialog(
               context: context,
               builder: (context) {
-                return AppAlertDailog(title: "UAP-PQMS", message: "Do you want to exit from app?",
-                 icon: Icons.error,yestitle: "Yes",notitle: "No",
-                 YesonPressed: (() {
-                   SystemNavigator.pop();
-                 }),
-                 NoonPressed: () {
+                return AppAlertDailog(
+                  titleTextColor: customColors.colorPQMS,
+                  title: "UAT-PQMS",
+                  message: "Do you want to exit from app?",
+                  icon: Icons.error,
+                  yestitle: "Yes",
+                  notitle: "No",
+                  iconColor: Colors.red,
+                  YesonPressed: (() {
+                    SystemNavigator.pop();
+                  }),
+                  NoonPressed: () {
                     Navigator.of(context).pop(false);
-                 },);
-                // return reusableAlert(
-                //   title: "UAT-PQMS",
-                //   message: "Do you want to exit from app?",
-                //   icon: Icons.error,
-                //   Yes: "Yes",
-                //   No: "No",
-                // );
+                  },
+                );
               },
             );
           },
@@ -130,19 +131,21 @@ class _SideBarState extends State<SideBar> {
               context: context,
               builder: (context) {
                 return AppAlertDailog(
+                  iconColor: Colors.red,
+                  titleTextColor: customColors.colorPQMS,
                   title: "UAT-PQMS",
                   message: "Do you want to logout from app?",
                   icon: Icons.error,
                   yestitle: "Yes",
-                  notitle: "NO",
+                  notitle: "No",
                   YesonPressed: () {
-                   Navigator.popUntil(context, ModalRoute.withName(AppRoutes.Login) );
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(AppRoutes.Login));
                   },
                   NoonPressed: () {
                     Navigator.of(context).pop(false);
                   },
                 );
-                
               },
             );
           },

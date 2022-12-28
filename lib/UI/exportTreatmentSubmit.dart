@@ -2,8 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -236,97 +239,79 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    final requestUrl =
-                        "https://pqms-uat.cgg.gov.in/pqms//saveExportPermitAction";
-                    final requestPayLoad = {
-                      "role": "Inspector",
-                      "action": "Forward",
-                      "applicationId": id.applicationId,
-                      "chemicals": id.chemicals,
-                      "dosage": id.dosage,
-                      "duration": id.durationHrs,
-                      "temperature": id.temperatureDegC,
-                      "treatmentDate": id.treatmentDate,
-                      "completedDateofSupervision": id.completionDate,
-                      "doneByAgency": id.agencyId,
-                      "remarks": id.treatmentRemarks,
-                      "employeeId": id.dutyofficerId,
-                      "forwardToRole": "Duty officer"
-                    };
-                    print("payLoad:  $requestPayLoad");
-                    final String token =
-                        await SharedPreferencesClass().readTheData(
-                      PreferenceConst.token,
-                    );
-                    final String username =
-                        await SharedPreferencesClass().readTheData(
-                      PreferenceConst.username,
-                    );
-                    print(token);
-                    print(username);
-                    final requestHeaders = {
-                      "clientId": "Client123Cgg",
-                      "token": token.toString(),
-                      "userName": username.toString()
-                    };
-                    final _dioObject = Dio();
-                    try {
-                      final Response = await _dioObject.post(
-                        requestUrl,
-                        data: requestPayLoad,
-                        options: Options(headers: requestHeaders),
-                      );
-                      if (Response.data["status_Code"] == 200) {
-                          final value= await DatabaseHelper.instance.deleteTheRequired(
-                            id.applicationId ?? "",
-                            DatabaseHelper.exporttreatmenttable,
-                            "applicationId");
-                            print("Treatment count:$value");
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(
-                                "Message",
-                                style: TextStyle(
-                                  color: Colors.green,
-                                ),
-                              ),
-                              icon: Icon(
-                                Icons.done_all_outlined,
-                                color: Colors.green,
-                                size: 50,
-                              ),
-                              content: Text(
-                                "${Response.data["status_Message"]}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.green,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.popUntil(
-                                      context,
-                                      ModalRoute.withName(
-                                          AppRoutes.exporttreatmentsaved),
-                                    );
-                                  },
-                                  child: Text(
-                                    "OK",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                )
-                              ],
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AppAlertDailog(
+                          titleTextColor: customColors.colorPQMS,
+                          title: "UAT-PQMS",
+                          message: "Do you want to submit?",
+                          icon: Icons.error,
+                          iconColor: Colors.red,
+                          yestitle: "Yes",
+                          notitle: "No",
+                          YesonPressed: () async {
+                            final requestUrl =
+                                "https://pqms-uat.cgg.gov.in/pqms//saveExportPermitAction";
+                            final requestPayLoad = {
+                              "role": "Inspector",
+                              "action": "Forward",
+                              "applicationId": id.applicationId,
+                              "chemicals": id.chemicals,
+                              "dosage": id.dosage,
+                              "duration": id.durationHrs,
+                              "temperature": id.temperatureDegC,
+                              "treatmentDate": id.treatmentDate,
+                              "completedDateofSupervision": id.completionDate,
+                              "doneByAgency": id.agencyId,
+                              "remarks": id.treatmentRemarks,
+                              "employeeId": id.dutyofficerId,
+                              "forwardToRole": "Duty officer"
+                            };
+                            print("payLoad:  $requestPayLoad");
+                            final String token =
+                                await SharedPreferencesClass().readTheData(
+                              PreferenceConst.token,
                             );
+                            final String username =
+                                await SharedPreferencesClass().readTheData(
+                              PreferenceConst.username,
+                            );
+                            print(token);
+                            print(username);
+                            final requestHeaders = {
+                              "clientId": "Client123Cgg",
+                              "token": token.toString(),
+                              "userName": username.toString()
+                            };
+                            final _dioObject = Dio();
+                            try {
+                              final Response = await _dioObject.post(
+                                requestUrl,
+                                data: requestPayLoad,
+                                options: Options(headers: requestHeaders),
+                              );
+                              if (Response.data["status_Code"] == 200) {
+                                final value = await DatabaseHelper.instance
+                                    .deleteTheRequired(
+                                        id.applicationId ?? "",
+                                        DatabaseHelper.exporttreatmenttable,
+                                        "applicationId");
+                                print("Treatment count:$value");
+                                Navigator.pop(context);
+                                showAlert(Response.data["status_Message"]);
+                                
+                              }
+                            } on DioError catch (e) {
+                              print("error");
+                            }
+                          },
+                          NoonPressed: () {
+                            Navigator.pop(context);
                           },
                         );
-                      }
-                    } on DioError catch (e) {
-                      print("error");
-                    }
+                      },
+                    );
                   },
                 ),
               ),
@@ -336,4 +321,23 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
       ),
     );
   }
+  
+   showAlert(String data) { showDialog(
+      context: context,
+      builder: (context) {
+        return SingleButtonAlertDailog(titleTextColor: customColors.colorPQMS,
+          title: "UAT-PQMS",
+          message: data,
+          icon: Icons.done_all_outlined,
+          oktitle: "Ok",
+          iconColor: customColors.colorPQMS,
+          okonPressed: () {
+            Navigator.popUntil(
+              context,
+              ModalRoute.withName(AppRoutes.exportsaved),
+            );
+          },
+        );
+      },
+    );}
 }

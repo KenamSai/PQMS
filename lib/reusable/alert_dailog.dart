@@ -14,6 +14,7 @@ class AppAlertDailog extends StatelessWidget {
     this.notitle,
     this.YesonPressed,
     this.NoonPressed,
+  
   });
 
   final String title;
@@ -30,6 +31,7 @@ class AppAlertDailog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
       title: Text(
         title,
         style: TextStyle(
@@ -60,10 +62,14 @@ class AppAlertDailog extends StatelessWidget {
                     MaterialStateProperty.all<Color>(customColors.colorred),
               ),
             ),
-            Visibility(child:    ElevatedButton(
+            ElevatedButton(
               onPressed: NoonPressed,
               child: Text(notitle!),
-            ) )
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(customColors.colorPQMS),
+              ),
+            )
         
           ],
         )

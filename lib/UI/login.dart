@@ -5,7 +5,6 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/ModelClass/login_request.dart';
 import 'package:pqms/ModelClass/login_response.dart';
-import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/deviceID.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';

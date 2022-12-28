@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -10,8 +11,11 @@ import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/imagecallback.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -333,37 +337,50 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    final data = exportResponseinspectionModelClass(
-                      applicationId: id,
-                      dutyofficer: selectedValue,
-                      dutyofficerId: DutyOfficerId,
-                      noofSamples: _NoOfsamples.text,
-                      inspectionDate: _date.text,
-                      sampleSize: _Samplesize.text,
-                      inspectionPlace: _InspectionPlace.text,
-                      inspectionRemarks: _InspectionRemarks.text,
-                      userimage1: imageData1.path,
-                      userimage2: imageData2.path,
-                      userimage3: imageData3.path,
-                      inspctArea: _currentAddress,
-                      inspctLocation: _currentPosition!.latitude.toString() +
-                          "," +
-                          _currentPosition!.longitude.toString(),
-                    );
-                    print("Area:$_currentAddress");
-                    print("LAT,LONG:$_currentPosition");
-                    final DatabaseHelper _databaseService =
-                        DatabaseHelper.instance;
-                    final details = await _databaseService.insertInto(
-                        data.toJson(), DatabaseHelper.ExportInspectiontable);
-                    print("dbdata:$details");
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return reusableAlert(
-                          title: "Message",
-                          message: "Data submitted Successfully!",
-                          icon: Icons.done_outline_sharp,
+                        return AppAlertDailog(
+                          title: "UAT-PQMS",
+                          titleTextColor: customColors.colorPQMS,
+                          message: "Do you want to save data locally?",
+                          icon: Icons.error,
+                          iconColor: Colors.red,
+                          yestitle: "Yes",
+                          YesonPressed: () async {
+                            final data = exportResponseinspectionModelClass(
+                              applicationId: id,
+                              dutyofficer: selectedValue,
+                              dutyofficerId: DutyOfficerId,
+                              noofSamples: _NoOfsamples.text,
+                              inspectionDate: _date.text,
+                              sampleSize: _Samplesize.text,
+                              inspectionPlace: _InspectionPlace.text,
+                              inspectionRemarks: _InspectionRemarks.text,
+                              userimage1: imageData1.path,
+                              userimage2: imageData2.path,
+                              userimage3: imageData3.path,
+                              inspctArea: _currentAddress,
+                              inspctLocation:
+                                  _currentPosition!.latitude.toString() +
+                                      "," +
+                                      _currentPosition!.longitude.toString(),
+                            );
+                            print("Area:$_currentAddress");
+                            print("LAT,LONG:$_currentPosition");
+                            final DatabaseHelper _databaseService =
+                                DatabaseHelper.instance;
+                            final details = await _databaseService.insertInto(
+                                data.toJson(),
+                                DatabaseHelper.ExportInspectiontable);
+                            print("dbdata:$details");
+                            Navigator.pop(context);
+                            showAlert();
+                          },
+                          notitle: "No",
+                          NoonPressed: () {
+                            Navigator.pop(context);
+                          },
                         );
                       },
                     );
@@ -377,8 +394,31 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
     );
   }
 
+  showAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SingleButtonAlertDailog(
+          title: "UAT-PQMS",
+          iconColor: customColors.colorPQMS,
+          message: "Data Saved Successfully",
+          titleTextColor: customColors.colorPQMS,
+          icon: Icons.done_outline,
+          oktitle: "Ok",
+          okonPressed: () {
+            Navigator.popUntil(
+              context,
+              ModalRoute.withName(AppRoutes.exportApplnDetails),
+            );
+          },
+        );
+      },
+    );
+  }
+
   getDutyOffcersList() async {
     _date.text = "";
+    EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
     String requestUrl =
         "https://pqms-uat.cgg.gov.in/pqms/getEmployeeListByRole";
     final requestPayLoad = {
@@ -405,9 +445,10 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       );
       final dataResponse = employDetails.fromJson(_response.data);
       if (dataResponse.statusCode == 200) {
+        EasyLoading.dismiss();
         ScaffoldMessenger.of(context).showSnackBar(
           new SnackBar(
-            content: Text("DutyOfficers List"),
+            content: Text("DutyOfficers List Updated!"),
           ),
         );
       }

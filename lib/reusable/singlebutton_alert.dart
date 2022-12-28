@@ -27,6 +27,7 @@ class SingleButtonAlertDailog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
       title: Text(
         title,
         style: TextStyle(
@@ -43,6 +44,7 @@ class SingleButtonAlertDailog extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: textColor ?? Colors.black,
+          fontSize: 16
         ),
       ),
       actions: [
