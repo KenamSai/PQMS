@@ -211,10 +211,7 @@ CREATE TABLE AgencyList
     return await db.delete(tableName,
         where: '$ImportInspectioncolId = ?', whereArgs: [value]);
   }
-  Future<int> dropTable(String tablename)async{
-     Database db = await instance.database;
-     return await db.rawDelete("DELETE FROM $tablename");
-  }
+  
 
   Future<int> ImportTreatmentdelete(String value, String tableName) async {
     Database db = await instance.database;
