@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -210,10 +211,24 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                           TextReusable(
                             data: "No Samples",
                             controller: _NoOfsamples,
+                            format: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(
+                                  r"[0-9.]",
+                                ),
+                              ),
+                            ],
                           ),
                           TextReusable(
                             data: "Sample size",
                             controller: _Samplesize,
+                            format: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(
+                                  r"[0-9.]",
+                                ),
+                              ),
+                            ],
                           ),
                           TextReusable(
                             data: "Inspection Place",
@@ -418,7 +433,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
 
   getDutyOffcersList() async {
     _date.text = "";
-    EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
+    EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
     String requestUrl =
         "https://pqms-uat.cgg.gov.in/pqms/getEmployeeListByRole";
     final requestPayLoad = {

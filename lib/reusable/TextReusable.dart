@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextReusable extends StatelessWidget {
   const TextReusable({
@@ -7,19 +8,22 @@ class TextReusable extends StatelessWidget {
     required this.controller,
     this.requiredData, 
     this.maxlines, 
-    this.readType
+    this.readType, this.format,
      
   });
+  final List<TextInputFormatter>? format;
   final String data;
   final TextEditingController controller;
   final String? requiredData;
   final int? maxlines;
   final bool? readType;
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: TextField(
+        inputFormatters:format ?? [],
         readOnly: readType ?? false,
         controller: controller,
         cursorColor: Colors.green.shade600,
