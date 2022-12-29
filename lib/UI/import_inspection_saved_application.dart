@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/import_inspection_response.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
 
@@ -59,7 +60,29 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
         ),
         actions: [
           GestureDetector(
-            onTap: null,
+            onTap:() {
+              showDialog(
+              context: context,
+              builder: (context) {
+                return AppAlertDailog(
+                  iconColor: Colors.red,
+                  titleTextColor: customColors.colorPQMS,
+                  title: "UAT-PQMS",
+                  message: "Do you want to logout from app?",
+                  icon: Icons.error,
+                  yestitle: "Yes",
+                  notitle: "No",
+                  YesonPressed: () {
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(AppRoutes.Login));
+                  },
+                  NoonPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                );
+              },
+            );
+            },
             child: Image.asset(
               "assets/logout.png",
               height: 20,
@@ -214,6 +237,8 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
       ),
     );
   }
+  
+  showAlert() {}
  
 
 }

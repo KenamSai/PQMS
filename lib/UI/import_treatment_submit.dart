@@ -5,8 +5,11 @@ import 'package:pqms/ModelClass/import_treatment_submit.dart';
 import 'package:pqms/ModelClass/import_treatment_submit_response.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import '../baseurl_and_endpoints/endpoints.dart';
 import '../sharedpreference/sharedpreference.dart';
@@ -80,7 +83,7 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
               child: Container(
                 child: Center(
                   child: Text(
-                    "Export Treatment Form",
+                    "Import Treatment Form",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 23,
@@ -238,19 +241,19 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    submitDetails(args);
-                    setState(() {
-                      // args.applicationId = "";
-                      // args.Dutyofficer="";
-                      // args.Chemicals='';
-                      // args.Dosage='';
-                      // args.Duration='';
-                      // args.Temperature='';
-                      // args.TreatmentDate='';
-                      // args.CompletedDate='';
-                      // args.DoneBy='';
-                      // args.TreatmentRemarks='';
-                    });
+                     showDialog(context: context, builder: ((context) => AppAlertDailog(title: "UAT-PQMS",
+                     message: "Do You Want To Submit", icon: Icons.error,
+                     yestitle: "Yes",
+                     notitle: "No",
+                     YesonPressed: () {
+                       Navigator.pop(context);
+                        submitDetails(args);
+                     },
+                     NoonPressed: () {
+                       Navigator.pop(context);
+                     },) ));
+                   
+                    
                   },
                 ),
               ),
@@ -311,11 +314,7 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
             args.applicationId!, DatabaseHelper.ImportTreatmenttable);
         var value = args.applicationId;
         print("application id+$value");
-        reusableAlert(
-            title: "UAT-PQMS",
-            message: "Data Submitted Successfully",
-            icon: Icons.android);
-         Navigator.of(context).pop();
+        showAlert();
                 print("Data Submitted");
       } else if (importtreatmentSubmitresponse.statusCode == 204) {
         print("NOt submitted");
@@ -323,8 +322,27 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 || e.response?.statusCode == 500) {
         print(e.message);
+        print("Not submitted");
         //Alert
       }
     }
   }
+  
+   showAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SingleButtonAlertDailog(
+          title: "UAT-PQMS",
+          message: "Data Submitted Successfully",
+          icon: Icons.done_outline_rounded,
+          iconColor: customColors.colorPQMS,
+          oktitle: "OK",
+          okonPressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+   }
 }

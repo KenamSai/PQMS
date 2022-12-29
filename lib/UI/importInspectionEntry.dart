@@ -35,14 +35,14 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
   TextEditingController _InspectionPlace = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _InspectionRemarks = TextEditingController();
-  TextEditingController _QuantityFound=TextEditingController();
+  TextEditingController _QuantityFound = TextEditingController();
   List<Data> DutyOfficersList = [];
   String? selectedValue;
   int? DutyOfficerId;
   //BuildContext context
 
-   String? _currentAddress;
-   Position? _currentPosition;
+  String? _currentAddress;
+  Position? _currentPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                 ),
               ),
             ),
-                Expanded(
+            Expanded(
               flex: 25,
               child: SingleChildScrollView(
                 child: Column(
@@ -338,68 +338,74 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                     showDialog(
-              context: context,
-              builder: (context) => AppAlertDailog(title: "UAT-PQMS", message: "Data will be stored locally! Do you want to save", 
-                  icon: Icons.error,
-                  yestitle: "Yes",
-                  notitle: "No",
-                  YesonPressed: ()  async {
-                    if (_currentPosition != null &&
-                        _currentPosition!.latitude != null &&
-                        _currentPosition!.longitude != null) {
-                      print('LAT: ${_currentPosition?.latitude ?? ""}');
-                      print('LAT: ${_currentPosition?.longitude ?? ""}');
-                      print('ADDRESS: ${_currentAddress ?? ""}');
-                    } else {
-                      _getCurrentPosition();
-                      print("please wait till location is fetched");
-                    }
+                    showDialog(
+                      context: context,
+                      builder: (context) => AppAlertDailog(
+                        title: "UAT-PQMS",
+                        message:
+                            "Data will be stored locally! Do you want to save",
+                        icon: Icons.error,
+                        yestitle: "Yes",
+                        notitle: "No",
+                        YesonPressed: () async {
+                          if (_currentPosition != null &&
+                              _currentPosition!.latitude != null &&
+                              _currentPosition!.longitude != null) {
+                            print('LAT: ${_currentPosition?.latitude ?? ""}');
+                            print('LAT: ${_currentPosition?.longitude ?? ""}');
+                            print('ADDRESS: ${_currentAddress ?? ""}');
+                          } else {
+                            _getCurrentPosition();
+                            print("please wait till location is fetched");
+                          }
 
-                    final data = ImportResponseinspectionModelClass(
-                      applicationId: id,
-                      Dutyofficer:  selectedValue,
-                      DutyOfficerId: DutyOfficerId,
-                      NoofSamples: _NoOfsamples.text,
-                      SampleSize: _Samplesize.text,
-                      InspectionPlace: _InspectionPlace.text,
-                      InspectionDate: _date.text,
-                      InspectionRemarks: _InspectionRemarks.text,
-                      QuantityFound:_QuantityFound.text,
-                      inptLocation:_currentPosition!.latitude.toString()+","+_currentPosition!.longitude.toString(),
-                      inspctArea: _currentAddress,
-                      userimage1: imageData1.path,
-                      userimage2: imageData2.path,
-                      userimage3: imageData3.path,
+                          final data = ImportResponseinspectionModelClass(
+                            applicationId: id,
+                            Dutyofficer: selectedValue,
+                            DutyOfficerId: DutyOfficerId,
+                            NoofSamples: _NoOfsamples.text,
+                            SampleSize: _Samplesize.text,
+                            InspectionPlace: _InspectionPlace.text,
+                            InspectionDate: _date.text,
+                            InspectionRemarks: _InspectionRemarks.text,
+                            QuantityFound: _QuantityFound.text,
+                            inptLocation:
+                                _currentPosition!.latitude.toString() +
+                                    "," +
+                                    _currentPosition!.longitude.toString(),
+                            inspctArea: _currentAddress,
+                            userimage1: imageData1.path,
+                            userimage2: imageData2.path,
+                            userimage3: imageData3.path,
+                          );
+                          var value = DutyOfficerId;
+                          print("ID=$value");
+                          final bytes = File(imageData1.path).readAsBytesSync();
+
+                          final DatabaseHelper _databaseService =
+                              DatabaseHelper.instance;
+                          final details = await _databaseService.insertInto(
+                              data.toJson(),
+                              DatabaseHelper.ImportInspectiontable);
+                          print(details);
+                          print("dbdata:$details");
+                          final Entries = await _databaseService.queryAllRows(
+                              DatabaseHelper.ImportInspectiontable);
+                          _DutyOfficer.clear();
+                          _NoOfsamples.clear();
+                          _Samplesize.clear();
+                          _InspectionPlace.clear();
+                          _date.clear();
+                          _InspectionRemarks.clear();
+                          _QuantityFound.clear();
+                          Navigator.pop(context);
+                          showAlert();
+                        },
+                        NoonPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                      ),
                     );
-                    var value=DutyOfficerId;
-                    print("ID=$value");
-                    final bytes = File(imageData1.path).readAsBytesSync();
-                    // _DutyOfficer.clear();
-                    // _NoOfsamples.clear();
-                    // _Samplesize.clear();
-                    // _InspectionPlace.clear();
-                    // _date.clear();
-                    // _InspectionRemarks.clear();
-                    // _QuantityFound.clear();
-
-                    final DatabaseHelper _databaseService =
-                        DatabaseHelper.instance;
-                    final details = await _databaseService.insertInto(
-                        data.toJson(), DatabaseHelper.ImportInspectiontable);
-                        print(details);
-                    print("dbdata:$details");
-                    final Entries = await _databaseService
-                        .queryAllRows(DatabaseHelper.ImportInspectiontable);
-                    Navigator.pop(context);
-                    showAlert();
-                    
-                  },
-                  NoonPressed: () {
-                     Navigator.of(context).pop(false);
-                  },
-                  ),);
-                  
                   },
                 ),
               ),
@@ -409,26 +415,22 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
       ),
     );
   }
-  
+
   @override
   void initState() {
     super.initState();
-   // _checkPermission( );
-  
     _getCurrentPosition();
-  // _handleLocationPermission();
-      dbRetrieve().then((value) {
-      //print(DutyOfficersList.length);
+    dbRetrieve().then((value) {
       if (DutyOfficersList.isEmpty) {
         getDutyOffcersList();
       }
     });
     _date.text = "";
-
   }
+
   getDutyOffcersList() async {
     _date.text = "";
-    String requestUrl =BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
+    String requestUrl = BaseUrl.uat_base_url + EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -474,7 +476,8 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
       print("error");
     }
   }
-   dbRetrieve() async {
+
+  dbRetrieve() async {
     await DatabaseHelper.instance
         .queryAllRows(DatabaseHelper.DutyOfficers)
         .then((value) {
@@ -492,10 +495,6 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
       print(error);
     });
   }
-
- 
-                        
-  
 
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
@@ -552,17 +551,22 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
       debugPrint(e);
     });
   }
-  
- showAlert() {
-    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return SingleButtonAlertDailog(title: "UAT-PQMS", message: "Data Submitted Successfully",
-                         icon: Icons.done_all_rounded,oktitle: "OK",okonPressed: () {
-                           Navigator.pop(context);
-                         },);
-                      },
-                    );
-  }
 
+  showAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SingleButtonAlertDailog(
+          title: "UAT-PQMS",
+          message: "Data Submitted Successfully",
+          icon: Icons.done_outline_rounded,
+          iconColor: customColors.colorPQMS,
+          oktitle: "OK",
+          okonPressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
 }
