@@ -93,7 +93,7 @@ class _AppInfoState extends State<AppInfo> {
                   ),
                   TextSpan(
                     text: """ Initial
-                    Release""",
+                  Release""",
                     style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 20),
                   )
                 ],

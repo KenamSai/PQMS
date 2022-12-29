@@ -2,6 +2,7 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -21,7 +22,24 @@ class _privacyPolicyState extends State<privacyPolicy> {
       appBar: AppBar(
         title: Text("UAT-PQMS"),
         centerTitle: true,
-        backgroundColor:customColors.colorPQMS,
+        backgroundColor: customColors.colorPQMS,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(
+                  AppRoutes.dashboardpage,
+                ),
+              );
+            },
+            child: Icon(
+              Icons.home,
+              size: 30,
+              color: Colors.white,
+            ),
+          )
+        ],
       ),
       body: Container(
         color: Colors.black.withOpacity(0.3),
@@ -44,6 +62,8 @@ Conditions""",
           views: [
             Container(
               child: WebView(
+                onPageStarted: (url) => EasyLoading.show(),
+                onPageFinished: (url) => EasyLoading.dismiss(),
                 gestureRecognizers: Set()
                   ..add(
                     Factory<VerticalDragGestureRecognizer>(
@@ -58,6 +78,8 @@ Conditions""",
             ),
             Container(
               child: WebView(
+                onPageStarted: (url) => EasyLoading.show(),
+                onPageFinished: (url) => EasyLoading.dismiss(),
                 gestureRecognizers: Set()
                   ..add(
                     Factory<VerticalDragGestureRecognizer>(
@@ -76,6 +98,8 @@ Conditions""",
             ),
             Container(
               child: WebView(
+                onPageStarted: (url) => EasyLoading.show(),
+                onPageFinished: (url) => EasyLoading.dismiss(),
                 gestureRecognizers: Set()
                   ..add(
                     Factory<VerticalDragGestureRecognizer>(
