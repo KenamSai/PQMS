@@ -457,20 +457,16 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     _TreatmentDate.text = "";
     _CompletedDate.text = "";
-
     _getCurrentPosition();
     dbRetrieve().then((value) {
-      //print(DutyOfficersList.length);
       if (DutyOfficersList.isEmpty) {
         getDutyOffcersList();
       }
     });
     dbRetrieveAgencyList().then((value) {
-      //print("agent length: ${AgencyNameID.length}");
+     
       if (AgencyNameID.isEmpty) {
         getAgencyList();
       }

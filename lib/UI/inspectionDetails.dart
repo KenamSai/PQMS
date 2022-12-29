@@ -1,15 +1,10 @@
 import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pqms/ModelClass/importApplModelClass.dart';
 import 'package:pqms/reusable/image.dart';
 import 'package:pqms/reusable/text.dart';
-import 'package:pqms/routes/AppRoutes.dart';
-import 'package:pqms/sharedpreference/preference.dart';
-import 'package:pqms/sharedpreference/sharedpreference.dart';
+
 
 
 
