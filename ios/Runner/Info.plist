@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+	<key>NSCameraUsageDescription</key>
+        <string>PQMS requires camera to take the picture</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+         <string>PQMS requires location to save the imports and exports</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+         <string>PQMS requires location to save the imports and exports</string>
+     <key>NSLocationAlwaysAndWhenInUsageDescription</key>
+        <string>PQMS requires location to save the imports and exports</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pqms/UI/AppInfo.dart';
 import 'package:pqms/UI/Dashboard.dart';
 import 'package:pqms/UI/ExportApplicationDetails.dart';
 import 'package:pqms/UI/ExportInspectionEntry.dart';
@@ -54,6 +55,7 @@ class AppPages {
       AppRoutes.importinspectionformsubmit:(context) => ImportInspectionSubmit(),
       AppRoutes.importtreatmentformsubmit:(context) => ImportTreatmentSubmit(),
       AppRoutes.exportinspectionSubmission:(context) => exportInspectionSubmission(),
+      AppRoutes.appinfo:(context) => AppInfo(),
     
       
     };

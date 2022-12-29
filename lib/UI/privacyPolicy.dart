@@ -2,6 +2,8 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pqms/reusable/CustomColors.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 //mport 'package:webview_flutter/webview_flutter.dart';
 
@@ -19,7 +21,7 @@ class _privacyPolicyState extends State<privacyPolicy> {
       appBar: AppBar(
         title: Text("UAT-PQMS"),
         centerTitle: true,
-        backgroundColor: Colors.green[900],
+        backgroundColor:customColors.colorPQMS,
       ),
       body: Container(
         color: Colors.black.withOpacity(0.3),

@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
   TextEditingController _username = TextEditingController(text: "Rekha_Mobile");
   TextEditingController _password = TextEditingController(text: "PQMS@2022");
+  String versionNumber = "";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,8 +37,24 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Version: uat $versionNumber",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  width: 5,
+                )
+              ],
+            ),
             Container(
-              margin: EdgeInsets.only(top: 80, left: 50, right: 50, bottom: 50),
+              margin: EdgeInsets.only(top: 20, left: 50, right: 50, bottom: 50),
               width: 100,
               height: 100,
               decoration: BoxDecoration(
@@ -53,7 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     "Officer Login",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -64,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white,
                         child: TextField(
                           controller: _username,
+                          textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
@@ -86,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextField(
                           controller: _password,
                           obscureText: !_isPasswordVisible,
+                          textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
@@ -147,6 +168,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getVersionNumber();
   }
 
   @override
@@ -263,5 +291,13 @@ class _LoginScreenState extends State<LoginScreen> {
       print(e.message);
       if (e.response?.statusCode == 400 || e.response?.statusCode == 500) {}
     }
+  }
+
+  getVersionNumber() async{
+    final value=await SharedPreferencesClass().readTheData(PreferenceConst.versionNumber);
+    setState((){
+      versionNumber=value;
+    });
+    
   }
 }

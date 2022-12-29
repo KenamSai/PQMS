@@ -23,6 +23,7 @@ class TextReusable extends StatelessWidget {
         readOnly: readType ?? false,
         controller: controller,
         cursorColor: Colors.green.shade600,
+        textInputAction: TextInputAction.done,
         maxLines: maxlines,
         decoration: InputDecoration(
           label: RichText(

@@ -472,7 +472,6 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
         options: Options(headers: requestHeaders),
       );
       final dataResponse = employDetails.fromJson(_response.data);
-      EasyLoading.dismiss();
        if (dataResponse.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           new SnackBar(
