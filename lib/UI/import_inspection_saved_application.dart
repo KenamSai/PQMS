@@ -5,18 +5,19 @@ import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
-
 class ImportInspectionSavedApplications extends StatefulWidget {
   const ImportInspectionSavedApplications({super.key});
 
   @override
-  State<ImportInspectionSavedApplications> createState() => _ImportInspectionSavedApplicationsState();
+  State<ImportInspectionSavedApplications> createState() =>
+      _ImportInspectionSavedApplicationsState();
 }
 
-class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSavedApplications> {
-    List<ImportResponseinspectionModelClass> importdata=[];
+class _ImportInspectionSavedApplicationsState
+    extends State<ImportInspectionSavedApplications> {
+  List<ImportResponseinspectionModelClass> importdata = [];
 
-     @override
+  @override
   void initState() {
     super.initState();
     DatabaseHelper.instance
@@ -25,22 +26,20 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
       setState(() {
         for (var element in value) {
           var model = ImportResponseinspectionModelClass(
-            applicationId: element["applicationId"],
-            InspectionDate: element["InspectionDate"],
-            NoofSamples: element["NoofSamples"],
-            SampleSize: element["SampleSize"],
-            Dutyofficer: element["Dutyofficer"],
-            DutyOfficerId: element["DutyOfficerId"],
-            InspectionPlace: element["InspectionPlace"],
-            InspectionRemarks: element["InspectionRemarks"],
-            QuantityFound: element["QuantityFound"],
-            inptLocation: element["inptLocation"],
-            inspctArea: element["inspctArea"],
-            userimage1: element["userimage1"],
-            userimage2: element["userimage2"],
-            userimage3: element["userimage3"]
-             
-          );
+              applicationId: element["applicationId"],
+              InspectionDate: element["InspectionDate"],
+              NoofSamples: element["NoofSamples"],
+              SampleSize: element["SampleSize"],
+              Dutyofficer: element["Dutyofficer"],
+              DutyOfficerId: element["DutyOfficerId"],
+              InspectionPlace: element["InspectionPlace"],
+              InspectionRemarks: element["InspectionRemarks"],
+              QuantityFound: element["QuantityFound"],
+              inptLocation: element["inptLocation"],
+              inspctArea: element["inspctArea"],
+              userimage1: element["userimage1"],
+              userimage2: element["userimage2"],
+              userimage3: element["userimage3"]);
           importdata.add(model);
           //print(userData);
         }
@@ -48,40 +47,39 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
     }).catchError((error) {
       print(error);
     });
-   
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         centerTitle: true,
+        centerTitle: true,
         backgroundColor: customColors.colorPQMS,
-        title: Text('UAT-PQMS'
-        ),
+        title: Text('UAT-PQMS'),
         actions: [
           GestureDetector(
-            onTap:() {
+            onTap: () {
               showDialog(
-              context: context,
-              builder: (context) {
-                return AppAlertDailog(
-                  iconColor: Colors.red,
-                  titleTextColor: customColors.colorPQMS,
-                  title: "UAT-PQMS",
-                  message: "Do you want to logout from app?",
-                  icon: Icons.error,
-                  yestitle: "Yes",
-                  notitle: "No",
-                  YesonPressed: () {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName(AppRoutes.Login));
-                  },
-                  NoonPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                );
-              },
-            );
+                context: context,
+                builder: (context) {
+                  return AppAlertDailog(
+                    iconColor: Colors.red,
+                    titleTextColor: customColors.colorPQMS,
+                    title: "UAT-PQMS",
+                    message: "Do you want to logout from app?",
+                    icon: Icons.error,
+                    yestitle: "Yes",
+                    notitle: "No",
+                    YesonPressed: () {
+                      Navigator.popUntil(
+                          context, ModalRoute.withName(AppRoutes.Login));
+                    },
+                    NoonPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  );
+                },
+              );
             },
             child: Image.asset(
               "assets/logout.png",
@@ -114,7 +112,7 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
                   "Import Inspection Applications",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
+                    fontSize: 20,
                   ),
                 ),
               ),
@@ -140,8 +138,9 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
                         final data = importdata[index];
                         return GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.importinspectionformsubmit,
-                            arguments: data);
+                            Navigator.pushNamed(
+                                context, AppRoutes.importinspectionformsubmit,
+                                arguments: data);
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
@@ -191,15 +190,10 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
                                   "Quantity Found",
                                   data.QuantityFound,
                                 ),
-                                 RowComponent(
+                                RowComponent(
                                   "Employ ID ",
                                   data.DutyOfficerId,
                                 ),
-
-                                // RowComponent(
-                                //   "Inspection Area",
-                                //   data.inspctArea,
-                                // ),
                               ],
                             ),
                           ),
@@ -237,9 +231,4 @@ class _ImportInspectionSavedApplicationsState extends State<ImportInspectionSave
       ),
     );
   }
-  
-  showAlert() {}
- 
-
 }
-

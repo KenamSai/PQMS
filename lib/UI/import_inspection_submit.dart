@@ -10,10 +10,8 @@ import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/deviceID.dart';
-import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/reusable/text_reusable_form.dart';
-import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -335,7 +333,6 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
 
       if (importinspectionSubmitresponse.statusCode == 200) {
         DatabaseHelper.instance.ImportInspectiondelete(args.applicationId!,DatabaseHelper.ImportInspectiontable);
-        var value=args.applicationId;
         showAlert();
         print("Data Submitted");
       } else if (importinspectionSubmitresponse.statusCode == 204) {
