@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
@@ -52,7 +53,7 @@ class _exportInspectionSubmissionState
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.green[900],
+        backgroundColor:customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
           style: TextStyle(
@@ -69,7 +70,7 @@ class _exportInspectionSubmissionState
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -219,8 +220,8 @@ class _exportInspectionSubmissionState
                                         size: 50,
                                       )
                                     : Image.file(
-                                        width: 100,
-                                        height: 100,
+                                        width: 70,
+                                        height: 70,
                                         File(
                                           id.userimage1 ?? "",
                                         ),
@@ -231,8 +232,8 @@ class _exportInspectionSubmissionState
                                         size: 50,
                                       )
                                     : Image.file(
-                                        width: 100,
-                                        height: 100,
+                                       width: 70,
+                                        height: 70,
                                         File(id.userimage2 ?? ""),
                                       ),
                                 id.userimage3 == ""
@@ -241,8 +242,8 @@ class _exportInspectionSubmissionState
                                         size: 50,
                                       )
                                     : Image.file(
-                                        width: 100,
-                                        height: 100,
+                                        width: 70,
+                                        height: 70,
                                         File(id.userimage3 ?? ""),
                                       )
                               ],
@@ -278,6 +279,7 @@ class _exportInspectionSubmissionState
                       iconColor: Colors.red,
                       yestitle: "Yes",
                       YesonPressed: () async {
+                        EasyLoading.show(maskType:EasyLoadingMaskType.black,status: "Loading...");
                         final deviceId = await _getId();
                         //print("id:  $deviceId");
                         if (id.userimage1!.isNotEmpty) {
@@ -345,6 +347,7 @@ class _exportInspectionSubmissionState
                                     DatabaseHelper.ExportInspectiontable,
                                     "applicationId");
                             print("count:$value");
+                            EasyLoading.dismiss();
                             Navigator.pop(context);
                             showAlert(
                                 _response.data["status_Message"].toString());

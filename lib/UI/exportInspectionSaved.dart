@@ -60,7 +60,7 @@ class _exportInspectionSavedState extends State<exportInspectionSaved> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )

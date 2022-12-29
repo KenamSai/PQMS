@@ -45,29 +45,42 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     Future<bool> showExitPopup() async {
       return await showDialog(
-            //show confirm dialogue
-            //the return value will be from "Yes" or "No" options
+            
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Exit App'),
-              content: Text('Do you want to exit an App?'),
+              icon: Icon(Icons.error,color: Colors.red,size: 50,),
+              title: Text(
+                "UAT-PQMS",
+                style: TextStyle(color: customColors.colorPQMS),
+              ),
+              content: Text(
+                'Do you want to exit App?',
+                textAlign: TextAlign.center,
+              ),
               actions: [
-                ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    //return false when click on "NO"
-                    child: Text('No'),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.green),
-                    )),
-                ElevatedButton(
-                    onPressed: () => SystemNavigator.pop(),
-                    //return true when click on "Yes"
-                    child: Text('Yes'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          customColors.colorred),
-                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      //return false when click on "NO"
+                      child: Text('No'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            customColors.colorPQMS),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => SystemNavigator.pop(),
+                      //return true when click on "Yes"
+                      child: Text('Yes'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            customColors.colorred),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ) ??
@@ -85,20 +98,7 @@ class _DashboardState extends State<Dashboard> {
           title: Text(
             "UAT-PQMS",
           ),
-          actions: [
-            GestureDetector(
-              onTap: null,
-              child: Image.asset(
-                "assets/logout.png",
-                height: 20,
-                width: 20,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            )
-          ],
+         
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -118,8 +118,7 @@ class _DashboardState extends State<Dashboard> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
-                        // fontWeight: FontWeight.bold,
-                        // fontWeight: FontWeight.bold,
+                      
                       ),
                     ),
                   ),
@@ -192,10 +191,12 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
-        bottomSheet: Image.asset(
-          "assets/headerpic.png",
-          width: double.infinity,
-          height: 40,
+        bottomSheet: Container(
+          child: Image.asset(
+            "assets/headerpic.png",
+            width: double.infinity,
+            height: 40,
+          ),
         ),
       ),
     );
@@ -257,7 +258,7 @@ class _DashboardState extends State<Dashboard> {
       builder: (context) {
         return SingleButtonAlertDailog(
           title: "UAT-PQMS",
-          iconColor:customColors.colorPQMS,
+          iconColor: customColors.colorPQMS,
           message: "Data Deleted Successfully",
           icon: Icons.done_outline,
           oktitle: "Ok",

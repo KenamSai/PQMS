@@ -7,6 +7,8 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
+import 'package:pqms/sharedpreference/preference.dart';
+import 'package:pqms/sharedpreference/sharedpreference.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,10 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Container(
-        child: Image.asset(
-          "assets/splash.png",
-          width: double.infinity,
-          height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: ExactAssetImage("assets/splash.png"),
+            fit: BoxFit.cover
+          ),
         ),
       ),
     );
@@ -39,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   call() {
     Navigator.pushNamed(context, AppRoutes.Login);
   }
+
   network() async {
     var result = await Connectivity().checkConnectivity();
     if (result == ConnectivityResult.mobile ||
@@ -60,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void getDetails() async {
-    var requestURL = BaseUrl.uat_base_url+EndPoints.AppVersion;
+    var requestURL = BaseUrl.uat_base_url + EndPoints.AppVersion;
     //conversion into form data
     FormData formData = FormData.fromMap({
       "osType": "IOS",
@@ -80,18 +84,20 @@ class _SplashScreenState extends State<SplashScreen> {
       final SplashResponse = SplashModelClass.fromJson(_response.data);
 
       if (SplashResponse.statusCode == 200) {
-
         final versionNumber = await appVersion().getAppVersion();
+        print("local: $versionNumber");
+        print("api: ${SplashResponse.data?.versionNumber}");
 
         if (SplashResponse.data?.versionNumber != null &&
-            versionNumber == SplashResponse.data?.versionNumber) {
+            versionNumber == "${SplashResponse.data?.versionNumber}.0") {
           final snack = SnackBar(
             content: Text(
-              "${SplashResponse.data?.statusMessage}",
+              "${SplashResponse.statusMessage}",
             ),
           );
           ScaffoldMessenger.of(context).showSnackBar(snack);
           Navigator.pushNamed(context, AppRoutes.Login);
+          await SharedPreferencesClass().writeTheData(PreferenceConst.versionNumber,SplashResponse.data?.versionNumber );
         } else {
           showDialog(
             context: context,

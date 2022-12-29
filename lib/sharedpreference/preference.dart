@@ -6,4 +6,5 @@ class PreferenceConst {
   static const String empid = "empid";
   static const String actualId="id";
   static const String upcomingId="/upcomingId";
+  static const String versionNumber="/versionNumber";
 }
