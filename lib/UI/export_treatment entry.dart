@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/DonebyModelClass.dart';
@@ -152,24 +153,31 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                                     ),
                                     isExpanded: true,
                                     onChanged: (changedValue) {
-                                      setState(() {
-                                        selectedValue = changedValue;
-                                        if (selectedValue != "") {
-                                          DutyOfficersList.forEach((element) {
-                                            if (selectedValue == element.name) {
-                                              DutyOfficerId = element.id;
-                                            }
-                                          });
-                                        }
-                                      });
-                                    },
-                                    items:
-                                        DutyOfficersList.map((DutyOfficerName) {
-                                      return new DropdownMenuItem<String>(
-                                        value: DutyOfficerName.name,
-                                        child: Text(DutyOfficerName.name ?? ""),
+                                      setState(
+                                        () {
+                                          selectedValue = changedValue;
+                                          if (selectedValue != "") {
+                                            DutyOfficersList.forEach(
+                                              (element) {
+                                                if (selectedValue ==
+                                                    element.name) {
+                                                  DutyOfficerId = element.id;
+                                                }
+                                              },
+                                            );
+                                          }
+                                        },
                                       );
-                                    }).toList(),
+                                    },
+                                    items: DutyOfficersList.map(
+                                      (DutyOfficerName) {
+                                        return new DropdownMenuItem<String>(
+                                          value: DutyOfficerName.name,
+                                          child:
+                                              Text(DutyOfficerName.name ?? ""),
+                                        );
+                                      },
+                                    ).toList(),
                                   ),
                                 ),
                                 Expanded(
@@ -213,6 +221,13 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                           TextReusable(
                             data: "Temperature(DegC)",
                             controller: _Temperature,
+                            format: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(
+                                  r"[0-9.]",
+                                ),
+                              ),
+                            ],
                           ),
                           Padding(
                             padding: const EdgeInsets.all(6.0),
@@ -446,7 +461,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   }
 
   getDutyOffcersList() async {
-     EasyLoading.show(status: "Loading...",maskType: EasyLoadingMaskType.black);
+    EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
     String requestUrl =
         "https://pqms-uat.cgg.gov.in/pqms/getEmployeeListByRole";
     final requestPayLoad = {
@@ -472,7 +487,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
         options: Options(headers: requestHeaders),
       );
       final dataResponse = employDetails.fromJson(_response.data);
-       if (dataResponse.statusCode == 200) {
+      if (dataResponse.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           new SnackBar(
             content: Text("DutyOfficers List Updated!"),
@@ -542,7 +557,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   }
 
   getAgencyList() async {
-    EasyLoading.show(maskType: EasyLoadingMaskType.black,status: "Loading...");
+    EasyLoading.show(maskType: EasyLoadingMaskType.black, status: "Loading...");
     String requestUrl = "https://pqms-uat.cgg.gov.in/pqms/agenciesList";
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);
@@ -562,7 +577,6 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
       final _response = DonebyModelClass.fromJson(Response.data);
       setState(() {
         AgencyList = _response.data!;
-        
       });
       final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
       AgencyList.forEach((element) async {
