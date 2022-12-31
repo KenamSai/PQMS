@@ -515,9 +515,13 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
           content: Text(
-              'Location services are disabled. Please enable the services')));
+            'Location services are disabled. Please enable the services',
+          ),
+        ),
+      );
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -525,14 +529,23 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
+          const SnackBar(
+            content: Text(
+              'Location permissions are denied',
+            ),
+          ),
+        );
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
           content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
+            'Location permissions are permanently denied, we cannot request permissions.',
+          ),
+        ),
+      );
       return false;
     }
     return true;
@@ -546,23 +559,31 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
         .then((Position position) {
       setState(() => _currentPosition = position);
       _getAddressFromLatLng(_currentPosition!);
-    }).catchError((e) {
-      debugPrint(e);
-    });
+    }).catchError(
+      (e) {
+        debugPrint(e);
+      },
+    );
   }
 
   Future<void> _getAddressFromLatLng(Position position) async {
     await placemarkFromCoordinates(
             _currentPosition!.latitude, _currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _currentAddress =
-            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.locality}, ${place.postalCode}';
-        print(_currentAddress);
-      });
-    }).catchError((e) {
-      debugPrint(e);
-    });
+        .then(
+      (List<Placemark> placemarks) {
+        Placemark place = placemarks[0];
+        setState(
+          () {
+            _currentAddress =
+                '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.locality}, ${place.postalCode}';
+            print(_currentAddress);
+          },
+        );
+      },
+    ).catchError(
+      (e) {
+        debugPrint(e);
+      },
+    );
   }
 }
