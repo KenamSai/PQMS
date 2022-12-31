@@ -2,12 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/importApplModelClass.dart';
+import 'package:pqms/UI/document.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class importApplicationDetails extends StatefulWidget {
   const importApplicationDetails({super.key});
@@ -19,7 +21,11 @@ class importApplicationDetails extends StatefulWidget {
 
 class _importApplicationDetailsState extends State<importApplicationDetails> {
   DataDetails? modelDetails;
+  List<IroDocList> iroDocList=[];
+
+
   bool? treatment;
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -275,19 +281,34 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                           Radius.circular(5.0),
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            "Documents Submitted",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              // fontSize: 15
-                            ),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children:<Widget> [
+                           
+                            
+                            ListView.builder(
+                               shrinkWrap: true,
+                                itemCount: iroDocList.length,
+                                itemBuilder: ((context, index) {
+                                   if(iroDocList.length==0)
+                                   {
+                                    print("No Documents");
+                                    return Text("No Documents",style: TextStyle(
+                                      color: Colors.amber
+                                    ),);
+                                   }
+                                   else
+                                   {
+                                      final document =modelDetails!. iroDocList![index];
+                                  return DocumentView(
+                                    document: document,
+                                  );
+                                   }
+                                  
+                                })),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -308,9 +329,10 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                         Navigator.pushNamed(
-                            context, AppRoutes.importTransactionDetails,arguments: modelDetails?.applicationId);
-                               EasyLoading.show(status: "Loading...");
+                        Navigator.pushNamed(
+                            context, AppRoutes.importTransactionDetails,
+                            arguments: modelDetails?.applicationId);
+                        EasyLoading.show(status: "Loading...");
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -319,7 +341,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                             Radius.circular(5.0),
                           ),
                         ),
-                        width: MediaQuery.of(context).size.width*0.9,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         height: 32.0,
                         child: Center(
                           child: Text(
@@ -329,88 +351,89 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                         ),
                       ),
                     ),
-                    if (!(modelDetails?.treatmentNeeded ?? false))
-                      ...[
-                        GestureDetector(
-                          onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.importinspection,arguments: modelDetails?.applicationId);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
+                    if (!(modelDetails?.treatmentNeeded ?? false)) ...[
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.importinspection,
+                              arguments: modelDetails?.applicationId);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.3),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5.0),
                             ),
-                            height: 32.0,
-                            width: MediaQuery.of(context).size.width*0.9,
-                            child: Center(
-                              child: Text(
-                                "INSPECTION",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15),
-                              ),
+                          ),
+                          height: 32.0,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: Center(
+                            child: Text(
+                              "INSPECTION",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
                         ),
-                      ]
-                    else
-                      ...[
-                          Container(
-                            width: MediaQuery.of(context).size.width*0.9,
-                            child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                               Navigator.pushNamed(context, AppRoutes.importinspection,arguments: modelDetails?.applicationId);
-                            },
-                            child: Container(
-                              
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.3),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5.0),
+                      ),
+                    ] else ...[
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.importinspection,
+                                    arguments: modelDetails?.applicationId);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.3),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5.0),
+                                  ),
                                 ),
-                              ),
-                              height: 32.0,
-                              width: MediaQuery.of(context).size.width*0.4,
-                              child: Center(
-                                child: Text(
-                                  "INSPECTION",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ),
-                            ),
-                        ),
-                        GestureDetector(
-                            onTap: () {
-                                Navigator.pushNamed(context,AppRoutes.importtreatment,arguments: modelDetails?.applicationId);
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width*0.4,
-                              height: 32.0,
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.3),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5.0),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "TREATMENT",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
+                                height: 32.0,
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: Center(
+                                  child: Text(
+                                    "INSPECTION",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
                                 ),
                               ),
                             ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.importtreatment,
+                                    arguments: modelDetails?.applicationId);
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: 32.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.3),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5.0),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "TREATMENT",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                          )
-                      ],
-                  
+                      )
+                    ],
                   ],
                 ),
               ),
@@ -429,13 +452,15 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
           Expanded(
             child: Text(
               data.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold,),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(
             child: Text(
               value.toString(),
-             // style: TextStyle(fontSize: 17),
+              // style: TextStyle(fontSize: 17),
             ),
           )
         ],
@@ -450,19 +475,89 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
         final String id = ModalRoute.of(context)?.settings.arguments as String;
         // print("init$id");
         getDetails(id);
-        
       },
     );
     // print("init :$id");
   }
 
+  setImage(_backgroundImage, {void Function()? onTap}) {
+    if (_backgroundImage.contains('.pdf')) {
+      return GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Image.asset(
+            "assets/viewpdf(1).png",
+            width: 80,
+            height: 50,
+          ),
+        ),
+      );
+    } else {
+      return GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Image.asset(
+            "assets/viewimage(1).png",
+            width: 80,
+            height: 60,
+          ),
+        ),
+      );
+    }
+  }
+
+  showAlert(String? photo) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SfPdfViewer.network(
+            photo!,
+            onDocumentLoadFailed: ((details) {
+              print("not working");
+            }),
+            key: _pdfViewerKey,
+          );
+        });
+    //showDialog
+  }
+
+  showAlertImage(String? photo) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            scrollable: true,
+            actions: [
+              Center(
+                  child: Container(
+                      child: /* FadeInImage(image: NetworkImage(photo!), 
+                placeholder: AssetImage(ImageConstants.no_uploaded),
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset(ImageConstants.no_uploaded, fit: BoxFit.fitWidth,);
+                },
+                fit: BoxFit.fitWidth,
+                ) */
+                          Image.network(
+                photo!,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset("assets/viewimage(1).png");
+                },
+              ))),
+            ],
+          );
+        });
+  }
+
   void getDetails(String id) async {
-    var requestURL = BaseUrl.uat_base_url+EndPoints.ImportAppDetails;
+    var requestURL = BaseUrl.uat_base_url + EndPoints.ImportAppDetails;
     final requestPayload = {
       "data": id, //pass id
     };
     // print("dataID:$dataId");
-    final token = await SharedPreferencesClass().readTheData(PreferenceConst.token);
+    final token =
+        await SharedPreferencesClass().readTheData(PreferenceConst.token);
     final username =
         await SharedPreferencesClass().readTheData(PreferenceConst.username);
     final requestHeaders = {
@@ -485,6 +580,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
         if (responseData.statusCode == 200) {
           modelDetails = responseData.data;
           treatment = responseData.data?.treatmentNeeded;
+          iroDocList=responseData.data!.iroDocList!;
           print("$treatment");
           EasyLoading.dismiss();
         } else {
@@ -495,7 +591,4 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
       print("error${e.message}");
     }
   }
-  
 }
-
-
