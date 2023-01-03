@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
@@ -252,7 +254,7 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                           notitle: "No",
                           YesonPressed: () async {
                             final requestUrl =
-                                "https://pqms-uat.cgg.gov.in/pqms//saveExportPermitAction";
+                              BaseUrl.uat_base_url+EndPoints.saveExportPermitAction;
                             final requestPayLoad = {
                               "role": "Inspector",
                               "action": "Forward",

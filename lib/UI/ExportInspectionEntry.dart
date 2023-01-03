@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/DutyOfficers.dart';
 import 'package:pqms/ModelClass/DutyOfficersResponse.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
@@ -435,7 +437,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
     _date.text = "";
     EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
     String requestUrl =
-        "https://pqms-uat.cgg.gov.in/pqms/getEmployeeListByRole";
+        BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,

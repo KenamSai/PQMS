@@ -5,6 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
@@ -298,7 +300,7 @@ class _exportInspectionSubmissionState
                           image3 = base64Encode(bytes3);
                         }
                         final requestUrl =
-                            "https://pqms-uat.cgg.gov.in/pqms/saveExportPermitAction";
+                            BaseUrl.uat_base_url+EndPoints.saveExportPermitAction;
                         final requestPayLoad = {
                           "role": "Inspector",
                           "applicationId": id.applicationId,

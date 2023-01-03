@@ -7,6 +7,8 @@ import 'package:pqms/ModelClass/DonebyModelClass.dart';
 import 'package:pqms/ModelClass/DonebyModelResponseTreatment.dart';
 import 'package:pqms/ModelClass/DutyOfficersResponse.dart';
 import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
@@ -463,7 +465,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   getDutyOffcersList() async {
     EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
     String requestUrl =
-        "https://pqms-uat.cgg.gov.in/pqms/getEmployeeListByRole";
+        BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -558,7 +560,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
 
   getAgencyList() async {
     EasyLoading.show(maskType: EasyLoadingMaskType.black, status: "Loading...");
-    String requestUrl = "https://pqms-uat.cgg.gov.in/pqms/agenciesList";
+    String requestUrl = BaseUrl.uat_base_url+EndPoints.agenciesList;
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);
     final username =

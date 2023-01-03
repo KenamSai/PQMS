@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/exportListModel.dart';
 import 'package:pqms/UI/ExportListItem.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -129,7 +131,7 @@ class _ExportList extends State<ExportList> {
   }
 
   getDetails() async {
-    var requestURL = "https://pqms-uat.cgg.gov.in/pqms/getPSCList";
+    var requestURL = BaseUrl.uat_base_url+EndPoints.getPSCList;
     final requestPayload = {
       "data": "Inspector",
     };
