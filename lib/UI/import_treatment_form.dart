@@ -553,7 +553,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
 
   /////////////////////////////////////////////////////////////////////////
   getDutyOffcersList() async {
-    String requestUrl = BaseUrl.uat_base_url + EndPoints.getEmployeeListByRole;
+    String requestUrl = BaseUrl.finalURL + EndPoints.getEmployeeListByRole;
 
     final requestPayLoad = {
       "actionType": "Duty officer",
@@ -640,7 +640,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   }
 
   getAgencyList() async {
-    String requestUrl = BaseUrl.uat_base_url + EndPoints.agenciesList;
+    String requestUrl = BaseUrl.finalURL + EndPoints.agenciesList;
 
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);

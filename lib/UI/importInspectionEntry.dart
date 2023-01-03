@@ -428,7 +428,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
 
   getDutyOffcersList() async {
     _date.text = "";
-    String requestUrl = BaseUrl.uat_base_url + EndPoints.getEmployeeListByRole;
+    String requestUrl = BaseUrl.finalURL + EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,

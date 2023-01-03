@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> getLoginResponse() async {
-    final requestUrl = BaseUrl.uat_base_url + EndPoints.login;
+    final requestUrl = BaseUrl.finalURL + EndPoints.login;
     final loginrequest = LoginRequest();
     loginrequest.iMEI = await Utils().getDeviceId();
     loginrequest.deviceId = await Utils().getDeviceId();

@@ -131,7 +131,7 @@ class _ExportList extends State<ExportList> {
   }
 
   getDetails() async {
-    var requestURL = BaseUrl.uat_base_url+EndPoints.getPSCList;
+    var requestURL = BaseUrl.finalURL+EndPoints.getPSCList;
     final requestPayload = {
       "data": "Inspector",
     };

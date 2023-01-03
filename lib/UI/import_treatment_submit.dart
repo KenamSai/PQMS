@@ -265,7 +265,7 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
   }
 
   Future<void> submitDetails(ImportTreatmentModelClass args) async {
-    final requestUrl = BaseUrl.uat_base_url + EndPoints.importinspectionsubmit;
+    final requestUrl = BaseUrl.finalURL + EndPoints.importinspectionsubmit;
 
     //print("img64"+img64);
     final importtreatmentSubmit = ImportTreatmentSubmitModel();

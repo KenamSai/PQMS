@@ -465,7 +465,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   getDutyOffcersList() async {
     EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
     String requestUrl =
-        BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
+        BaseUrl.finalURL+EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -560,7 +560,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
 
   getAgencyList() async {
     EasyLoading.show(maskType: EasyLoadingMaskType.black, status: "Loading...");
-    String requestUrl = BaseUrl.uat_base_url+EndPoints.agenciesList;
+    String requestUrl = BaseUrl.finalURL+EndPoints.agenciesList;
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);
     final username =

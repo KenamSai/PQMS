@@ -254,7 +254,7 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                           notitle: "No",
                           YesonPressed: () async {
                             final requestUrl =
-                              BaseUrl.uat_base_url+EndPoints.saveExportPermitAction;
+                              BaseUrl.finalURL+EndPoints.saveExportPermitAction;
                             final requestPayLoad = {
                               "role": "Inspector",
                               "action": "Forward",
