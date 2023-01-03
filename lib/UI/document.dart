@@ -10,13 +10,15 @@ class DocumentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         document!.document!.endsWith(".pdf")
             ? GestureDetector(
                 onTap: () async {
                   _pdfViewerKey.currentState?.openBookmarkView();
-                  showAlert("${document?.document}",context);
+                  showAlert("${document?.document}", context);
                 },
                 child: Image.asset(
                   'assets/pdf.png',
@@ -26,8 +28,7 @@ class DocumentView extends StatelessWidget {
                 ))
             : GestureDetector(
                 onTap: () {
-                  showImage("${document?.document}",context);
-                  
+                  showImage("${document?.document}", context);
                 },
                 child: Image.asset(
                   'assets/jpg.png',
@@ -53,21 +54,27 @@ class DocumentView extends StatelessWidget {
           );
         }));
   }
-  
+
   showImage(String photo, BuildContext context) {
-    showDialog(context: context, builder: ((BuildContext context){
-      return AlertDialog(
-        actions: [
-            Image.network("${photo}",errorBuilder: (context, error, stackTrace) {
-              return Center(child: Image.asset( 'assets/no_uploaded.png',height: 200,width: 200,));
-            },),
-        ],
-
-      ) ;
-      
-
-    }));
-
+    showDialog(
+        context: context,
+        builder: ((BuildContext context) {
+          return AlertDialog(
+            actions: [
+              Image.network(
+                "${photo}",
+                errorBuilder: (context, error, stackTrace) {
+                  return Center(
+                      child: Image.asset(
+                    'assets/no_uploaded.png',
+                    height: 200,
+                    width: 200,
+                  ));
+                },
+              ),
+            ],
+          );
+        }));
   }
 
   //showDialog

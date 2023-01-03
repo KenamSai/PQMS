@@ -21,8 +21,7 @@ class importApplicationDetails extends StatefulWidget {
 
 class _importApplicationDetailsState extends State<importApplicationDetails> {
   DataDetails? modelDetails;
-  List<IroDocList> iroDocList=[];
-
+  List<IroDocList> iroDocList = [];
 
   bool? treatment;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
@@ -275,42 +274,70 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                         ],
                       ),
                     ),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5.0),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children:<Widget> [
-                           
-                            
-                            ListView.builder(
-                               shrinkWrap: true,
-                                itemCount: iroDocList.length,
-                                itemBuilder: ((context, index) {
-                                   if(iroDocList.length==0)
-                                   {
-                                    print("No Documents");
-                                    return Text("No Documents",style: TextStyle(
-                                      color: Colors.amber
-                                    ),);
-                                   }
-                                   else
-                                   {
-                                      final document =modelDetails!. iroDocList![index];
-                                  return DocumentView(
-                                    document: document,
-                                  );
-                                   }
-                                  
-                                })),
-                          ],
-                        ),
-                      ),
-                    ),
+                    iroDocList.length == 0
+                        ? Container(
+                          height: 50,
+                          width: double.infinity,
+                          child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "No Documents",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        )
+                        : Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 80,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemCount: iroDocList.length,
+                                      itemBuilder: ((context, index) {
+                                        print(iroDocList.length);
+                                        if (iroDocList.length == 0) {
+                                          print("No Documents");
+                                          return Text(
+                                            "No Documents",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                            ),
+                                          );
+                                        } else {
+                                          final document =
+                                              modelDetails!.iroDocList![index];
+                                          return DocumentView(
+                                            document: document,
+                                          );
+                                        }
+                                      }),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                   ],
                 ),
               ),
@@ -580,7 +607,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
         if (responseData.statusCode == 200) {
           modelDetails = responseData.data;
           treatment = responseData.data?.treatmentNeeded;
-          iroDocList=responseData.data!.iroDocList!;
+          iroDocList = responseData.data!.iroDocList!;
           print("$treatment");
           EasyLoading.dismiss();
         } else {
