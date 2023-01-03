@@ -276,9 +276,9 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                     ),
                     iroDocList.length == 0
                         ? Container(
-                          height: 50,
-                          width: double.infinity,
-                          child: Card(
+                            height: 50,
+                            width: double.infinity,
+                            child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.0),
@@ -294,7 +294,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                                 ),
                               ),
                             ),
-                        )
+                          )
                         : Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
@@ -313,24 +313,11 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                                       shrinkWrap: true,
                                       itemCount: iroDocList.length,
                                       itemBuilder: ((context, index) {
-                                        print(iroDocList.length);
-                                        if (iroDocList.length == 0) {
-                                          print("No Documents");
-                                          return Text(
-                                            "No Documents",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                              color: Colors.black,
-                                            ),
-                                          );
-                                        } else {
-                                          final document =
-                                              modelDetails!.iroDocList![index];
-                                          return DocumentView(
-                                            document: document,
-                                          );
-                                        }
+                                        final document =
+                                            modelDetails!.iroDocList![index];
+                                        return DocumentView(
+                                          document: document,
+                                        );
                                       }),
                                     ),
                                   ),

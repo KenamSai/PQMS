@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/DonebyModelClass.dart';
 import 'package:pqms/ModelClass/DonebyModelResponseTreatment.dart';
 import 'package:pqms/ModelClass/ExportApplicationModelClass.dart';
+import 'package:pqms/UI/export_document.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
@@ -25,6 +26,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
   List<DonebyModelResponseTreatment> AgencyNameID = [];
   String? selectedAgencyName;
   DataApplicationDetails? exportmodelDetails;
+  List<PscDocList> pscDocList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -272,6 +274,57 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                         ],
                       ),
                     ),
+                    pscDocList.length == 0
+                        ? Container(
+                            height: 50,
+                            width: double.infinity,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "No Documents",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 80,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemCount: pscDocList.length,
+                                      itemBuilder: ((context, index) {
+                                        final document = exportmodelDetails!
+                                            .pscDocList![index];
+                                        return ExportDocumentView(
+                                          document: document,
+                                        );
+                                      }),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                   ],
                 ),
               ),
@@ -457,7 +510,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
   }
 
   void getApplnDetails(String id) async {
-    var requestURL = BaseUrl.uat_base_url+EndPoints.getPSCAppDetails;
+    var requestURL = BaseUrl.uat_base_url + EndPoints.getPSCAppDetails;
     final requestPayload = {
       "data": id, //pass id
     };

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:pqms/ModelClass/importApplModelClass.dart';
+import 'package:pqms/ModelClass/ExportApplicationModelClass.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class DocumentView extends StatelessWidget {
-  DocumentView({super.key, required this.document});
+class ExportDocumentView extends StatelessWidget {
+  ExportDocumentView({super.key, required this.document});
 
-  final IroDocList? document;
+  final PscDocList? document;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Row(
-      // crossAxisAlignment: CrossAxisAlignment.center,
-      // mainAxisAlignment: MainAxisAlignment.center,
+      
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         document!.document!.endsWith(".pdf")
