@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pqms/baseurl_and_endpoints/WebUrlConstants.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -71,8 +72,7 @@ Conditions""",
                     ),
                   ),
                 initialUrl:
-                    "https://www.cgg.gov.in/mgov-privacy-policy/?depot_name=" +
-                        "AGRICULTURE and  FARMERS WELFARE, GOVERNMENT OF INDIA",
+                    WebUrlConstants.privacypolicy,
                 javascriptMode: JavascriptMode.unrestricted,
               ),
             ),
@@ -87,12 +87,7 @@ Conditions""",
                     ),
                   ),
                 initialUrl:
-                    "https://www.cgg.gov.in/mgov-terms-conditions/?depot_name=" +
-                        "AGRICULTURE " +
-                        "and" +
-                        " FARMERS WELFARE, GOVERNMENT OF INDIA" +
-                        "&" +
-                        " capital=NEW DELHI, INDIA",
+                    WebUrlConstants.termsAndConditions,
                 javascriptMode: JavascriptMode.unrestricted,
               ),
             ),
@@ -107,10 +102,7 @@ Conditions""",
                     ),
                   ),
                 initialUrl:
-                    "https://www.cgg.gov.in/mgov-copyright-policy/?depot_name=" +
-                        "AGRICULTURE " +
-                        "and" +
-                        " FARMERS WELFARE, GOVERNMENT OF INDIA & depot_email=info@cgg.gov.in",
+                    WebUrlConstants.copyrightPolicy,
                 javascriptMode: JavascriptMode.unrestricted,
               ),
             ),

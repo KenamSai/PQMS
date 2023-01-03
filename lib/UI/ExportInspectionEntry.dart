@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:pqms/ModelClass/DutyOfficers.dart';
 import 'package:pqms/ModelClass/DutyOfficersResponse.dart';
 import 'package:pqms/ModelClass/exportInspectionResponseModelClass.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
@@ -435,7 +437,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
     _date.text = "";
     EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
     String requestUrl =
-        "https://pqms-uat.cgg.gov.in/pqms/getEmployeeListByRole";
+        BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -515,9 +517,13 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
           content: Text(
-              'Location services are disabled. Please enable the services')));
+            'Location services are disabled. Please enable the services',
+          ),
+        ),
+      );
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -525,14 +531,23 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
+          const SnackBar(
+            content: Text(
+              'Location permissions are denied',
+            ),
+          ),
+        );
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
           content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
+            'Location permissions are permanently denied, we cannot request permissions.',
+          ),
+        ),
+      );
       return false;
     }
     return true;
@@ -546,23 +561,31 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
         .then((Position position) {
       setState(() => _currentPosition = position);
       _getAddressFromLatLng(_currentPosition!);
-    }).catchError((e) {
-      debugPrint(e);
-    });
+    }).catchError(
+      (e) {
+        debugPrint(e);
+      },
+    );
   }
 
   Future<void> _getAddressFromLatLng(Position position) async {
     await placemarkFromCoordinates(
             _currentPosition!.latitude, _currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _currentAddress =
-            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.locality}, ${place.postalCode}';
-        print(_currentAddress);
-      });
-    }).catchError((e) {
-      debugPrint(e);
-    });
+        .then(
+      (List<Placemark> placemarks) {
+        Placemark place = placemarks[0];
+        setState(
+          () {
+            _currentAddress =
+                '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.locality}, ${place.postalCode}';
+            print(_currentAddress);
+          },
+        );
+      },
+    ).catchError(
+      (e) {
+        debugPrint(e);
+      },
+    );
   }
 }

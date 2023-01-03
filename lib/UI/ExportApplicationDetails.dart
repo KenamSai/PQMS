@@ -4,6 +4,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/DonebyModelClass.dart';
 import 'package:pqms/ModelClass/DonebyModelResponseTreatment.dart';
 import 'package:pqms/ModelClass/ExportApplicationModelClass.dart';
+import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
+import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -455,7 +457,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
   }
 
   void getApplnDetails(String id) async {
-    var requestURL = "https://pqms-uat.cgg.gov.in/pqms/getPSCAppDetails";
+    var requestURL = BaseUrl.uat_base_url+EndPoints.getPSCAppDetails;
     final requestPayload = {
       "data": id, //pass id
     };

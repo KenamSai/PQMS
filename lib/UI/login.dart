@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   getVersionNumber() async{
-    final value=await SharedPreferencesClass().readTheData(PreferenceConst.versionNumber);
+    String value=await SharedPreferencesClass().readTheData(PreferenceConst.versionNumber);
     setState((){
       versionNumber=value;
     });
