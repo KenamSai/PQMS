@@ -85,6 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (SplashResponse.statusCode == 200) {
         final versionNumber = await appVersion().getAppVersion();
+       
         print("local: $versionNumber");
         print("api: ${SplashResponse.data?.versionNumber}");
 

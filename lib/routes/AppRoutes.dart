@@ -1,6 +1,6 @@
 class AppRoutes {
   AppRoutes._();
-  static const initial = Login;
+  static const initial = Splash;
   static const dashboardpage = "/Dashboard";
   static const Login = "/LoginScreen";
   static const importrelease = "/Import release order";
