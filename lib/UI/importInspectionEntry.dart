@@ -347,82 +347,170 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                   color: Colors.black.withOpacity(0.3),
                 ),
                 child: TextButton(
-                  // onPressed: () {  },
-                  child: Text(
-                    "SAVE",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AppAlertDailog(
-                        title: "UAT-PQMS",
-                        message:
-                            "Data will be stored locally! Do you want to save",
-                        icon: Icons.error,
-                        yestitle: "Yes",
-                        notitle: "No",
-                        YesonPressed: () async {
-                          if (_currentPosition != null &&
-                              _currentPosition!.latitude != null &&
-                              _currentPosition!.longitude != null) {
-                            print('LAT: ${_currentPosition?.latitude ?? ""}');
-                            print('LAT: ${_currentPosition?.longitude ?? ""}');
-                            print('ADDRESS: ${_currentAddress ?? ""}');
-                          } else {
-                            _getCurrentPosition();
-                            print("please wait till location is fetched");
-                          }
+                    // onPressed: () {  },
+                    child: Text(
+                      "SAVE",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      if (selectedValue == null) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SingleButtonAlertDailog(
+                              title: "UAT-PQMS",
+                              message: "Please Select DutyOfficer",
+                              icon: Icons.error,
+                              iconColor: Colors.red,
+                              oktitle: "OK",
+                              okonPressed: () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                      } else if (_InspectionPlace.text.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SingleButtonAlertDailog(
+                              title: "UAT-PQMS",
+                              message: "Please Enter Inspection Place",
+                              icon: Icons.error,
+                              iconColor: Colors.red,
+                              oktitle: "OK",
+                              okonPressed: () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                      } else if (_date.text.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SingleButtonAlertDailog(
+                              title: "UAT-PQMS",
+                              message:
+                                  "Please Select Completed Inspection Date",
+                              icon: Icons.error,
+                              iconColor: Colors.red,
+                              oktitle: "OK",
+                              okonPressed: () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                      } else if (_InspectionRemarks.text.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SingleButtonAlertDailog(
+                              title: "UAT-PQMS",
+                              message: "Please Enter Inspection Remarks ",
+                              icon: Icons.error,
+                              iconColor: Colors.red,
+                              oktitle: "OK",
+                              okonPressed: () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                      } else if (imageData1.path.isEmpty &&
+                          imageData2.path.isEmpty &&
+                          imageData3.path.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SingleButtonAlertDailog(
+                              title: "UAT-PQMS",
+                              message: "Please Capture atleast one image",
+                              icon: Icons.error,
+                              iconColor: Colors.red,
+                              oktitle: "OK",
+                              okonPressed: () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AppAlertDailog(
+                            title: "UAT-PQMS",
+                            message:
+                                "Data will be stored locally! Do you want to save",
+                            icon: Icons.error,
+                            yestitle: "Yes",
+                            notitle: "No",
+                            YesonPressed: () async {
+                              if (_currentPosition != null &&
+                                  _currentPosition!.latitude != null &&
+                                  _currentPosition!.longitude != null) {
+                                print(
+                                    'LAT: ${_currentPosition?.latitude ?? ""}');
+                                print(
+                                    'LAT: ${_currentPosition?.longitude ?? ""}');
+                                print('ADDRESS: ${_currentAddress ?? ""}');
+                              } else {
+                                _getCurrentPosition();
+                                print("please wait till location is fetched");
+                              }
 
-                          final data = ImportResponseinspectionModelClass(
-                            applicationId: id,
-                            Dutyofficer: selectedValue,
-                            DutyOfficerId: DutyOfficerId,
-                            NoofSamples: _NoOfsamples.text,
-                            SampleSize: _Samplesize.text,
-                            InspectionPlace: _InspectionPlace.text,
-                            InspectionDate: _date.text,
-                            InspectionRemarks: _InspectionRemarks.text,
-                            QuantityFound: _QuantityFound.text,
-                            inptLocation:
-                                _currentPosition!.latitude.toString() +
-                                    "," +
-                                    _currentPosition!.longitude.toString(),
-                            inspctArea: _currentAddress,
-                            userimage1: imageData1.path,
-                            userimage2: imageData2.path,
-                            userimage3: imageData3.path,
-                          );
-                          var value = DutyOfficerId;
-                          print("ID=$value");
-                          final bytes = File(imageData1.path).readAsBytesSync();
+                              final data = ImportResponseinspectionModelClass(
+                                applicationId: id,
+                                Dutyofficer: selectedValue,
+                                DutyOfficerId: DutyOfficerId,
+                                NoofSamples: _NoOfsamples.text,
+                                SampleSize: _Samplesize.text,
+                                InspectionPlace: _InspectionPlace.text,
+                                InspectionDate: _date.text,
+                                InspectionRemarks: _InspectionRemarks.text,
+                                QuantityFound: _QuantityFound.text,
+                                inptLocation:
+                                    _currentPosition!.latitude.toString() +
+                                        "," +
+                                        _currentPosition!.longitude.toString(),
+                                inspctArea: _currentAddress,
+                                userimage1: imageData1.path,
+                                userimage2: imageData2.path,
+                                userimage3: imageData3.path,
+                              );
+                              var value = DutyOfficerId;
+                              print("ID=$value");
+                              final bytes =
+                                  File(imageData1.path).readAsBytesSync();
 
-                          final DatabaseHelper _databaseService =
-                              DatabaseHelper.instance;
-                          final details = await _databaseService.insertInto(
-                              data.toJson(),
-                              DatabaseHelper.ImportInspectiontable);
-                          print(details);
-                          print("dbdata:$details");
-                          final Entries = await _databaseService.queryAllRows(
-                              DatabaseHelper.ImportInspectiontable);
-                          _DutyOfficer.clear();
-                          _NoOfsamples.clear();
-                          _Samplesize.clear();
-                          _InspectionPlace.clear();
-                          _date.clear();
-                          _InspectionRemarks.clear();
-                          _QuantityFound.clear();
-                          Navigator.pop(context);
-                          showAlert();
-                        },
-                        NoonPressed: () {
-                          Navigator.of(context).pop(false);
-                        },
-                      ),
-                    );
-                  },
-                ),
+                              final DatabaseHelper _databaseService =
+                                  DatabaseHelper.instance;
+                              final details = await _databaseService.insertInto(
+                                  data.toJson(),
+                                  DatabaseHelper.ImportInspectiontable);
+                              print(details);
+                              print("dbdata:$details");
+                              final Entries =
+                                  await _databaseService.queryAllRows(
+                                      DatabaseHelper.ImportInspectiontable);
+                              _DutyOfficer.clear();
+                              _NoOfsamples.clear();
+                              _Samplesize.clear();
+                              _InspectionPlace.clear();
+                              _date.clear();
+                              _InspectionRemarks.clear();
+                              _QuantityFound.clear();
+                              Navigator.pop(context);
+                              showAlert();
+                            },
+                            NoonPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                          ),
+                        );
+                      }
+                    }),
               ),
             ),
           ],
