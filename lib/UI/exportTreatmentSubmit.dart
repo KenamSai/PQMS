@@ -6,7 +6,9 @@ import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/alertWithButton.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -46,7 +48,7 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor:customColors.colorPQMS,
+        backgroundColor: customColors.colorPQMS,
         title: Text(
           "UAT-PQMS",
           style: TextStyle(
@@ -244,17 +246,15 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return AppAlertDailog(
-                          titleTextColor: customColors.colorPQMS,
+                        return CustomDialogBoxTwoButtons(
                           title: "UAT-PQMS",
-                          message: "Do you want to submit?",
-                          icon: Icons.error,
-                          iconColor: Colors.red,
-                          yestitle: "Yes",
-                          notitle: "No",
-                          YesonPressed: () async {
-                            final requestUrl =
-                              BaseUrl.finalURL+EndPoints.saveExportPermitAction;
+                          descriptions: "Do you want to submit?",
+                          Buttontext1: "No ",
+                          Buttontext2: "Yes",
+                          img: Image.asset("assets/warning.png"),
+                          onButton1Pressed: (){Navigator.pop(context);},
+                          onButton2Pressed: ()async{ final requestUrl = BaseUrl.finalURL +
+                                EndPoints.saveExportPermitAction;
                             final requestPayLoad = {
                               "role": "Inspector",
                               "action": "Forward",
@@ -302,18 +302,15 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                                 print("Treatment count:$value");
                                 Navigator.pop(context);
                                 showAlert(Response.data["status_Message"]);
-                                
                               }
                             } on DioError catch (e) {
                               print("error");
-                            }
-                          },
-                          NoonPressed: () {
-                            Navigator.pop(context);
-                          },
+                            }},
                         );
                       },
                     );
+
+                   
                   },
                 ),
               ),
@@ -323,23 +320,23 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
       ),
     );
   }
-  
-   showAlert(String data) { showDialog(
+
+   showAlert(msg) {
+    showDialog(
       context: context,
       builder: (context) {
-        return SingleButtonAlertDailog(titleTextColor: customColors.colorPQMS,
-          title: "UAT-PQMS",
-          message: data,
-          icon: Icons.done_all_outlined,
-          oktitle: "Ok",
-          iconColor: customColors.colorPQMS,
-          okonPressed: () {
-            Navigator.popUntil(
-              context,
-              ModalRoute.withName(AppRoutes.exportsaved),
-            );
-          },
-        );
+        return alertWithButton(
+            title: "UAT-PQMS",
+            descriptions: msg,
+            Buttontext: "Ok",
+            img: Image.asset("assets/correct.png"),
+            onButtonPressed: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(AppRoutes.exportsaved),
+              );
+            });
       },
-    );}
+    );
+  }
 }
