@@ -14,7 +14,9 @@ import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pqms/reusable/alertWithButton.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/imagecallback.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
@@ -70,8 +72,8 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
         ),
         actions: [
           GestureDetector(
-            onTap: () async{
-               FocusScope.of(context).unfocus();
+            onTap: () async {
+              FocusScope.of(context).unfocus();
               Navigator.pop(context);
             },
             child: Icon(
@@ -321,7 +323,6 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 ImgPickerCamera(
                                   callbackValue: (imageData) {
                                     imageData1 = imageData;
-                                    
                                   },
                                 ),
                                 ImgPickerCamera(
@@ -422,8 +423,10 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                           );
                         },
                       );
-                    }
-                    else if(imageData1.path.isEmpty && imageData2.path.isEmpty && imageData3.path.isEmpty){showDialog(
+                    } else if (imageData1.path.isEmpty &&
+                        imageData2.path.isEmpty &&
+                        imageData3.path.isEmpty) {
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonAlertDailog(
@@ -437,52 +440,51 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                             },
                           );
                         },
-                      );} else {
+                      );
+                    } else {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return AppAlertDailog(
-                            title: "UAT-PQMS",
-                            titleTextColor: customColors.colorPQMS,
-                            message: "Do you want to save data locally?",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            yestitle: "Yes",
-                            YesonPressed: () async {
-                              final data = exportResponseinspectionModelClass(
-                                applicationId: id,
-                                dutyofficer: selectedValue,
-                                dutyofficerId: DutyOfficerId,
-                                noofSamples: _NoOfsamples.text,
-                                inspectionDate: _date.text,
-                                sampleSize: _Samplesize.text,
-                                inspectionPlace: _InspectionPlace.text,
-                                inspectionRemarks: _InspectionRemarks.text,
-                                userimage1: imageData1.path,
-                                userimage2: imageData2.path,
-                                userimage3: imageData3.path,
-                                inspctArea: _currentAddress,
-                                inspctLocation:
-                                    _currentPosition!.latitude.toString() +
-                                        "," +
-                                        _currentPosition!.longitude.toString(),
-                              );
-                              print("Area:$_currentAddress");
-                              print("LAT,LONG:$_currentPosition");
-                              final DatabaseHelper _databaseService =
-                                  DatabaseHelper.instance;
-                              final details = await _databaseService.insertInto(
-                                  data.toJson(),
-                                  DatabaseHelper.ExportInspectiontable);
-                              print("dbdata:$details");
-                              Navigator.pop(context);
-                              showAlert();
-                            },
-                            notitle: "No",
-                            NoonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return CustomDialogBoxTwoButtons(
+                              title: "UAT-PQMS",
+                              descriptions: "Do you want to save data locally?",
+                              Buttontext1: "No",
+                              Buttontext2: "Yes",
+                              img: Image.asset("assets/warning.png"),
+                              onButton1Pressed: () {
+                                Navigator.pop(context);
+                              },
+                              onButton2Pressed: () async {
+                                final data = exportResponseinspectionModelClass(
+                                  applicationId: id,
+                                  dutyofficer: selectedValue,
+                                  dutyofficerId: DutyOfficerId,
+                                  noofSamples: _NoOfsamples.text,
+                                  inspectionDate: _date.text,
+                                  sampleSize: _Samplesize.text,
+                                  inspectionPlace: _InspectionPlace.text,
+                                  inspectionRemarks: _InspectionRemarks.text,
+                                  userimage1: imageData1.path,
+                                  userimage2: imageData2.path,
+                                  userimage3: imageData3.path,
+                                  inspctArea: _currentAddress,
+                                  inspctLocation: _currentPosition!.latitude
+                                          .toString() +
+                                      "," +
+                                      _currentPosition!.longitude.toString(),
+                                );
+                                print("Area:$_currentAddress");
+                                print("LAT,LONG:$_currentPosition");
+                                final DatabaseHelper _databaseService =
+                                    DatabaseHelper.instance;
+                                final details =
+                                    await _databaseService.insertInto(
+                                        data.toJson(),
+                                        DatabaseHelper.ExportInspectiontable);
+                                print("dbdata:$details");
+                                Navigator.pop(context);
+                                showAlert();
+                              });
                         },
                       );
                     }
@@ -500,20 +502,17 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
     showDialog(
       context: context,
       builder: (context) {
-        return SingleButtonAlertDailog(
-          title: "UAT-PQMS",
-          iconColor: customColors.colorPQMS,
-          message: "Data Saved Successfully",
-          titleTextColor: customColors.colorPQMS,
-          icon: Icons.done_outline,
-          oktitle: "Ok",
-          okonPressed: () {
-            Navigator.popUntil(
-              context,
-              ModalRoute.withName(AppRoutes.exportApplnDetails),
-            );
-          },
-        );
+        return alertWithButton(
+            title: "UAT-PQMS",
+            descriptions: "Data Saved Successfully",
+            Buttontext: "Ok",
+            img: Image.asset("assets/correct.png"),
+            onButtonPressed: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(AppRoutes.exportApplnDetails),
+              );
+            });
       },
     );
   }

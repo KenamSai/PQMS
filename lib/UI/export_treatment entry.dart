@@ -12,7 +12,9 @@ import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/alertWithButton.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -398,7 +400,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    if (selectedValue==null) {
+                    if (selectedValue == null) {
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -414,8 +416,8 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                           );
                         },
                       );
-                    } 
-                    else if(_TreatmentDate.text.isEmpty){showDialog(
+                    } else if (_TreatmentDate.text.isEmpty) {
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonAlertDailog(
@@ -429,13 +431,15 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                             },
                           );
                         },
-                      );}
-                      else if(_CompletedDate.text.isEmpty){showDialog(
+                      );
+                    } else if (_CompletedDate.text.isEmpty) {
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonAlertDailog(
                             title: "UAT-PQMS",
-                            message: "Please Select Completed Date of  Supervision/Treatment",
+                            message:
+                                "Please Select Completed Date of  Supervision/Treatment",
                             icon: Icons.error,
                             iconColor: Colors.red,
                             oktitle: "OK",
@@ -444,8 +448,9 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                             },
                           );
                         },
-                      );}
-                      else if(selectedAgencyName==null){showDialog(
+                      );
+                    } else if (selectedAgencyName == null) {
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonAlertDailog(
@@ -459,8 +464,9 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                             },
                           );
                         },
-                      );}
-                      else if(_TreatmentRemarks.text.isEmpty){showDialog(
+                      );
+                    } else if (_TreatmentRemarks.text.isEmpty) {
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonAlertDailog(
@@ -474,20 +480,10 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                             },
                           );
                         },
-                      );}
-                    else {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AppAlertDailog(
-                            titleTextColor: customColors.colorPQMS,
-                            title: "UAT-PQMS",
-                            message: "Do you want to save data locally?",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            yestitle: "Yes",
-                            YesonPressed: () async {
-                              final Response =
+                      );
+                    } else {
+                        showDialog(context: context, builder:(context) {
+                          return CustomDialogBoxTwoButtons(title: "UAT-PQMS", descriptions: "Do you want to save data locally?", Buttontext1: "No", Buttontext2: "Yes", img: Image.asset("assets/warning.png"), onButton1Pressed: (){Navigator.pop(context);}, onButton2Pressed: ()async{   final Response =
                                   exporttreatmentresponsemodelclass(
                                 applicationId: id.toString(),
                                 chemicals: _Chemicals.text,
@@ -509,15 +505,11 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                                       Response.toJson(), "ExportTreatment");
                               print("teja: $DBdetails");
                               Navigator.pop(context);
-                              showAlert();
-                            },
-                            notitle: "No",
-                            NoonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
-                        },
-                      );
+                              showAlert();});
+                        },);
+
+                    
+                    
                     }
                   },
                 ),
@@ -679,17 +671,16 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   }
 
   showAlert() {
+
     showDialog(
       context: context,
       builder: (context) {
-        return SingleButtonAlertDailog(
+        return alertWithButton(
             title: "UAT-PQMS",
-            titleTextColor: customColors.colorPQMS,
-            message: "Data saved Successfully",
-            icon: Icons.done_outline,
-            iconColor: customColors.colorPQMS,
-            oktitle: "Ok",
-            okonPressed: () {
+            descriptions: "Data Saved Successfully",
+            Buttontext: "Ok",
+            img: Image.asset("assets/correct.png"),
+            onButtonPressed: () {
               Navigator.popUntil(
                 context,
                 ModalRoute.withName(AppRoutes.exportApplnDetails),
