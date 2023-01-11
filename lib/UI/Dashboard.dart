@@ -223,37 +223,35 @@ class _DashboardState extends State<Dashboard> {
       showDialog(
         context: context,
         builder: (context) {
-          return AppAlertDailog(
-            title: "UAT-PQMS",
-            message:
-                "Saved Inspection/Treatment data found related to others.Do you want to clear?",
-            icon: Icons.error,
-            iconColor: Colors.red,
-            yestitle: "Yes",
-            YesonPressed: () async {
-              await SharedPreferencesClass()
-                  .writeTheData(PreferenceConst.actualId, upcomingId);
+          return CustomDialogBoxTwoButtons(
+              title: "UAT-PQMS",
+              descriptions:
+                  "Saved Inspection/Treatment data found related to others.Do you want to clear?",
+              Buttontext1: "Yes",
+              Buttontext2: "No",
+              img: Image.asset("assets/warning.png"),
+              onButton1Pressed: (() async {
+                await SharedPreferencesClass()
+                    .writeTheData(PreferenceConst.actualId, upcomingId);
 
-              DatabaseHelper _databasehelper = await DatabaseHelper.instance;
-              await _databasehelper
-                  .dropTable(DatabaseHelper.ExportInspectiontable);
-              await _databasehelper
-                  .dropTable(DatabaseHelper.exporttreatmenttable);
-              await _databasehelper
-                  .dropTable(DatabaseHelper.ImportInspectiontable);
-              await _databasehelper
-                  .dropTable(DatabaseHelper.ImportTreatmenttable);
-              Navigator.pop(context);
-              showAlert();
-            },
-            NoonPressed: () {
-              Navigator.popUntil(
-                context,
-                ModalRoute.withName(AppRoutes.Login),
-              );
-            },
-            notitle: "NO",
-          );
+                DatabaseHelper _databasehelper = await DatabaseHelper.instance;
+                await _databasehelper
+                    .dropTable(DatabaseHelper.ExportInspectiontable);
+                await _databasehelper
+                    .dropTable(DatabaseHelper.exporttreatmenttable);
+                await _databasehelper
+                    .dropTable(DatabaseHelper.ImportInspectiontable);
+                await _databasehelper
+                    .dropTable(DatabaseHelper.ImportTreatmenttable);
+                Navigator.pop(context);
+                showAlert();
+              }),
+              onButton2Pressed: (() {
+                Navigator.popUntil(
+                  context,
+                  ModalRoute.withName(AppRoutes.Login),
+                );
+              }));
         },
       );
     }
