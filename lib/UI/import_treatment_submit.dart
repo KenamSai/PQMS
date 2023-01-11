@@ -8,6 +8,7 @@ import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -241,17 +242,32 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                     showDialog(context: context, builder: ((context) => AppAlertDailog(title: "UAT-PQMS",
-                     message: "Do You Want To Submit", icon: Icons.error,
-                     yestitle: "Yes",
-                     notitle: "No",
-                     YesonPressed: () {
-                       Navigator.pop(context);
-                        submitDetails(args);
-                     },
-                     NoonPressed: () {
-                       Navigator.pop(context);
-                     },) ));
+                     showDialog(context: context, builder: ((context) => 
+                     CustomDialogBoxTwoButtons(
+                      title: 'UAT-PQMS',
+                      descriptions: 'Do You Want To Submit',
+                      Buttontext1: 'No', 
+                      Buttontext2: 'Yes', 
+                      img:  Image.asset("assets/warning.png"),
+                      onButton1Pressed: () { 
+                        Navigator.pop(context);
+                       },  onButton2Pressed: () { 
+                        Navigator.pop(context);
+                      submitDetails(args);
+                        }, )
+                    //  AppAlertDailog(title: "UAT-PQMS",
+                    //  message: "Do You Want To Submit", icon: Icons.error,
+                    //  yestitle: "Yes",
+                    //  notitle: "No",
+                    //  YesonPressed: () {
+                    //    Navigator.pop(context);
+                    //     submitDetails(args);
+                    //  },
+                    //  NoonPressed: () {
+                    //    Navigator.pop(context);
+                    //  },)
+                      )
+                     );
                    
                     
                   },

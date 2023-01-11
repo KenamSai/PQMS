@@ -13,10 +13,12 @@ import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/alertWithButton.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 import '../ModelClass/DutyOfficers.dart';
@@ -529,16 +531,22 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                         DatabaseHelper.ImportTreatmenttable);
                                 print(entries);
                                 Navigator.pop(context);
-                                showDialog(context: context,
-                                  builder: (context) =>
-                                SingleButtonDialogBox(
-                              title: "UAT-PQMS",
-                              descriptions: "Data Submitted Successfully",
-                              Buttontext: "ok",
-                              img: Image.asset("assets/checked.png"),
-                              onPressed: (() {
-                                Navigator.pop(context);
-                              })));
+                                showDialog(
+      context: context,
+      builder: (context) {
+        return alertWithButton(
+            title: "UAT-PQMS",
+            descriptions: "Data Saved Successfully",
+            Buttontext: "Ok",
+            img: Image.asset("assets/correct.png"),
+            onButtonPressed: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(AppRoutes.importApplDetails),
+              );
+            });
+      },
+    );
                               }),
                               onButton2Pressed: (() {
                                 Navigator.pop(context);

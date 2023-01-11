@@ -9,6 +9,7 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/deviceID.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/reusable/text_reusable_form.dart';
@@ -23,13 +24,12 @@ class ImportInspectionSubmit extends StatefulWidget {
 }
 
 class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
-  String imagePreview1="";
-  String imagePreview2="";
-  String imagePreview3="";
-  String img1="";
-  String img2="";
-  String img3="";
-
+  String imagePreview1 = "";
+  String imagePreview2 = "";
+  String imagePreview3 = "";
+  String img1 = "";
+  String img2 = "";
+  String img3 = "";
 
   @override
   Widget build(BuildContext context) {
@@ -233,18 +233,23 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    showDialog(context: context, builder: ((context) => AppAlertDailog(title: "UAT-PQMS",
-                     message: "Do You Want To Submit", icon: Icons.error,
-                     yestitle: "Yes",
-                     notitle: "No",
-                     YesonPressed: () {
-                       Navigator.pop(context);
-                        submitDetails(args);
-                     },
-                     NoonPressed: () {
-                       Navigator.pop(context);
-                     },) ));
-                   
+                    showDialog(
+                        context: context,
+                        builder: ((context) => CustomDialogBoxTwoButtons(
+                                title: "UAT-PQMS",
+                                descriptions: "Do You Want To Submit?",
+                                Buttontext1: "No",
+                                Buttontext2: "Yes",
+                                img: Image.asset("assets/warning.png"),
+                                onButton1Pressed: (() {
+                                  Navigator.pop(context);
+                                }),
+                                onButton2Pressed: (() {
+                                  Navigator.pop(context);
+                                  submitDetails(args);
+                                }))
+                            
+                            ));
 
                     // args.applicationId = "";
                     // args.Dutyofficer='';
@@ -267,26 +272,23 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
     final requestUrl = BaseUrl.finalURL + EndPoints.importinspectionsubmit;
     print("preview" + imagePreview1);
     // Image.file(new File(imagePreview!));
-    if(imagePreview1!="")
-    {
+    if (imagePreview1 != "") {
       final bytes1 = File(imagePreview1).readAsBytesSync();
-       img1 = base64Encode(bytes1);
+      img1 = base64Encode(bytes1);
     }
-     if(imagePreview2!="")
-    {
+    if (imagePreview2 != "") {
       final bytes2 = File(imagePreview2).readAsBytesSync();
-       img2 = base64Encode(bytes2);
+      img2 = base64Encode(bytes2);
     }
-     if(imagePreview3!="")
-    {
+    if (imagePreview3 != "") {
       final bytes3 = File(imagePreview3).readAsBytesSync();
-       img3 = base64Encode(bytes3);
+      img3 = base64Encode(bytes3);
     }
-   
+
     //print("img64"+img64);
     final importinspectionSubmit = ImportInspectionSubmitModel();
-    
-    importinspectionSubmit.quantityfound= args.QuantityFound.toString();
+
+    importinspectionSubmit.quantityfound = args.QuantityFound.toString();
     importinspectionSubmit.inspectionPlace = args.InspectionPlace.toString();
     importinspectionSubmit.noOfSamples = args.NoofSamples.toString();
     importinspectionSubmit.action = "Forward";
@@ -297,12 +299,13 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
     importinspectionSubmit.forwardToRole = "Duty officer";
     importinspectionSubmit.inspectionDate = args.InspectionDate.toString();
     importinspectionSubmit.sampleSize = args.SampleSize.toString();
-    importinspectionSubmit.inptLocation = args.inptLocation.toString(); //get latlang
+    importinspectionSubmit.inptLocation =
+        args.inptLocation.toString(); //get latlang
     importinspectionSubmit.deviceId = await Utils().getDeviceId();
-    importinspectionSubmit.inspctArea =args.inspctArea;
-    importinspectionSubmit.inptDoc1 = imagePreview1.isNotEmpty? img1: " ";
-    importinspectionSubmit.inptDoc2 = imagePreview2.isNotEmpty? img2: " ";
-    importinspectionSubmit.inptDoc3 = imagePreview3.isNotEmpty? img3: " ";
+    importinspectionSubmit.inspctArea = args.inspctArea;
+    importinspectionSubmit.inptDoc1 = imagePreview1.isNotEmpty ? img1 : " ";
+    importinspectionSubmit.inptDoc2 = imagePreview2.isNotEmpty ? img2 : " ";
+    importinspectionSubmit.inptDoc3 = imagePreview3.isNotEmpty ? img3 : " ";
 
     importinspectionSubmit.toJson();
     print(importinspectionSubmit.toJson());
@@ -332,7 +335,8 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
       print(_response.data);
 
       if (importinspectionSubmitresponse.statusCode == 200) {
-        DatabaseHelper.instance.ImportInspectiondelete(args.applicationId!,DatabaseHelper.ImportInspectiontable);
+        DatabaseHelper.instance.ImportInspectiondelete(
+            args.applicationId!, DatabaseHelper.ImportInspectiontable);
         showAlert();
         print("Data Submitted");
       } else if (importinspectionSubmitresponse.statusCode == 204) {
@@ -345,9 +349,9 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
       }
     }
   }
-  
-   showAlert() {
-     showDialog(
+
+  showAlert() {
+    showDialog(
       context: context,
       builder: (context) {
         return SingleButtonAlertDailog(
@@ -361,5 +365,5 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
         );
       },
     );
-   }
+  }
 }
