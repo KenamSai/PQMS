@@ -510,7 +510,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
   }
 
   void getApplnDetails(String id) async {
-    var requestURL = BaseUrl.uat_base_url + EndPoints.getPSCAppDetails;
+    var requestURL = BaseUrl.finalURL + EndPoints.getPSCAppDetails;
     final requestPayload = {
       "data": id, //pass id
     };

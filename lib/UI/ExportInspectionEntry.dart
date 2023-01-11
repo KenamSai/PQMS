@@ -437,7 +437,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
     _date.text = "";
     EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
     String requestUrl =
-        BaseUrl.uat_base_url+EndPoints.getEmployeeListByRole;
+        BaseUrl.finalURL+EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,

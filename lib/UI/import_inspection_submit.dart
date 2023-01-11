@@ -264,7 +264,7 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
   }
 
   Future<void> submitDetails(ImportResponseinspectionModelClass args) async {
-    final requestUrl = BaseUrl.uat_base_url + EndPoints.importinspectionsubmit;
+    final requestUrl = BaseUrl.finalURL + EndPoints.importinspectionsubmit;
     print("preview" + imagePreview1);
     // Image.file(new File(imagePreview!));
     if(imagePreview1!="")

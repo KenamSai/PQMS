@@ -19,8 +19,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
-  TextEditingController _username = TextEditingController(text: "Rekha_Mobile");
-  TextEditingController _password = TextEditingController(text: "PQMS@2022");
+  TextEditingController _username = TextEditingController();
+  TextEditingController _password = TextEditingController();
   String versionNumber = "";
   @override
   Widget build(BuildContext context) {
@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> getLoginResponse() async {
-    final requestUrl = BaseUrl.uat_base_url + EndPoints.login;
+    final requestUrl = BaseUrl.finalURL + EndPoints.login;
     final loginrequest = LoginRequest();
     loginrequest.iMEI = await Utils().getDeviceId();
     loginrequest.deviceId = await Utils().getDeviceId();

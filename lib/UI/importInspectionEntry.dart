@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -204,10 +205,26 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                           TextReusable(
                             data: "No Samples",
                             controller: _NoOfsamples,
+                            keyboardtype: TextInputType.number,
+                            format: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(
+                                  r"[0-9.]",
+                                ),
+                              ),
+                            ],
                           ),
                           TextReusable(
                             data: "Sample size",
                             controller: _Samplesize,
+                            keyboardtype: TextInputType.number,
+                            format: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(
+                                  r"[0-9.]",
+                                ),
+                              ),
+                            ],
                           ),
                           TextReusable(
                             data: "Inspection Place",
@@ -428,7 +445,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
 
   getDutyOffcersList() async {
     _date.text = "";
-    String requestUrl = BaseUrl.uat_base_url + EndPoints.getEmployeeListByRole;
+    String requestUrl = BaseUrl.finalURL + EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,

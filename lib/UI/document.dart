@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/ModelClass/importApplModelClass.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -19,7 +18,7 @@ class DocumentView extends StatelessWidget {
             ? GestureDetector(
                 onTap: () async {
                   _pdfViewerKey.currentState?.openBookmarkView();
-                  showAlert("${document?.document}", context);
+                  showDocumentPdf("${document?.document}", context);
                 },
                 child: Image.asset(
                   'assets/pdf.png',
@@ -41,7 +40,7 @@ class DocumentView extends StatelessWidget {
     );
   }
 
-  showAlert(String? pdf, BuildContext context) async {
+  showDocumentPdf(String? pdf, BuildContext context) async {
     showDialog(
         context: context,
         builder: ((BuildContext context) {

@@ -17,7 +17,7 @@ class ExportDocumentView extends StatelessWidget {
             ? GestureDetector(
                 onTap: () async {
                   _pdfViewerKey.currentState?.openBookmarkView();
-                  showAlert("${document?.document}", context);
+                  showDocumentPdf("${document?.document}", context);
                 },
                 child: Image.asset(
                   'assets/pdf.png',
@@ -39,7 +39,7 @@ class ExportDocumentView extends StatelessWidget {
     );
   }
 
-  showAlert(String? pdf, BuildContext context) async {
+  showDocumentPdf(String? pdf, BuildContext context) async {
     showDialog(
         context: context,
         builder: ((BuildContext context) {

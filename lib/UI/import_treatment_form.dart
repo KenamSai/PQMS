@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +17,6 @@ import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
-
 import '../ModelClass/DutyOfficers.dart';
 
 class ImportTreatmentForm extends StatefulWidget {
@@ -213,10 +213,26 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                           TextReusable(
                             data: "Duration(Hrs)",
                             controller: _Duration,
+                            keyboardtype: TextInputType.number,
+                            format: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(
+                                  r"[0-9.]",
+                                ),
+                              ),
+                            ],
                           ),
                           TextReusable(
                             data: "Temperature(DegC)",
                             controller: _Temperature,
+                            keyboardtype: TextInputType.number,
+                            format: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(
+                                  r"[0-9.]",
+                                ),
+                              ),
+                            ],
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -551,9 +567,9 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     });
   }
 
-  /////////////////////////////////////////////////////////////////////////
+  
   getDutyOffcersList() async {
-    String requestUrl = BaseUrl.uat_base_url + EndPoints.getEmployeeListByRole;
+    String requestUrl = BaseUrl.finalURL + EndPoints.getEmployeeListByRole;
 
     final requestPayLoad = {
       "actionType": "Duty officer",
@@ -640,7 +656,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
   }
 
   getAgencyList() async {
-    String requestUrl = BaseUrl.uat_base_url + EndPoints.agenciesList;
+    String requestUrl = BaseUrl.finalURL + EndPoints.agenciesList;
 
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);

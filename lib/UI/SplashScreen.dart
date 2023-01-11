@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void getDetails() async {
-    var requestURL = BaseUrl.uat_base_url + EndPoints.AppVersion;
+    var requestURL = BaseUrl.finalURL + EndPoints.AppVersion;
     //conversion into form data
     FormData formData = FormData.fromMap({
       "osType": "IOS",

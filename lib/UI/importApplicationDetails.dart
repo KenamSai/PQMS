@@ -565,7 +565,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
   }
 
   void getDetails(String id) async {
-    var requestURL = BaseUrl.uat_base_url + EndPoints.ImportAppDetails;
+    var requestURL = BaseUrl.finalURL + EndPoints.ImportAppDetails;
     final requestPayload = {
       "data": id, //pass id
     };

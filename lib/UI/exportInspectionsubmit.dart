@@ -300,7 +300,7 @@ class _exportInspectionSubmissionState
                           image3 = base64Encode(bytes3);
                         }
                         final requestUrl =
-                            BaseUrl.uat_base_url+EndPoints.saveExportPermitAction;
+                            BaseUrl.finalURL+EndPoints.saveExportPermitAction;
                         final requestPayLoad = {
                           "role": "Inspector",
                           "applicationId": id.applicationId,

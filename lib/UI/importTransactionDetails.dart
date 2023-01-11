@@ -101,8 +101,8 @@ class _ImportTransactionDetailsState extends State<ImportTransactionDetails> {
   }
 
   void getTransactionResponse(String id) async {
-    var requestURL = BaseUrl.uat_base_url + EndPoints.importtransactindetails;
-    //BaseUrl.uat_base_url + EndPoints.importtransactindetails;
+    var requestURL = BaseUrl.finalURL + EndPoints.importtransactindetails;
+    //BaseUrl.finalURL + EndPoints.importtransactindetails;
     final requestPayload = {
       "data": id, //pass id
     };
