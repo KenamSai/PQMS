@@ -14,6 +14,8 @@ import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/imagecallback.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -357,65 +359,68 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return SingleButtonAlertDailog(
-                              title: "UAT-PQMS",
-                              message: "Please Select DutyOfficer",
-                              icon: Icons.error,
-                              iconColor: Colors.red,
-                              oktitle: "OK",
-                              okonPressed: () {
-                                Navigator.pop(context);
-                              },
-                            );
+                            return SingleButtonDialogBox(
+                                title: "UAT-PQMS",
+                                descriptions: "Please Select DutyOfficer",
+                                Buttontext: "ok",
+                                img: Image.asset("assets/caution.png"),
+                                onPressed: (() {
+                                  Navigator.pop(context);
+                                }));
+                            // SingleButtonAlertDailog(
+                            //   title: "UAT-PQMS",
+                            //   message: "Please Select DutyOfficer",
+                            //   icon: Icons.error,
+                            //   iconColor: Colors.red,
+                            //   oktitle: "OK",
+                            //   okonPressed: () {
+                            //     Navigator.pop(context);
+                            //   },
+                            // );
                           },
                         );
                       } else if (_InspectionPlace.text.isEmpty) {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return SingleButtonAlertDailog(
-                              title: "UAT-PQMS",
-                              message: "Please Enter Inspection Place",
-                              icon: Icons.error,
-                              iconColor: Colors.red,
-                              oktitle: "OK",
-                              okonPressed: () {
-                                Navigator.pop(context);
-                              },
-                            );
+                            return SingleButtonDialogBox(
+                                title: "UAT-PQMS",
+                                descriptions: "Please Enter Inspection Place",
+                                Buttontext: "ok",
+                                img: Image.asset("assets/caution.png"),
+                                onPressed: (() {
+                                  Navigator.pop(context);
+                                }));
                           },
                         );
                       } else if (_date.text.isEmpty) {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return SingleButtonAlertDailog(
-                              title: "UAT-PQMS",
-                              message:
-                                  "Please Select Completed Inspection Date",
-                              icon: Icons.error,
-                              iconColor: Colors.red,
-                              oktitle: "OK",
-                              okonPressed: () {
-                                Navigator.pop(context);
-                              },
-                            );
+                            return SingleButtonDialogBox(
+                                title: "UAT-PQMS",
+                                descriptions:
+                                    "Please Select Completed Inspection Date",
+                                Buttontext: "ok",
+                                img: Image.asset("assets/caution.png"),
+                                onPressed: (() {
+                                  Navigator.pop(context);
+                                }));
                           },
                         );
                       } else if (_InspectionRemarks.text.isEmpty) {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return SingleButtonAlertDailog(
-                              title: "UAT-PQMS",
-                              message: "Please Enter Inspection Remarks ",
-                              icon: Icons.error,
-                              iconColor: Colors.red,
-                              oktitle: "OK",
-                              okonPressed: () {
-                                Navigator.pop(context);
-                              },
-                            );
+                            return SingleButtonDialogBox(
+                                title: "UAT-PQMS",
+                                descriptions:
+                                    "Please Enter Inspection Remarks ",
+                                Buttontext: "ok",
+                                img: Image.asset("assets/caution.png"),
+                                onPressed: (() {
+                                  Navigator.pop(context);
+                                }));
                           },
                         );
                       } else if (imageData1.path.isEmpty &&
@@ -424,91 +429,109 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return SingleButtonAlertDailog(
-                              title: "UAT-PQMS",
-                              message: "Please Capture atleast one image",
-                              icon: Icons.error,
-                              iconColor: Colors.red,
-                              oktitle: "OK",
-                              okonPressed: () {
-                                Navigator.pop(context);
-                              },
-                            );
+                            return SingleButtonDialogBox(
+                                title: "UAT-PQMS",
+                                descriptions:
+                                    "Please Capture atleast one image",
+                                Buttontext: "ok",
+                                img: Image.asset("assets/caution.png"),
+                                onPressed: (() {
+                                  Navigator.pop(context);
+                                }));
                           },
                         );
                       } else {
                         showDialog(
-                          context: context,
-                          builder: (context) => AppAlertDailog(
-                            title: "UAT-PQMS",
-                            message:
-                                "Data will be stored locally! Do you want to save",
-                            icon: Icons.error,
-                            yestitle: "Yes",
-                            notitle: "No",
-                            YesonPressed: () async {
-                              if (_currentPosition != null &&
-                                  _currentPosition!.latitude != null &&
-                                  _currentPosition!.longitude != null) {
-                                print(
-                                    'LAT: ${_currentPosition?.latitude ?? ""}');
-                                print(
-                                    'LAT: ${_currentPosition?.longitude ?? ""}');
-                                print('ADDRESS: ${_currentAddress ?? ""}');
-                              } else {
-                                _getCurrentPosition();
-                                print("please wait till location is fetched");
-                              }
+                            context: context,
+                            builder: (context) => CustomDialogBoxTwoButtons(
+                                  title: "UAT-PQMS",
+                                  descriptions:
+                                      "Data will be stored locally! Do you want to save?",
+                                  Buttontext1: "Yes",
+                                  Buttontext2: "No",
+                                  img: Image.asset("assets/warning.png"),
+                                  onButton1Pressed: (() async {
+                                    if (_currentPosition != null &&
+                                        _currentPosition!.latitude != null &&
+                                        _currentPosition!.longitude != null) {
+                                      print(
+                                          'LAT: ${_currentPosition?.latitude ?? ""}');
+                                      print(
+                                          'LAT: ${_currentPosition?.longitude ?? ""}');
+                                      print(
+                                          'ADDRESS: ${_currentAddress ?? ""}');
+                                    } else {
+                                      _getCurrentPosition();
+                                      print(
+                                          "please wait till location is fetched");
+                                    }
 
-                              final data = ImportResponseinspectionModelClass(
-                                applicationId: id,
-                                Dutyofficer: selectedValue,
-                                DutyOfficerId: DutyOfficerId,
-                                NoofSamples: _NoOfsamples.text,
-                                SampleSize: _Samplesize.text,
-                                InspectionPlace: _InspectionPlace.text,
-                                InspectionDate: _date.text,
-                                InspectionRemarks: _InspectionRemarks.text,
-                                QuantityFound: _QuantityFound.text,
-                                inptLocation:
-                                    _currentPosition!.latitude.toString() +
-                                        "," +
-                                        _currentPosition!.longitude.toString(),
-                                inspctArea: _currentAddress,
-                                userimage1: imageData1.path,
-                                userimage2: imageData2.path,
-                                userimage3: imageData3.path,
-                              );
-                              var value = DutyOfficerId;
-                              print("ID=$value");
-                              final bytes =
-                                  File(imageData1.path).readAsBytesSync();
+                                    final data =
+                                        ImportResponseinspectionModelClass(
+                                      applicationId: id,
+                                      Dutyofficer: selectedValue,
+                                      DutyOfficerId: DutyOfficerId,
+                                      NoofSamples: _NoOfsamples.text,
+                                      SampleSize: _Samplesize.text,
+                                      InspectionPlace: _InspectionPlace.text,
+                                      InspectionDate: _date.text,
+                                      InspectionRemarks:
+                                          _InspectionRemarks.text,
+                                      QuantityFound: _QuantityFound.text,
+                                      inptLocation: _currentPosition!.latitude
+                                              .toString() +
+                                          "," +
+                                          _currentPosition!.longitude
+                                              .toString(),
+                                      inspctArea: _currentAddress,
+                                      userimage1: imageData1.path,
+                                      userimage2: imageData2.path,
+                                      userimage3: imageData3.path,
+                                    );
+                                    var value = DutyOfficerId;
+                                    print("ID=$value");
+                                    final bytes =
+                                        File(imageData1.path).readAsBytesSync();
 
-                              final DatabaseHelper _databaseService =
-                                  DatabaseHelper.instance;
-                              final details = await _databaseService.insertInto(
-                                  data.toJson(),
-                                  DatabaseHelper.ImportInspectiontable);
-                              print(details);
-                              print("dbdata:$details");
-                              final Entries =
-                                  await _databaseService.queryAllRows(
-                                      DatabaseHelper.ImportInspectiontable);
-                              _DutyOfficer.clear();
-                              _NoOfsamples.clear();
-                              _Samplesize.clear();
-                              _InspectionPlace.clear();
-                              _date.clear();
-                              _InspectionRemarks.clear();
-                              _QuantityFound.clear();
-                              Navigator.pop(context);
-                              showAlert();
-                            },
-                            NoonPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                          ),
-                        );
+                                    final DatabaseHelper _databaseService =
+                                        DatabaseHelper.instance;
+                                    final details =
+                                        await _databaseService.insertInto(
+                                            data.toJson(),
+                                            DatabaseHelper
+                                                .ImportInspectiontable);
+                                    print(details);
+                                    print("dbdata:$details");
+                                    final Entries = await _databaseService
+                                        .queryAllRows(DatabaseHelper
+                                            .ImportInspectiontable);
+                                    _DutyOfficer.clear();
+                                    _NoOfsamples.clear();
+                                    _Samplesize.clear();
+                                    _InspectionPlace.clear();
+                                    _date.clear();
+                                    _InspectionRemarks.clear();
+                                    _QuantityFound.clear();
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            SingleButtonDialogBox(
+                                                title: "UAT-PQMS",
+                                                descriptions:
+                                                    "Data Submitted Successfully",
+                                                Buttontext: "ok",
+                                                img: Image.asset(
+                                                    "assets/checked.png"),
+                                                onPressed: (() {
+                                                  Navigator.pop(context);
+                                                })));
+                                  }),
+                                  onButton2Pressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ));
                       }
                     }),
               ),
