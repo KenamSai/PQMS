@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pqms/reusable/CustomColors.dart';
@@ -124,7 +126,8 @@ class _SideBarState extends State<SideBar> {
                       notitle: "No",
                       iconColor: Colors.red,
                       YesonPressed: (() {
-                        SystemNavigator.pop();
+                        //SystemNavigator.pop();
+                       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                       }),
                       NoonPressed: () {
                         Navigator.of(context).pop(false);

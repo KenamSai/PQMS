@@ -6,6 +6,7 @@ import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/ModelClass/login_request.dart';
 import 'package:pqms/ModelClass/login_response.dart';
 import 'package:pqms/reusable/deviceID.dart';
+import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -19,8 +20,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
-  TextEditingController _username = TextEditingController();
-  TextEditingController _password = TextEditingController();
+  TextEditingController _username = TextEditingController(text: "Rekha_Mobile");
+  TextEditingController _password = TextEditingController(text: "PQMS@2022");
   String versionNumber = "";
   @override
   Widget build(BuildContext context) {
@@ -183,19 +184,15 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Please enter username"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "OK",
-                  style: TextStyle(fontSize: 18, color: Colors.blue),
-                ),
-              ),
-            ],
+          return SingleButtonAlertDailog(
+            title: "UAT-PQMS",
+            message: "Please Enter Username",
+            icon: Icons.error,
+            iconColor: Colors.red,
+            oktitle: "OK",
+            okonPressed: () {
+              Navigator.pop(context);
+            },
           );
         },
       );
@@ -204,19 +201,15 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Please enter password"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "OK",
-                  style: TextStyle(fontSize: 18, color: Colors.blue),
-                ),
-              ),
-            ],
+          return SingleButtonAlertDailog(
+            title: "UAT-PQMS",
+            message: "Please Enter Password",
+            icon: Icons.error,
+            iconColor: Colors.red,
+            oktitle: "OK",
+            okonPressed: () {
+              Navigator.pop(context);
+            },
           );
         },
       );
@@ -268,21 +261,15 @@ class _LoginScreenState extends State<LoginScreen> {
         showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              title: Text(
-                loginResponse.statusMessage.toString(),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    "OK",
-                    style: TextStyle(fontSize: 18, color: Colors.blue),
-                  ),
-                ),
-              ],
+            return SingleButtonAlertDailog(
+              title: "UAT-PQMS",
+              message: loginResponse.statusMessage!,
+              icon: Icons.error,
+              oktitle: "OK",
+              iconColor: Colors.red,
+              okonPressed: () {
+                Navigator.pop(context);
+              },
             );
           },
         );
@@ -293,11 +280,11 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  getVersionNumber() async{
-    String value=await SharedPreferencesClass().readTheData(PreferenceConst.versionNumber);
-    setState((){
-      versionNumber=value;
+  getVersionNumber() async {
+    String value = await SharedPreferencesClass()
+        .readTheData(PreferenceConst.versionNumber);
+    setState(() {
+      versionNumber = value;
     });
-    
   }
 }

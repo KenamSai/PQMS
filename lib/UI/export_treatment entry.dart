@@ -223,6 +223,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                           TextReusable(
                             data: "Temperature(DegC)",
                             controller: _Temperature,
+                             keyboardtype: TextInputType.number,
                             format: [
                               FilteringTextInputFormatter.allow(
                                 RegExp(
