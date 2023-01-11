@@ -99,6 +99,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ScaffoldMessenger.of(context).showSnackBar(snack);
           Navigator.pushNamed(context, AppRoutes.Login);
           await SharedPreferencesClass().writeTheData(PreferenceConst.versionNumber,SplashResponse.data?.versionNumber );
+          await SharedPreferencesClass().writeTheData(PreferenceConst.versionUpdateDate, SplashResponse.data?.versionDate);      
         } else {
           showDialog(
             context: context,

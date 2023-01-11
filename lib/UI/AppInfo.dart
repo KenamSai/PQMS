@@ -15,6 +15,7 @@ class AppInfo extends StatefulWidget {
 
 class _AppInfoState extends State<AppInfo> {
   String versionNumber = "";
+  String versionDate="";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,8 +93,7 @@ class _AppInfoState extends State<AppInfo> {
                     style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 16),
                   ),
                   TextSpan(
-                    text: """ Initial
-                  Release""",
+                    text: "$versionDate",
                     style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 20),
                   )
                 ],
@@ -114,8 +114,10 @@ class _AppInfoState extends State<AppInfo> {
   getVersionNumber() async {
     final value = await SharedPreferencesClass()
         .readTheData(PreferenceConst.versionNumber);
+    final date=await SharedPreferencesClass().readTheData(PreferenceConst.versionUpdateDate);
     setState(() {
       versionNumber = value;
+      versionDate=date;
     });
   }
 }
