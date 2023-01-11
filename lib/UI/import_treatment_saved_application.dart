@@ -3,58 +3,55 @@ import 'package:pqms/ModelClass/import_treatment_response.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/routes/AppRoutes.dart';
-
 
 class ImportTreatmentSavedApplications extends StatefulWidget {
   const ImportTreatmentSavedApplications({super.key});
 
   @override
-  State<ImportTreatmentSavedApplications> createState() => _ImportTreatmentSavedApplications();
+  State<ImportTreatmentSavedApplications> createState() =>
+      _ImportTreatmentSavedApplications();
 }
 
-class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplications> {
-    List<ImportTreatmentModelClass> importdata=[];
+class _ImportTreatmentSavedApplications
+    extends State<ImportTreatmentSavedApplications> {
+  List<ImportTreatmentModelClass> importdata = [];
 
-     @override
+  @override
   void initState() {
-   
-
     showrecords();
-     super.initState();
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         centerTitle: true,
+        centerTitle: true,
         backgroundColor: customColors.colorPQMS,
-        title: Text('UAT-PQMS'
-        ),
+        title: Text('UAT-PQMS'),
         actions: [
           GestureDetector(
-            onTap:() {
+            onTap: () {
               showDialog(
-              context: context,
-              builder: (context) {
-                return AppAlertDailog(
-                  iconColor: Colors.red,
-                  titleTextColor: customColors.colorPQMS,
-                  title: "UAT-PQMS",
-                  message: "Do you want to logout from app?",
-                  icon: Icons.error,
-                  yestitle: "Yes",
-                  notitle: "No",
-                  YesonPressed: () {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName(AppRoutes.Login));
-                  },
-                  NoonPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                );
-              },
-            );
+                context: context,
+                builder: (context) {
+                  return CustomDialogBoxTwoButtons(
+                      title: "UAT-PQMS",
+                      descriptions: "Do you want to logout from app?",
+                      Buttontext1: "Yes",
+                      Buttontext2: "No",
+                      img: Image.asset("assets/warning.png"),
+                      onButton1Pressed: (() {
+                        Navigator.popUntil(
+                            context, ModalRoute.withName(AppRoutes.Login));
+                      }),
+                      onButton2Pressed: (() {
+                        Navigator.of(context).pop(false);
+                      }));
+                },
+              );
             },
             child: Image.asset(
               "assets/logout.png",
@@ -113,7 +110,9 @@ class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplic
                         final data = importdata[index];
                         return GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.importtreatmentformsubmit,arguments: data);
+                            Navigator.pushNamed(
+                                context, AppRoutes.importtreatmentformsubmit,
+                                arguments: data);
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
@@ -184,30 +183,30 @@ class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplic
       ),
     );
   }
+
   void showrecords() {
-  DatabaseHelper.instance
+    DatabaseHelper.instance
         .queryAllRows(DatabaseHelper.ImportTreatmenttable)
         .then((value) {
       setState(() {
         for (var element in value) {
           var model = ImportTreatmentModelClass(
-            applicationId: element["applicationId"],
-            Dutyofficer: element["Dutyofficer"],
-            Chemicals: element["Chemicals"],
-            Dosage: element["Dosage"],
-            Duration: element["Duration"],
-            Temperature: element["Temperature"],
-            TreatmentDate: element["TreatmentDate"],
-            CompletedDate: element["CompletedDate"],
-            DoneBy: element["DoneBy"],
-            TreatmentRemarks: element["TreatmentRemarks"],
-            TreatmentLocation: element["TreatmentLocation"],
-            TreatmentArea: element["TreatmentArea"],
-            DutyOfficerId:element["DutyOfficerId"],
-            agencyId: element["AgencyId"]
-          );
+              applicationId: element["applicationId"],
+              Dutyofficer: element["Dutyofficer"],
+              Chemicals: element["Chemicals"],
+              Dosage: element["Dosage"],
+              Duration: element["Duration"],
+              Temperature: element["Temperature"],
+              TreatmentDate: element["TreatmentDate"],
+              CompletedDate: element["CompletedDate"],
+              DoneBy: element["DoneBy"],
+              TreatmentRemarks: element["TreatmentRemarks"],
+              TreatmentLocation: element["TreatmentLocation"],
+              TreatmentArea: element["TreatmentArea"],
+              DutyOfficerId: element["DutyOfficerId"],
+              agencyId: element["AgencyId"]);
           importdata.add(model);
-          
+
           //print(userData);
         }
       });
@@ -215,6 +214,4 @@ class _ImportTreatmentSavedApplications extends State<ImportTreatmentSavedApplic
       print(error);
     });
   }
-
 }
-

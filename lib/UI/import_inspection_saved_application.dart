@@ -3,6 +3,7 @@ import 'package:pqms/ModelClass/import_inspection_response.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 
 class ImportInspectionSavedApplications extends StatefulWidget {
@@ -62,22 +63,35 @@ class _ImportInspectionSavedApplicationsState
               showDialog(
                 context: context,
                 builder: (context) {
-                  return AppAlertDailog(
-                    iconColor: Colors.red,
-                    titleTextColor: customColors.colorPQMS,
-                    title: "UAT-PQMS",
-                    message: "Do you want to logout from app?",
-                    icon: Icons.error,
-                    yestitle: "Yes",
-                    notitle: "No",
-                    YesonPressed: () {
-                      Navigator.popUntil(
-                          context, ModalRoute.withName(AppRoutes.Login));
-                    },
-                    NoonPressed: () {
-                      Navigator.of(context).pop(false);
-                    },
-                  );
+                  return CustomDialogBoxTwoButtons(
+                  title: "UAT-PQMS",
+                  descriptions: "Do you want to logout from app?",
+                  Buttontext1: "Yes",
+                  Buttontext2: "No",
+                  img: Image.asset("assets/warning.png"),
+                  onButton1Pressed: (() {
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(AppRoutes.Login));
+                  }),
+                  onButton2Pressed: (() {
+                    Navigator.of(context).pop(false);
+                  }));
+                  // AppAlertDailog(
+                  //   iconColor: Colors.red,
+                  //   titleTextColor: customColors.colorPQMS,
+                  //   title: "UAT-PQMS",
+                  //   message: "Do you want to logout from app?",
+                  //   icon: Icons.error,
+                  //   yestitle: "Yes",
+                  //   notitle: "No",
+                  //   YesonPressed: () {
+                  //     Navigator.popUntil(
+                  //         context, ModalRoute.withName(AppRoutes.Login));
+                  //   },
+                  //   NoonPressed: () {
+                  //     Navigator.of(context).pop(false);
+                  //   },
+                  // );
                 },
               );
             },

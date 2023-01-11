@@ -7,6 +7,7 @@ import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -45,45 +46,20 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     Future<bool> showExitPopup() async {
       return await showDialog(
-            
-            context: context,
-            builder: (context) => AlertDialog(
-              icon: Icon(Icons.error,color: Colors.red,size: 50,),
-              title: Text(
-                "UAT-PQMS",
-                style: TextStyle(color: customColors.colorPQMS),
-              ),
-              content: Text(
-                'Do you want to exit App?',
-                textAlign: TextAlign.center,
-              ),
-              actions: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      //return false when click on "NO"
-                      child: Text('No'),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            customColors.colorPQMS),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => SystemNavigator.pop(),
-                      //return true when click on "Yes"
-                      child: Text('Yes'),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            customColors.colorred),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ) ??
+              context: context,
+              builder: (context) => CustomDialogBoxTwoButtons(
+                  title: "UAT-PQMS",
+                  descriptions: "Do you want to logout from app?",
+                  Buttontext1: "Yes",
+                  Buttontext2: "No",
+                  img: Image.asset("assets/warning.png"),
+                  onButton1Pressed: (() {
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(AppRoutes.Login));
+                  }),
+                  onButton2Pressed: (() {
+                    Navigator.of(context).pop(false);
+                  }))) ??
           false; //if showDialouge had returned null, then return false
       //if showDialouge had returned null, then return false
     }
@@ -100,28 +76,25 @@ class _DashboardState extends State<Dashboard> {
           ),
           actions: [
             GestureDetector(
-              onTap:() {
+              onTap: () {
                 showDialog(
-              context: context,
-              builder: (context) {
-                return AppAlertDailog(
-                  iconColor: Colors.red,
-                  titleTextColor: Colors.black,
-                  title: "UAT-PQMS",
-                  message: "Do you want to logout from app?",
-                  icon: Icons.error,
-                  yestitle: "Yes",
-                  notitle: "No",
-                  YesonPressed: () {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName(AppRoutes.Login));
-                  },
-                  NoonPressed: () {
-                    Navigator.of(context).pop(false);
+                  context: context,
+                  builder: (context) {
+                    return CustomDialogBoxTwoButtons(
+                        title: "UAT-PQMS",
+                        descriptions: "Do you want to logout from app?",
+                        Buttontext1: "Yes",
+                        Buttontext2: "No",
+                        img: Image.asset("assets/warning.png"),
+                        onButton1Pressed: (() {
+                          Navigator.popUntil(
+                              context, ModalRoute.withName(AppRoutes.Login));
+                        }),
+                        onButton2Pressed: (() {
+                          Navigator.of(context).pop(false);
+                        }));
                   },
                 );
-              },
-            );
               },
               child: Image.asset(
                 "assets/logout.png",
@@ -153,7 +126,6 @@ class _DashboardState extends State<Dashboard> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
-                      
                       ),
                     ),
                   ),
