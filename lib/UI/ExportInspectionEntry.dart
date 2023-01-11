@@ -70,7 +70,8 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {
+            onTap: () async{
+               FocusScope.of(context).unfocus();
               Navigator.pop(context);
             },
             child: Icon(
@@ -213,6 +214,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                           TextReusable(
                             data: "No Samples",
                             controller: _NoOfsamples,
+                            keyboardtype: TextInputType.number,
                             format: [
                               FilteringTextInputFormatter.allow(
                                 RegExp(
@@ -224,6 +226,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                           TextReusable(
                             data: "Sample size",
                             controller: _Samplesize,
+                            keyboardtype: TextInputType.number,
                             format: [
                               FilteringTextInputFormatter.allow(
                                 RegExp(
@@ -318,6 +321,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 ImgPickerCamera(
                                   callbackValue: (imageData) {
                                     imageData1 = imageData;
+                                    
                                   },
                                 ),
                                 ImgPickerCamera(
@@ -354,53 +358,134 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AppAlertDailog(
-                          title: "UAT-PQMS",
-                          titleTextColor: customColors.colorPQMS,
-                          message: "Do you want to save data locally?",
-                          icon: Icons.error,
-                          iconColor: Colors.red,
-                          yestitle: "Yes",
-                          YesonPressed: () async {
-                            final data = exportResponseinspectionModelClass(
-                              applicationId: id,
-                              dutyofficer: selectedValue,
-                              dutyofficerId: DutyOfficerId,
-                              noofSamples: _NoOfsamples.text,
-                              inspectionDate: _date.text,
-                              sampleSize: _Samplesize.text,
-                              inspectionPlace: _InspectionPlace.text,
-                              inspectionRemarks: _InspectionRemarks.text,
-                              userimage1: imageData1.path,
-                              userimage2: imageData2.path,
-                              userimage3: imageData3.path,
-                              inspctArea: _currentAddress,
-                              inspctLocation:
-                                  _currentPosition!.latitude.toString() +
-                                      "," +
-                                      _currentPosition!.longitude.toString(),
-                            );
-                            print("Area:$_currentAddress");
-                            print("LAT,LONG:$_currentPosition");
-                            final DatabaseHelper _databaseService =
-                                DatabaseHelper.instance;
-                            final details = await _databaseService.insertInto(
-                                data.toJson(),
-                                DatabaseHelper.ExportInspectiontable);
-                            print("dbdata:$details");
-                            Navigator.pop(context);
-                            showAlert();
-                          },
-                          notitle: "No",
-                          NoonPressed: () {
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                    );
+                    if (selectedValue == null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Select DutyOfficer",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    } else if (_InspectionPlace.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Enter Inspection Place",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    } else if (_date.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Select Completed Inspection Date",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    } else if (_InspectionRemarks.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Enter Inspection Remarks ",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    }
+                    else if(imageData1.path.isEmpty && imageData2.path.isEmpty && imageData3.path.isEmpty){showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Capture atleast one image",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );} else {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AppAlertDailog(
+                            title: "UAT-PQMS",
+                            titleTextColor: customColors.colorPQMS,
+                            message: "Do you want to save data locally?",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            yestitle: "Yes",
+                            YesonPressed: () async {
+                              final data = exportResponseinspectionModelClass(
+                                applicationId: id,
+                                dutyofficer: selectedValue,
+                                dutyofficerId: DutyOfficerId,
+                                noofSamples: _NoOfsamples.text,
+                                inspectionDate: _date.text,
+                                sampleSize: _Samplesize.text,
+                                inspectionPlace: _InspectionPlace.text,
+                                inspectionRemarks: _InspectionRemarks.text,
+                                userimage1: imageData1.path,
+                                userimage2: imageData2.path,
+                                userimage3: imageData3.path,
+                                inspctArea: _currentAddress,
+                                inspctLocation:
+                                    _currentPosition!.latitude.toString() +
+                                        "," +
+                                        _currentPosition!.longitude.toString(),
+                              );
+                              print("Area:$_currentAddress");
+                              print("LAT,LONG:$_currentPosition");
+                              final DatabaseHelper _databaseService =
+                                  DatabaseHelper.instance;
+                              final details = await _databaseService.insertInto(
+                                  data.toJson(),
+                                  DatabaseHelper.ExportInspectiontable);
+                              print("dbdata:$details");
+                              Navigator.pop(context);
+                              showAlert();
+                            },
+                            notitle: "No",
+                            NoonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ),
@@ -436,8 +521,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   getDutyOffcersList() async {
     _date.text = "";
     EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
-    String requestUrl =
-        BaseUrl.finalURL+EndPoints.getEmployeeListByRole;
+    String requestUrl = BaseUrl.finalURL + EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -587,5 +671,27 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
         debugPrint(e);
       },
     );
+  }
+
+  bool validation() {
+    if (true) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return SingleButtonAlertDailog(
+            title: "UAT-PQMS",
+            message: "Please Enter Username",
+            icon: Icons.error,
+            iconColor: Colors.red,
+            oktitle: "OK",
+            okonPressed: () {
+              Navigator.pop(context);
+            },
+          );
+        },
+      );
+      return false;
+    }
+    return true;
   }
 }

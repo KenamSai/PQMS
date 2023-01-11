@@ -31,7 +31,7 @@ class SingleButtonAlertDailog extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-          color: titleTextColor ?? Colors.green,
+          color: titleTextColor ??customColors.colorPQMS,
         ),
       ),
       icon: Icon(
@@ -52,7 +52,7 @@ class SingleButtonAlertDailog extends StatelessWidget {
           width: MediaQuery.of(context).size.width*0.9,
           child: ElevatedButton(
             onPressed: this.okonPressed ,
-            child: Text(oktitle),
+            child: Text(oktitle,style: TextStyle(color: Colors.white),),
             style: ButtonStyle(
               backgroundColor:
                   MaterialStateProperty.all<Color>(customColors.colorPQMS),
