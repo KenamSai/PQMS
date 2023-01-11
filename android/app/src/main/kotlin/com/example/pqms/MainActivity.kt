@@ -1,4 +1,4 @@
-package com.example.pqms
+package com.cgg.gov.pqms
 
 import io.flutter.embedding.android.FlutterActivity
 
