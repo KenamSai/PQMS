@@ -172,22 +172,7 @@ class _SideBarState extends State<SideBar> {
                       onButton2Pressed:(() {
                          Navigator.of(context).pop(false);
                       }));
-                      //  AppAlertDailog(
-                      //   iconColor: Colors.red,
-                      //   titleTextColor: customColors.colorPQMS,
-                      //   title: "UAT-PQMS",
-                      //   message: "Do you want to logout from app?",
-                      //   icon: Icons.error,
-                      //   yestitle: "Yes",
-                      //   notitle: "No",
-                      //   YesonPressed: () {
-                      //     Navigator.popUntil(
-                      //         context, ModalRoute.withName(AppRoutes.Login));
-                      //   },
-                      //   NoonPressed: () {
-                      //     Navigator.of(context).pop(false);
-                      //   },
-                      // );
+                     
                     },
                   );
                 },

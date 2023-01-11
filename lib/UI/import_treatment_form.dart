@@ -14,6 +14,8 @@ import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
+import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -402,16 +404,88 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    showDialog(
+                    if (selectedValue == null) {
+                      showDialog(
                         context: context,
-                        builder: (context) => AppAlertDailog(
+                        builder: (context) {
+                          return SingleButtonDialogBox(
                               title: "UAT-PQMS",
-                              message:
-                                  "Data will be stored locally! Do you want to save",
-                              icon: Icons.error,
-                              yestitle: "Yes",
-                              notitle: "No",
-                              YesonPressed: () async {
+                              descriptions: "Please Select DutyOfficer",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
+                        },
+                      );
+                    } else if (_TreatmentDate.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Select Treatment Date",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
+                        },
+                      );
+                    } else if (_CompletedDate.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions:
+                                  "Please Select Completed Date of  Supervision/Treatment",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
+                        },
+                      );
+                    } else if (selectedAgencyName == null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Select AgencyList",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
+                        },
+                      );
+                    } else if (_TreatmentRemarks.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Enter Treatment Remarks",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
+                        },
+                      );
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) => CustomDialogBoxTwoButtons(
+                              title: "UAT-PQMS",
+                              descriptions:
+                                  "Data will be stored locally! Do you want to save?",
+                              Buttontext1: "Yes",
+                              Buttontext2: "No",
+                              img: Image.asset("assets/warning.png"),
+                              onButton1Pressed: (() async {
                                 final data = ImportTreatmentModelClass(
                                   applicationId: id,
                                   Dutyofficer: selectedValue,
@@ -454,13 +528,78 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                     await _databaseService.queryAllRows(
                                         DatabaseHelper.ImportTreatmenttable);
                                 print(entries);
-                                 Navigator.pop(context);
-                                 showAlert();
-                              },
-                              NoonPressed: () {
                                 Navigator.pop(context);
-                              },
-                            ),);
+                                showDialog(context: context,
+                                  builder: (context) =>
+                                SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Data Submitted Successfully",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/checked.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              })));
+                              }),
+                              onButton2Pressed: (() {
+                                Navigator.pop(context);
+                              }))
+                          // AppAlertDailog(
+                          //   title: "UAT-PQMS",
+                          //   message:
+                          //       "Data will be stored locally! Do you want to save",
+                          //   icon: Icons.error,
+                          //   yestitle: "Yes",
+                          //   notitle: "No",
+                          //   YesonPressed: () async {
+                          //     final data = ImportTreatmentModelClass(
+                          //       applicationId: id,
+                          //       Dutyofficer: selectedValue,
+                          //       DutyOfficerId: DutyOfficerId,
+                          //       Chemicals: _Chemicals.text,
+                          //       Dosage: _Dosage.text,
+                          //       Duration: _Duration.text,
+                          //       Temperature: _Temperature.text,
+                          //       TreatmentDate: _TreatmentDate.text,
+                          //       CompletedDate: _CompletedDate.text,
+                          //       DoneBy: selectedAgencyName,
+                          //       agencyId: AgencyId,
+                          //       TreatmentRemarks: _TreatmentRemarks.text,
+                          //       TreatmentLocation:
+                          //           _currentPosition!.latitude.toString() +
+                          //               "," +
+                          //               _currentPosition!.longitude.toString(),
+                          //       TreatmentArea: _currentAddress,
+                          //     );
+                          //     _Dutyofficer.clear();
+                          //     _Chemicals.clear();
+                          //     _Dosage.clear();
+                          //     _Duration.clear();
+                          //     _Temperature.clear();
+                          //     _TreatmentDate.clear();
+                          //     _CompletedDate.clear();
+                          //     _DoneBy.clear();
+
+                          //     _TreatmentRemarks.clear();
+
+                          //     final DatabaseHelper _databaseService =
+                          //         DatabaseHelper.instance;
+
+                          //     final details = await _databaseService.insertInto(
+                          //         data.toJson(),
+                          //         DatabaseHelper.ImportTreatmenttable);
+                          //     print("dbdata:$details");
+                          //     final entries = await _databaseService.queryAllRows(
+                          //         DatabaseHelper.ImportTreatmenttable);
+                          //     print(entries);
+                          //     Navigator.pop(context);
+                          //     showAlert();
+                          //   },
+                          //   NoonPressed: () {
+                          //     Navigator.pop(context);
+                          //   },
+                          // ),
+                          );
+                    }
                   },
                 ),
               ),
@@ -482,7 +621,6 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
       }
     });
     dbRetrieveAgencyList().then((value) {
-     
       if (AgencyNameID.isEmpty) {
         getAgencyList();
       }
@@ -567,7 +705,6 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     });
   }
 
-  
   getDutyOffcersList() async {
     String requestUrl = BaseUrl.finalURL + EndPoints.getEmployeeListByRole;
 
@@ -694,9 +831,9 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
       print("error");
     }
   }
-  
-   showAlert() {
-     showDialog(
+
+  showAlert() {
+    showDialog(
       context: context,
       builder: (context) {
         return SingleButtonAlertDailog(
@@ -710,5 +847,5 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
         );
       },
     );
-   }
+  }
 }
