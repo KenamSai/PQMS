@@ -223,7 +223,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                           TextReusable(
                             data: "Temperature(DegC)",
                             controller: _Temperature,
-                             keyboardtype: TextInputType.number,
+                            keyboardtype: TextInputType.number,
                             format: [
                               FilteringTextInputFormatter.allow(
                                 RegExp(
@@ -398,46 +398,127 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AppAlertDailog(
-                          titleTextColor: customColors.colorPQMS,
-                          title: "UAT-PQMS",
-                          message: "Do you want to save data locally?",
-                          icon: Icons.error,
-                          iconColor: Colors.red,
-                          yestitle: "Yes",
-                          YesonPressed: () async {
-                            final Response = exporttreatmentresponsemodelclass(
-                              applicationId: id.toString(),
-                              chemicals: _Chemicals.text,
-                              completionDate: _CompletedDate.text,
-                              treatmentDate: _TreatmentDate.text,
-                              dutyofficerId: DutyOfficerId,
-                              dosage: _Dosage.text,
-                              durationHrs: _Duration.text,
-                              dutyofficer: selectedValue,
-                              temperatureDegC: _Temperature.text,
-                              treatmentRemarks: _TreatmentRemarks.text,
-                              doneby: selectedAgencyName,
-                              agencyId: AgencyId,
-                            );
-                            final DatabaseHelper _databaseService =
-                                DatabaseHelper.instance;
-                            final DBdetails = await _databaseService.insertInto(
-                                Response.toJson(), "ExportTreatment");
-                            print("teja: $DBdetails");
-                            Navigator.pop(context);
-                            showAlert();
-                          },
-                          notitle: "No",
-                          NoonPressed: () {
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                    );
+                    if (selectedValue==null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Select DutyOfficer",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    } 
+                    else if(_TreatmentDate.text.isEmpty){showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Enter Treatment Date",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );}
+                      else if(_CompletedDate.text.isEmpty){showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Select Completed Date of  Supervision/Treatment",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );}
+                      else if(selectedAgencyName==null){showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Select AgencyList",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );}
+                      else if(_TreatmentRemarks.text.isEmpty){showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SingleButtonAlertDailog(
+                            title: "UAT-PQMS",
+                            message: "Please Enter Treatment Remarks",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            oktitle: "OK",
+                            okonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );}
+                    else {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AppAlertDailog(
+                            titleTextColor: customColors.colorPQMS,
+                            title: "UAT-PQMS",
+                            message: "Do you want to save data locally?",
+                            icon: Icons.error,
+                            iconColor: Colors.red,
+                            yestitle: "Yes",
+                            YesonPressed: () async {
+                              final Response =
+                                  exporttreatmentresponsemodelclass(
+                                applicationId: id.toString(),
+                                chemicals: _Chemicals.text,
+                                completionDate: _CompletedDate.text,
+                                treatmentDate: _TreatmentDate.text,
+                                dutyofficerId: DutyOfficerId,
+                                dosage: _Dosage.text,
+                                durationHrs: _Duration.text,
+                                dutyofficer: selectedValue,
+                                temperatureDegC: _Temperature.text,
+                                treatmentRemarks: _TreatmentRemarks.text,
+                                doneby: selectedAgencyName,
+                                agencyId: AgencyId,
+                              );
+                              final DatabaseHelper _databaseService =
+                                  DatabaseHelper.instance;
+                              final DBdetails =
+                                  await _databaseService.insertInto(
+                                      Response.toJson(), "ExportTreatment");
+                              print("teja: $DBdetails");
+                              Navigator.pop(context);
+                              showAlert();
+                            },
+                            notitle: "No",
+                            NoonPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ),
@@ -465,8 +546,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
 
   getDutyOffcersList() async {
     EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
-    String requestUrl =
-        BaseUrl.finalURL+EndPoints.getEmployeeListByRole;
+    String requestUrl = BaseUrl.finalURL + EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
       "appLevel": 1,
@@ -561,7 +641,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
 
   getAgencyList() async {
     EasyLoading.show(maskType: EasyLoadingMaskType.black, status: "Loading...");
-    String requestUrl = BaseUrl.finalURL+EndPoints.agenciesList;
+    String requestUrl = BaseUrl.finalURL + EndPoints.agenciesList;
     final token =
         await SharedPreferencesClass().readTheData(PreferenceConst.token);
     final username =
