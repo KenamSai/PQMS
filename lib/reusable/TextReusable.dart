@@ -8,7 +8,9 @@ class TextReusable extends StatelessWidget {
     required this.controller,
     this.requiredData, 
     this.maxlines, 
-    this.readType, this.format,
+    this.readType, 
+    this.format, 
+    this.keyboardtype,
      
   });
   final List<TextInputFormatter>? format;
@@ -17,12 +19,14 @@ class TextReusable extends StatelessWidget {
   final String? requiredData;
   final int? maxlines;
   final bool? readType;
+  final TextInputType? keyboardtype;
   
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: TextField(
+        keyboardType: keyboardtype,
         inputFormatters:format ?? [],
         readOnly: readType ?? false,
         controller: controller,
