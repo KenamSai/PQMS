@@ -8,7 +8,7 @@ import 'package:pqms/ModelClass/import_inspection_submit_response.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
-import 'package:pqms/reusable/alertWithButton.dart';
+import 'package:pqms/reusable/alertWithButtonDone.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/deviceID.dart';
