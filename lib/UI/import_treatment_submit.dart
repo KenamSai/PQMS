@@ -7,7 +7,7 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
-import 'package:pqms/reusable/alertWithButton.dart';
+import 'package:pqms/reusable/alertWithButtonDone.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/reusableAlert.dart';

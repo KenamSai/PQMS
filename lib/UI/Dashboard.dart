@@ -5,7 +5,7 @@ import 'package:pqms/reusable/Card_Component.dart';
 import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
-import 'package:pqms/reusable/alertWithButton.dart';
+import 'package:pqms/reusable/alertWithButtonDone.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
