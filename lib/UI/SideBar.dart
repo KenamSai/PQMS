@@ -120,30 +120,17 @@ class _SideBarState extends State<SideBar> {
                     builder: (context) {
                       return CustomDialogBoxTwoButtons(title: "UAT-PQMS", 
                       descriptions: "Do you want to exit from app?", 
-                      Buttontext1: "Yes", 
-                      Buttontext2: "No", 
+                      Buttontext1: "No", 
+                      Buttontext2: "Yes", 
                       img: Image.asset("assets/warning.png") , 
                       onButton1Pressed: (() {
-                         SystemNavigator.pop();
+                           Navigator.of(context).pop(false);
                       }), 
                       onButton2Pressed:(() {
-                         Navigator.of(context).pop(false);
+                        SystemNavigator.pop();
+                       
                       }));
-                      // return AppAlertDailog(
-                      //   titleTextColor: customColors.colorPQMS,
-                      //   title: "UAT-PQMS",
-                      //   message: "Do you want to exit from app?",
-                      //   icon: Icons.error,
-                      //   yestitle: "Yes",
-                      //   notitle: "No",
-                      //   iconColor: Colors.red,
-                      //   YesonPressed: (() {
-                      //     SystemNavigator.pop();
-                      //   }),
-                      //   NoonPressed: () {
-                      //     Navigator.of(context).pop(false);
-                      //   },
-                      // );
+                     
                     },
                   );
                 },
@@ -161,15 +148,16 @@ class _SideBarState extends State<SideBar> {
                     builder: (context) {
                       return CustomDialogBoxTwoButtons(title: "UAT-PQMS", 
                       descriptions: "Do you want to logout from app?", 
-                      Buttontext1: "Yes", 
-                      Buttontext2: "No", 
+                      Buttontext1: "No", 
+                      Buttontext2: "Yes", 
                       img: Image.asset("assets/warning.png") , 
                       onButton1Pressed: (() {
-                         Navigator.popUntil(
-                              context, ModalRoute.withName(AppRoutes.Login));
+                          Navigator.of(context).pop(false);
                       }), 
                       onButton2Pressed:(() {
-                         Navigator.of(context).pop(false);
+                        Navigator.popUntil(
+                              context, ModalRoute.withName(AppRoutes.Login));
+                        
                       }));
                      
                     },
