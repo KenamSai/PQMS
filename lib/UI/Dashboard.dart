@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/Card_Component.dart';
 import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
-import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alertWithButton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
-import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -50,15 +48,15 @@ class _DashboardState extends State<Dashboard> {
               builder: (context) => CustomDialogBoxTwoButtons(
                   title: "UAT-PQMS",
                   descriptions: "Do you want to logout from app?",
-                  Buttontext1: "Yes",
-                  Buttontext2: "No",
+                  Buttontext1: "No",
+                  Buttontext2: "Yes",
                   img: Image.asset("assets/warning.png"),
                   onButton1Pressed: (() {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName(AppRoutes.Login));
+                    Navigator.of(context).pop(false);
                   }),
                   onButton2Pressed: (() {
-                    Navigator.of(context).pop(false);
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(AppRoutes.Login));
                   }))) ??
           false; //if showDialouge had returned null, then return false
       //if showDialouge had returned null, then return false
@@ -83,15 +81,15 @@ class _DashboardState extends State<Dashboard> {
                     return CustomDialogBoxTwoButtons(
                         title: "UAT-PQMS",
                         descriptions: "Do you want to logout from app?",
-                        Buttontext1: "Yes",
-                        Buttontext2: "No",
+                        Buttontext1: "No",
+                        Buttontext2: "Yes",
                         img: Image.asset("assets/warning.png"),
                         onButton1Pressed: (() {
-                          Navigator.popUntil(
-                              context, ModalRoute.withName(AppRoutes.Login));
+                          Navigator.of(context).pop(false);
                         }),
                         onButton2Pressed: (() {
-                          Navigator.of(context).pop(false);
+                          Navigator.popUntil(
+                              context, ModalRoute.withName(AppRoutes.Login));
                         }));
                   },
                 );
@@ -227,10 +225,16 @@ class _DashboardState extends State<Dashboard> {
               title: "UAT-PQMS",
               descriptions:
                   "Saved Inspection/Treatment data found related to others.Do you want to clear?",
-              Buttontext1: "Yes",
-              Buttontext2: "No",
+              Buttontext1: "No",
+              Buttontext2: "Yes",
               img: Image.asset("assets/warning.png"),
               onButton1Pressed: (() async {
+                Navigator.popUntil(
+                  context,
+                  ModalRoute.withName(AppRoutes.Login),
+                );
+              }),
+              onButton2Pressed: (() async {
                 await SharedPreferencesClass()
                     .writeTheData(PreferenceConst.actualId, upcomingId);
 
@@ -244,33 +248,25 @@ class _DashboardState extends State<Dashboard> {
                 await _databasehelper
                     .dropTable(DatabaseHelper.ImportTreatmenttable);
                 Navigator.pop(context);
-                showAlert();
-              }),
-              onButton2Pressed: (() {
-                Navigator.popUntil(
-                  context,
-                  ModalRoute.withName(AppRoutes.Login),
-                );
+                showAlert("Data Deleted Successfully");
               }));
         },
       );
     }
   }
 
-  showAlert() {
+  showAlert(msg) {
     showDialog(
       context: context,
       builder: (context) {
-        return SingleButtonAlertDailog(
-          title: "UAT-PQMS",
-          iconColor: customColors.colorPQMS,
-          message: "Data Deleted Successfully",
-          icon: Icons.done_outline,
-          oktitle: "Ok",
-          okonPressed: () {
-            Navigator.pop(context);
-          },
-        );
+        return alertWithButton(
+            title: "UAT-PQMS",
+            descriptions: msg,
+            Buttontext: "Ok",
+            img: Image.asset("assets/correct.png"),
+            onButtonPressed: () {
+              Navigator.pop(context);
+            });
       },
     );
   }

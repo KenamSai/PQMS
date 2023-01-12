@@ -8,11 +8,13 @@ import 'package:pqms/ModelClass/import_inspection_submit_response.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
+import 'package:pqms/reusable/alertWithButton.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/deviceID.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/reusable/text_reusable_form.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -337,7 +339,8 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
       if (importinspectionSubmitresponse.statusCode == 200) {
         DatabaseHelper.instance.ImportInspectiondelete(
             args.applicationId!, DatabaseHelper.ImportInspectiontable);
-        showAlert();
+        showAlert(_response.data["status_Message"]
+                                      .toString());
         print("Data Submitted");
       } else if (importinspectionSubmitresponse.statusCode == 204) {
         print("NOt submitted");
@@ -350,19 +353,22 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
     }
   }
 
-  showAlert() {
+  
+  showAlert(msg) {
     showDialog(
       context: context,
       builder: (context) {
-        return SingleButtonAlertDailog(
-          title: "UAT-PQMS",
-          message: "Successfully Forwarded to Duty Officer",
-          icon: Icons.done_outline_rounded,
-          oktitle: "OK",
-          okonPressed: () {
-            Navigator.pop(context);
-          },
-        );
+        return alertWithButton(
+            title: "UAT-PQMS",
+            descriptions: msg,
+            Buttontext: "Ok",
+            img: Image.asset("assets/correct.png"),
+            onButtonPressed: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(AppRoutes.importsaved),
+              );
+            });
       },
     );
   }

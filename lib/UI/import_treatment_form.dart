@@ -484,10 +484,13 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                               title: "UAT-PQMS",
                               descriptions:
                                   "Data will be stored locally! Do you want to save?",
-                              Buttontext1: "Yes",
-                              Buttontext2: "No",
+                              Buttontext1: "No",
+                              Buttontext2: "Yes",
                               img: Image.asset("assets/warning.png"),
                               onButton1Pressed: (() async {
+                                 Navigator.pop(context);
+                              }),
+                              onButton2Pressed: (() async{
                                 final data = ImportTreatmentModelClass(
                                   applicationId: id,
                                   Dutyofficer: selectedValue,
@@ -547,65 +550,9 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
             });
       },
     );
-                              }),
-                              onButton2Pressed: (() {
-                                Navigator.pop(context);
+                               
                               }))
-                          // AppAlertDailog(
-                          //   title: "UAT-PQMS",
-                          //   message:
-                          //       "Data will be stored locally! Do you want to save",
-                          //   icon: Icons.error,
-                          //   yestitle: "Yes",
-                          //   notitle: "No",
-                          //   YesonPressed: () async {
-                          //     final data = ImportTreatmentModelClass(
-                          //       applicationId: id,
-                          //       Dutyofficer: selectedValue,
-                          //       DutyOfficerId: DutyOfficerId,
-                          //       Chemicals: _Chemicals.text,
-                          //       Dosage: _Dosage.text,
-                          //       Duration: _Duration.text,
-                          //       Temperature: _Temperature.text,
-                          //       TreatmentDate: _TreatmentDate.text,
-                          //       CompletedDate: _CompletedDate.text,
-                          //       DoneBy: selectedAgencyName,
-                          //       agencyId: AgencyId,
-                          //       TreatmentRemarks: _TreatmentRemarks.text,
-                          //       TreatmentLocation:
-                          //           _currentPosition!.latitude.toString() +
-                          //               "," +
-                          //               _currentPosition!.longitude.toString(),
-                          //       TreatmentArea: _currentAddress,
-                          //     );
-                          //     _Dutyofficer.clear();
-                          //     _Chemicals.clear();
-                          //     _Dosage.clear();
-                          //     _Duration.clear();
-                          //     _Temperature.clear();
-                          //     _TreatmentDate.clear();
-                          //     _CompletedDate.clear();
-                          //     _DoneBy.clear();
-
-                          //     _TreatmentRemarks.clear();
-
-                          //     final DatabaseHelper _databaseService =
-                          //         DatabaseHelper.instance;
-
-                          //     final details = await _databaseService.insertInto(
-                          //         data.toJson(),
-                          //         DatabaseHelper.ImportTreatmenttable);
-                          //     print("dbdata:$details");
-                          //     final entries = await _databaseService.queryAllRows(
-                          //         DatabaseHelper.ImportTreatmenttable);
-                          //     print(entries);
-                          //     Navigator.pop(context);
-                          //     showAlert();
-                          //   },
-                          //   NoonPressed: () {
-                          //     Navigator.pop(context);
-                          //   },
-                          // ),
+                          
                           );
                     }
                   },
@@ -840,20 +787,20 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     }
   }
 
-  showAlert() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return SingleButtonAlertDailog(
-          title: "UAT-PQMS",
-          message: "Data Submitted Successfully",
-          icon: Icons.done_outline_rounded,
-          oktitle: "OK",
-          okonPressed: () {
-            Navigator.pop(context);
-          },
-        );
-      },
-    );
-  }
+  // showAlert() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return SingleButtonAlertDailog(
+  //         title: "UAT-PQMS",
+  //         message: "Data Submitted Successfully",
+  //         icon: Icons.done_outline_rounded,
+  //         oktitle: "OK",
+  //         okonPressed: () {
+  //           Navigator.pop(context);
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 }

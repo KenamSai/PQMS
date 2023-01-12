@@ -66,32 +66,18 @@ class _ImportInspectionSavedApplicationsState
                   return CustomDialogBoxTwoButtons(
                   title: "UAT-PQMS",
                   descriptions: "Do you want to logout from app?",
-                  Buttontext1: "Yes",
-                  Buttontext2: "No",
+                  Buttontext1: "No",
+                  Buttontext2: "Yes",
                   img: Image.asset("assets/warning.png"),
                   onButton1Pressed: (() {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName(AppRoutes.Login));
+                     Navigator.of(context).pop(false);
                   }),
                   onButton2Pressed: (() {
-                    Navigator.of(context).pop(false);
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(AppRoutes.Login));
+                   
                   }));
-                  // AppAlertDailog(
-                  //   iconColor: Colors.red,
-                  //   titleTextColor: customColors.colorPQMS,
-                  //   title: "UAT-PQMS",
-                  //   message: "Do you want to logout from app?",
-                  //   icon: Icons.error,
-                  //   yestitle: "Yes",
-                  //   notitle: "No",
-                  //   YesonPressed: () {
-                  //     Navigator.popUntil(
-                  //         context, ModalRoute.withName(AppRoutes.Login));
-                  //   },
-                  //   NoonPressed: () {
-                  //     Navigator.of(context).pop(false);
-                  //   },
-                  // );
+                  
                 },
               );
             },

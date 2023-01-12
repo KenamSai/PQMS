@@ -449,10 +449,13 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                                   title: "UAT-PQMS",
                                   descriptions:
                                       "Data will be stored locally! Do you want to save?",
-                                  Buttontext1: "Yes",
-                                  Buttontext2: "No",
+                                  Buttontext1: "No",
+                                  Buttontext2: "Yes",
                                   img: Image.asset("assets/warning.png"),
                                   onButton1Pressed: (() async {
+                                    Navigator.of(context).pop(false);
+                                  }),
+                                  onButton2Pressed:( () async{
                                     if (_currentPosition != null &&
                                         _currentPosition!.latitude != null &&
                                         _currentPosition!.longitude != null) {
@@ -535,10 +538,8 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                                             });
                                       },
                                     );
+                                    
                                   }),
-                                  onButton2Pressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
                                 ));
                       }
                     }),
@@ -686,21 +687,21 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
     });
   }
 
-  showAlert() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return SingleButtonAlertDailog(
-          title: "UAT-PQMS",
-          message: "Data Submitted Successfully",
-          icon: Icons.done_outline_rounded,
-          iconColor: customColors.colorPQMS,
-          oktitle: "OK",
-          okonPressed: () {
-            Navigator.pop(context);
-          },
-        );
-      },
-    );
-  }
+  // showAlert() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return SingleButtonAlertDailog(
+  //         title: "UAT-PQMS",
+  //         message: "Data Submitted Successfully",
+  //         icon: Icons.done_outline_rounded,
+  //         iconColor: customColors.colorPQMS,
+  //         oktitle: "OK",
+  //         okonPressed: () {
+  //           Navigator.pop(context);
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 }

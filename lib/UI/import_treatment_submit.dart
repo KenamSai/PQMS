@@ -7,10 +7,12 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
+import 'package:pqms/reusable/alertWithButton.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
+import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import '../baseurl_and_endpoints/endpoints.dart';
 import '../sharedpreference/sharedpreference.dart';
@@ -330,7 +332,7 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
             args.applicationId!, DatabaseHelper.ImportTreatmenttable);
         var value = args.applicationId;
         print("application id+$value");
-        showAlert();
+        showAlert(_response.data["status_Message"]);
                 print("Data Submitted");
       } else if (importtreatmentSubmitresponse.statusCode == 204) {
         print("NOt submitted");
@@ -344,21 +346,22 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
     }
   }
   
-   showAlert() {
+   showAlert(msg) {
     showDialog(
       context: context,
       builder: (context) {
-        return SingleButtonAlertDailog(
-          title: "UAT-PQMS",
-          message: "Data Submitted Successfully",
-          icon: Icons.done_outline_rounded,
-          iconColor: customColors.colorPQMS,
-          oktitle: "OK",
-          okonPressed: () {
-            Navigator.pop(context);
-          },
-        );
+        return alertWithButton(
+            title: "UAT-PQMS",
+            descriptions: msg,
+            Buttontext: "Ok",
+            img: Image.asset("assets/correct.png"),
+            onButtonPressed: () {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName(AppRoutes.importsaved),
+              );
+            });
       },
     );
-   }
+  }
 }
