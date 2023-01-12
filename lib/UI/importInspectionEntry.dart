@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -455,7 +456,7 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                                   onButton1Pressed: (() async {
                                     Navigator.of(context).pop(false);
                                   }),
-                                  onButton2Pressed:( () async{
+                                  onButton2Pressed: (() async {
                                     if (_currentPosition != null &&
                                         _currentPosition!.latitude != null &&
                                         _currentPosition!.longitude != null) {
@@ -538,7 +539,6 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
                                             });
                                       },
                                     );
-                                    
                                   }),
                                 ));
                       }
@@ -555,9 +555,28 @@ class _ImportInspectionEntryState extends State<ImportInspectionEntry> {
   void initState() {
     super.initState();
     _getCurrentPosition();
-    dbRetrieve().then((value) {
+    dbRetrieve().then((value) async {
       if (DutyOfficersList.isEmpty) {
-        getDutyOffcersList();
+        var result = await Connectivity().checkConnectivity();
+
+        if (result == ConnectivityResult.mobile ||
+            result == ConnectivityResult.wifi) {
+          getDutyOffcersList();
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return SingleButtonDialogBox(
+                  title: "UAT-PQMS",
+                  descriptions: "Please Check your Internet Connectivity",
+                  Buttontext: "Ok",
+                  img: Image.asset("assets/caution.png"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  });
+            },
+          );
+        }
       }
     });
     _date.text = "";

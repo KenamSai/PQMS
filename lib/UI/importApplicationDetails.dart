@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -6,6 +7,7 @@ import 'package:pqms/UI/document.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/reusable/CustomColors.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -346,7 +348,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                         Navigator.pushNamed(
                             context, AppRoutes.importTransactionDetails,
                             arguments: modelDetails?.applicationId);
-                        EasyLoading.show(status: "Loading...");
+                        
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -485,10 +487,28 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero).then(
-      (value) {
+      (value) async {
         final String id = ModalRoute.of(context)?.settings.arguments as String;
-        // print("init$id");
-        getDetails(id);
+        var result = await Connectivity().checkConnectivity();
+
+        if (result == ConnectivityResult.mobile ||
+            result == ConnectivityResult.wifi) {
+          getDetails(id);
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return SingleButtonDialogBox(
+                  title: "UAT-PQMS",
+                  descriptions: "Please Check your Internet Connectivity",
+                  Buttontext: "Ok",
+                  img: Image.asset("assets/caution.png"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  });
+            },
+          );
+        }
       },
     );
     // print("init :$id");
@@ -534,7 +554,7 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
             key: _pdfViewerKey,
           );
         });
-    //showDialog
+    
   }
 
   showAlertImage(String? photo) async {
