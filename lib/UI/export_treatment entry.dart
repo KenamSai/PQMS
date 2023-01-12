@@ -12,8 +12,8 @@ import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
-import 'package:pqms/reusable/alertWithButton.dart';
-import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alertWithButtonDone.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -401,84 +401,74 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                   ),
                   onPressed: () async {
                     if (selectedValue == null) {
-                      showDialog(
+                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Select DutyOfficer",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Select DutyOfficer",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else if (_TreatmentDate.text.isEmpty) {
-                      showDialog(
+                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Enter Treatment Date",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Enter Treatment Date",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else if (_CompletedDate.text.isEmpty) {
-                      showDialog(
+                        
+                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message:
-                                "Please Select Completed Date of  Supervision/Treatment",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Select Completed Date of  Supervision/Treatment",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else if (selectedAgencyName == null) {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Select AgencyList",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Select Agency List",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else if (_TreatmentRemarks.text.isEmpty) {
-                      showDialog(
+                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Enter Treatment Remarks",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Enter Treatment Remarks",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else {

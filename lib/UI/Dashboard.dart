@@ -6,7 +6,8 @@ import 'package:pqms/reusable/Card_Component.dart';
 import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
-import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alertWithButtonDone.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -261,16 +262,14 @@ class _DashboardState extends State<Dashboard> {
     showDialog(
       context: context,
       builder: (context) {
-        return SingleButtonAlertDailog(
-          title: "UAT-PQMS",
-          iconColor: customColors.colorPQMS,
-          message: "Data Deleted Successfully",
-          icon: Icons.done_outline,
-          oktitle: "Ok",
-          okonPressed: () {
-            Navigator.pop(context);
-          },
-        );
+        return alertWithButton(
+            title: "UAT-PQMS",
+            descriptions: "Data Deleted Successfully",
+            Buttontext: "Ok",
+            img: Image.asset("assets/correct.png"),
+            onButtonPressed: () {
+              Navigator.pop(context);
+            });
       },
     );
   }

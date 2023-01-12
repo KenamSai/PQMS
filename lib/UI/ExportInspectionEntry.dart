@@ -14,8 +14,8 @@ import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pqms/reusable/alertWithButton.dart';
-import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alertWithButtonDone.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/imagecallback.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
@@ -363,64 +363,57 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Select DutyOfficer",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Select DutyOfficer",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else if (_InspectionPlace.text.isEmpty) {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Enter Inspection Place",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Select Inspection Place",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else if (_date.text.isEmpty) {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Select Completed Inspection Date",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions:
+                                  "Please Select Completed Inspection Date",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else if (_InspectionRemarks.text.isEmpty) {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Enter Inspection Remarks ",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Enter Inspection Remarks",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else if (imageData1.path.isEmpty &&
@@ -429,16 +422,14 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SingleButtonAlertDailog(
-                            title: "UAT-PQMS",
-                            message: "Please Capture atleast one image",
-                            icon: Icons.error,
-                            iconColor: Colors.red,
-                            oktitle: "OK",
-                            okonPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
+                          return SingleButtonDialogBox(
+                              title: "UAT-PQMS",
+                              descriptions: "Please Capture atleast one image",
+                              Buttontext: "ok",
+                              img: Image.asset("assets/caution.png"),
+                              onPressed: (() {
+                                Navigator.pop(context);
+                              }));
                         },
                       );
                     } else {
