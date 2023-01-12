@@ -5,6 +5,7 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/ModelClass/login_request.dart';
 import 'package:pqms/ModelClass/login_response.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/deviceID.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -184,16 +185,14 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return SingleButtonAlertDailog(
-            title: "UAT-PQMS",
-            message: "Please Enter Username",
-            icon: Icons.error,
-            iconColor: Colors.red,
-            oktitle: "OK",
-            okonPressed: () {
-              Navigator.pop(context);
-            },
-          );
+          return SingleButtonDialogBox(
+              title: "UAT-PQMS",
+              descriptions: "Please Enter Username",
+              Buttontext: "Ok",
+              img: Image.asset("assets/caution.png"),
+              onPressed: () {
+                Navigator.pop(context);
+              });
         },
       );
       return false;
@@ -201,16 +200,14 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return SingleButtonAlertDailog(
-            title: "UAT-PQMS",
-            message: "Please Enter Password",
-            icon: Icons.error,
-            iconColor: Colors.red,
-            oktitle: "OK",
-            okonPressed: () {
-              Navigator.pop(context);
-            },
-          );
+          return SingleButtonDialogBox(
+              title: "UAT-PQMS",
+              descriptions: "Please Enter Password",
+              Buttontext: "Ok",
+              img: Image.asset("assets/caution.png"),
+              onPressed: () {
+                Navigator.pop(context);
+              });
         },
       );
       return false;
@@ -261,16 +258,14 @@ class _LoginScreenState extends State<LoginScreen> {
         showDialog(
           context: context,
           builder: (context) {
-            return SingleButtonAlertDailog(
+            return SingleButtonDialogBox(
               title: "UAT-PQMS",
-              message: loginResponse.statusMessage!,
-              icon: Icons.error,
-              oktitle: "OK",
-              iconColor: Colors.red,
-              okonPressed: () {
+              descriptions: loginResponse.statusMessage!,
+              Buttontext: "Ok",
+              img: Image.asset("assets/caution.png"),
+              onPressed: () {
                 Navigator.pop(context);
-              },
-            );
+              });
           },
         );
       }

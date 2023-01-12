@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
@@ -6,6 +7,7 @@ import 'package:pqms/UI/SideBar.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextComponenet.dart';
 import 'package:pqms/reusable/alertWithButtonDone.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
@@ -157,11 +159,31 @@ class _DashboardState extends State<Dashboard> {
                       children: [
                         GestureDetector(
                           onTap: (() async {
-                            await EasyLoading.show(
-                                status: "Loading...",
-                                maskType: EasyLoadingMaskType.black);
-                            Navigator.pushNamed(
-                                context, AppRoutes.importrelease);
+                            var result =
+                                await Connectivity().checkConnectivity();
+                            if (result == ConnectivityResult.mobile ||
+                                result == ConnectivityResult.wifi) {
+                              await EasyLoading.show(
+                                  status: "Loading...",
+                                  maskType: EasyLoadingMaskType.black);
+                              Navigator.pushNamed(
+                                  context, AppRoutes.importrelease);
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return SingleButtonDialogBox(
+                                      title: "UAT-PQMS",
+                                      descriptions:
+                                          "Please Check your Internet Connectivity",
+                                      Buttontext: "Ok",
+                                      img: Image.asset("assets/caution.png"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      });
+                                },
+                              );
+                            }
                           }),
                           child: CardComponent(
                               TextData: "Import Release Order",
@@ -169,11 +191,29 @@ class _DashboardState extends State<Dashboard> {
                         ),
                         GestureDetector(
                           onTap: (() async {
+                             var result =
+                                await Connectivity().checkConnectivity();
+                            if (result == ConnectivityResult.mobile ||
+                                result == ConnectivityResult.wifi){
                             await EasyLoading.show(
                                 status: "Loading...",
                                 maskType: EasyLoadingMaskType.black);
                             Navigator.pushNamed(
-                                context, AppRoutes.exportrelease);
+                                context, AppRoutes.exportrelease);}
+                                else{showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return SingleButtonDialogBox(
+                                      title: "UAT-PQMS",
+                                      descriptions:
+                                          "Please Check your Internet Connectivity",
+                                      Buttontext: "Ok",
+                                      img: Image.asset("assets/caution.png"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      });
+                                },
+                              );}
                           }),
                           child: CardComponent(
                               TextData: "Export Applications",

@@ -5,7 +5,7 @@ import 'package:pqms/ModelClass/SplashModel.dart';
 import 'package:pqms/UI/appVersion.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
-import 'package:pqms/reusable/reusableAlert.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -52,12 +52,14 @@ class _SplashScreenState extends State<SplashScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return reusableAlert(
-            title: "UAT-PQMS",
-            message: "Please check your internet connection",
-            icon: Icons.signal_cellular_connected_no_internet_0_bar_sharp,
-            textColor: Colors.red,
-          );
+          return SingleButtonDialogBox(
+              title: "UAT-PQMS",
+              descriptions: "Please Check your Internet Connectivity",
+              Buttontext: "Ok",
+              img: Image.asset("assets/caution.png"),
+              onPressed: () {
+                Navigator.pop(context);
+              });
         },
       );
     }
@@ -104,13 +106,14 @@ class _SplashScreenState extends State<SplashScreen> {
           showDialog(
             context: context,
             builder: (context) {
-              return reusableAlert(
-                title: "UAT-PQMS",
-                message: "Upgrade Your App",
-                icon: Icons.upgrade,
-                textColor: Colors.green,
-                iconColor: Colors.deepPurple,
-              );
+              return SingleButtonDialogBox(
+              title: "UAT-PQMS",
+              descriptions: "Please Upgrade Your App",
+              Buttontext: "Ok",
+              img: Image.asset("assets/caution.png"),
+              onPressed: () {
+                Navigator.pop(context);
+              });
             },
           );
         }
@@ -120,12 +123,14 @@ class _SplashScreenState extends State<SplashScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return reusableAlert(
-            title: "UAT-PQMS",
-            message: "Unable to connect",
-            icon: Icons.error_outline_rounded,
-            textColor: Colors.red,
-          );
+          return SingleButtonDialogBox(
+              title: "UAT-PQMS",
+              descriptions: e.response!.statusMessage ?? "",
+              Buttontext: "Ok",
+              img: Image.asset("assets/caution.png"),
+              onPressed: () {
+                Navigator.pop(context);
+              });
         },
       );
     }
