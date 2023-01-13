@@ -590,9 +590,28 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     _TreatmentDate.text = "";
     _CompletedDate.text = "";
     _getCurrentPosition();
-    dbRetrieve().then((value) {
+    dbRetrieve().then((value) async {
       if (DutyOfficersList.isEmpty) {
-        getDutyOffcersList();
+        var result = await Connectivity().checkConnectivity();
+
+        if (result == ConnectivityResult.mobile ||
+            result == ConnectivityResult.wifi) {
+          getDutyOffcersList();
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return SingleButtonDialogBox(
+                  title: "UAT-PQMS",
+                  descriptions: "Please Check your Internet Connectivity",
+                  Buttontext: "Ok",
+                  img: Image.asset("assets/caution.png"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  });
+            },
+          );
+        }
       }
     });
     dbRetrieveAgencyList().then((value) async {

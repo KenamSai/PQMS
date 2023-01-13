@@ -493,6 +493,8 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
 
         if (result == ConnectivityResult.mobile ||
             result == ConnectivityResult.wifi) {
+               FocusScope.of(context).unfocus();
+        await EasyLoading.show(status: "Loading...");
           getDetails(id);
         } else {
           showDialog(

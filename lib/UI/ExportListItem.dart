@@ -11,8 +11,7 @@ class ExportListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-         FocusScope.of(context).unfocus();
-        await EasyLoading.show(status: "Loading...");
+        
         Navigator.pushNamed(context, AppRoutes.exportApplnDetails,
             arguments: userInfo?.applicationId);
       },
@@ -36,14 +35,14 @@ class ExportListItem extends StatelessWidget {
 
   RowComponent(String data, String? value) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
       child: Row(
         children: [
 
            Expanded(
               child: Text(
                 data.toString(),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                style: TextStyle(fontWeight: FontWeight.bold,) //fontSize: 17
               ),
             ),
             SizedBox(
@@ -52,7 +51,7 @@ class ExportListItem extends StatelessWidget {
             Expanded(
               child: Text(
                 value.toString(),
-                style: TextStyle(fontSize: 17),
+               // style: TextStyle(fontSize: 17),
               ),
             )
           

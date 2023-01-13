@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,10 +46,29 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
   @override
   void initState() {
     _getCurrentPosition();
-    dbRetrieve().then((value) {
+    dbRetrieve().then((value) async {
       //print(DutyOfficersList.length);
       if (DutyOfficersList.isEmpty) {
-        getDutyOffcersList();
+        var result = await Connectivity().checkConnectivity();
+
+        if (result == ConnectivityResult.mobile ||
+            result == ConnectivityResult.wifi) {
+          getDutyOffcersList();
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return SingleButtonDialogBox(
+                  title: "UAT-PQMS",
+                  descriptions: "Please Check your Internet Connectivity",
+                  Buttontext: "Ok",
+                  img: Image.asset("assets/caution.png"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  });
+            },
+          );
+        }
       }
     });
   }
@@ -190,7 +210,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 Expanded(
                                   flex: 1,
                                   child: IconButton(
-                                    onPressed: (() {
+                                    onPressed: (() async {
                                       DutyOfficersList.forEach((element) async {
                                         final count = await DatabaseHelper
                                             .instance
@@ -202,7 +222,29 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                         DutyOfficersList.clear();
                                         //selectedValue="";
                                       });
-                                      getDutyOffcersList();
+                                      var result = await Connectivity()
+                                          .checkConnectivity();
+
+                                      if (result == ConnectivityResult.mobile ||
+                                          result == ConnectivityResult.wifi) {
+                                        getDutyOffcersList();
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return SingleButtonDialogBox(
+                                                title: "UAT-PQMS",
+                                                descriptions:
+                                                    "Please Check your Internet Connectivity",
+                                                Buttontext: "Ok",
+                                                img: Image.asset(
+                                                    "assets/caution.png"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                });
+                                          },
+                                        );
+                                      }
                                     }),
                                     icon: Icon(
                                       Icons.repeat_outlined,

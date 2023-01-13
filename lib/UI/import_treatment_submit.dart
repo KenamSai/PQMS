@@ -66,7 +66,7 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )
