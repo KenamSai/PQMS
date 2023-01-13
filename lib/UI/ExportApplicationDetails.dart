@@ -498,7 +498,9 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                 Buttontext: "Ok",
                 img: Image.asset("assets/caution.png"),
                 onPressed: () {
-                  Navigator.pop(context);
+                 Navigator.popUntil(
+                context,
+                ModalRoute.withName("/export release order"));
                 });
           },
         );

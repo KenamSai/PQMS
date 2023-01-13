@@ -506,7 +506,10 @@ class _importApplicationDetailsState extends State<importApplicationDetails> {
                   Buttontext: "Ok",
                   img: Image.asset("assets/caution.png"),
                   onPressed: () {
-                    Navigator.pop(context);
+                   Navigator.popUntil(
+                context,
+                ModalRoute.withName("/Import release order"),
+              );
                   });
             },
           );
