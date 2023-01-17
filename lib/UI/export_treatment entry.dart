@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -187,19 +188,39 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                                 Expanded(
                                   flex: 1,
                                   child: IconButton(
-                                    onPressed: (() {
-                                      DutyOfficersList.forEach((element) async {
-                                        final count = await DatabaseHelper
-                                            .instance
-                                            .delete(element.id ?? 0,
-                                                DatabaseHelper.DutyOfficers);
-                                        print("deletion Count in db:$count");
+                                    onPressed: (() async {
+                                      var result = await Connectivity()
+                                          .checkConnectivity();
+                                      if (result == ConnectivityResult.mobile ||
+                                          result == ConnectivityResult.wifi) {
+                                        DutyOfficersList.forEach(
+                                            (element) async {
+                                          final count = await DatabaseHelper
+                                              .instance
+                                              .delete(element.id ?? 0,
+                                                  DatabaseHelper.DutyOfficers);
+                                          print("deletion Count in db:$count");
+                                        });
+                                        setState(() {
+                                          DutyOfficersList.clear();
+                                          //selectedValue="";
+                                        });
+                                        getDutyOffcersList();
+                                      }
+                                      else{showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return SingleButtonDialogBox(
+                                      title: "UAT-PQMS",
+                                      descriptions:
+                                          "Please Check your Internet Connectivity",
+                                      Buttontext: "Ok",
+                                      img: Image.asset("assets/caution.png"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
                                       });
-                                      setState(() {
-                                        DutyOfficersList.clear();
-                                        //selectedValue="";
-                                      });
-                                      getDutyOffcersList();
+                                },
+                              );}
                                     }),
                                     icon: Icon(
                                       Icons.repeat_outlined,
@@ -401,7 +422,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                   ),
                   onPressed: () async {
                     if (selectedValue == null) {
-                       showDialog(
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonDialogBox(
@@ -415,7 +436,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                         },
                       );
                     } else if (_TreatmentDate.text.isEmpty) {
-                       showDialog(
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonDialogBox(
@@ -429,13 +450,13 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                         },
                       );
                     } else if (_CompletedDate.text.isEmpty) {
-                        
-                       showDialog(
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonDialogBox(
                               title: "UAT-PQMS",
-                              descriptions: "Please Select Completed Date of  Supervision/Treatment",
+                              descriptions:
+                                  "Please Select Completed Date of  Supervision/Treatment",
                               Buttontext: "ok",
                               img: Image.asset("assets/caution.png"),
                               onPressed: (() {
@@ -458,7 +479,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                         },
                       );
                     } else if (_TreatmentRemarks.text.isEmpty) {
-                       showDialog(
+                      showDialog(
                         context: context,
                         builder: (context) {
                           return SingleButtonDialogBox(
@@ -472,34 +493,45 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
                         },
                       );
                     } else {
-                        showDialog(context: context, builder:(context) {
-                          return CustomDialogBoxTwoButtons(title: "UAT-PQMS", descriptions: "Do you want to save data locally?", Buttontext1: "No", Buttontext2: "Yes", img: Image.asset("assets/warning.png"), onButton1Pressed: (){Navigator.pop(context);}, onButton2Pressed: ()async{   final Response =
-                                  exporttreatmentresponsemodelclass(
-                                applicationId: id.toString(),
-                                chemicals: _Chemicals.text,
-                                completionDate: _CompletedDate.text,
-                                treatmentDate: _TreatmentDate.text,
-                                dutyofficerId: DutyOfficerId,
-                                dosage: _Dosage.text,
-                                durationHrs: _Duration.text,
-                                dutyofficer: selectedValue,
-                                temperatureDegC: _Temperature.text,
-                                treatmentRemarks: _TreatmentRemarks.text,
-                                doneby: selectedAgencyName,
-                                agencyId: AgencyId,
-                              );
-                              final DatabaseHelper _databaseService =
-                                  DatabaseHelper.instance;
-                              final DBdetails =
-                                  await _databaseService.insertInto(
-                                      Response.toJson(), "ExportTreatment");
-                              print("teja: $DBdetails");
-                              Navigator.pop(context);
-                              showAlert();});
-                        },);
-
-                    
-                    
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CustomDialogBoxTwoButtons(
+                              title: "UAT-PQMS",
+                              descriptions: "Do you want to save data locally?",
+                              Buttontext1: "No",
+                              Buttontext2: "Yes",
+                              img: Image.asset("assets/warning.png"),
+                              onButton1Pressed: () {
+                                Navigator.pop(context);
+                              },
+                              onButton2Pressed: () async {
+                                final Response =
+                                    exporttreatmentresponsemodelclass(
+                                  applicationId: id.toString(),
+                                  chemicals: _Chemicals.text,
+                                  completionDate: _CompletedDate.text,
+                                  treatmentDate: _TreatmentDate.text,
+                                  dutyofficerId: DutyOfficerId,
+                                  dosage: _Dosage.text,
+                                  durationHrs: _Duration.text,
+                                  dutyofficer: selectedValue,
+                                  temperatureDegC: _Temperature.text,
+                                  treatmentRemarks: _TreatmentRemarks.text,
+                                  doneby: selectedAgencyName,
+                                  agencyId: AgencyId,
+                                );
+                                final DatabaseHelper _databaseService =
+                                    DatabaseHelper.instance;
+                                final DBdetails =
+                                    await _databaseService.insertInto(
+                                        Response.toJson(), "ExportTreatment");
+                                print("teja: $DBdetails");
+                                Navigator.pop(context);
+                                showAlert();
+                              });
+                        },
+                      );
                     }
                   },
                 ),
@@ -512,18 +544,39 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   }
 
   void initState() {
-    dbRetrieve().then((value) {
+    dbRetrieve().then((value) async {
       //print(DutyOfficersList.length);
       if (DutyOfficersList.isEmpty) {
-        getDutyOffcersList();
-      }
-    });
-    dbRetrieveAgencyList().then((value) {
+        var result = await Connectivity().checkConnectivity();
+        if (result == ConnectivityResult.mobile ||
+            result == ConnectivityResult.wifi) {
+          getDutyOffcersList();
+
+           dbRetrieveAgencyList().then((value) {//check here
       //print("agent length: ${AgencyNameID.length}");
       if (AgencyNameID.isEmpty) {
         getAgencyList();
       }
     });
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return SingleButtonDialogBox(
+                  title: "UAT-PQMS",
+                  descriptions: "Please Check your Internet Connectivity",
+                  Buttontext: "Ok",
+                  img: Image.asset("assets/caution.png"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  });
+            },
+          );
+        }
+      }
+    });
+
+   
   }
 
   getDutyOffcersList() async {
@@ -577,6 +630,7 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
         print("count:${DutyOfficersList.length}");
       });
       dbRetrieve();
+      EasyLoading.dismiss();
     } on DioError catch (e) {
       print("error");
     }
@@ -661,7 +715,6 @@ class _ExportTreatmentForm extends State<ExportTreatmentForm> {
   }
 
   showAlert() {
-
     showDialog(
       context: context,
       builder: (context) {

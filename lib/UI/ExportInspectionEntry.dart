@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -190,19 +191,41 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
                                 Expanded(
                                   flex: 1,
                                   child: IconButton(
-                                    onPressed: (() {
-                                      DutyOfficersList.forEach((element) async {
-                                        final count = await DatabaseHelper
-                                            .instance
-                                            .delete(element.id ?? 0,
-                                                DatabaseHelper.DutyOfficers);
-                                        print("deletion Count in db:$count");
-                                      });
-                                      setState(() {
-                                        DutyOfficersList.clear();
-                                        //selectedValue="";
-                                      });
-                                      getDutyOffcersList();
+                                    onPressed: (() async {
+                                      var result = await Connectivity()
+                                          .checkConnectivity();
+                                      if (result == ConnectivityResult.mobile ||
+                                          result == ConnectivityResult.wifi) {
+                                        DutyOfficersList.forEach(
+                                            (element) async {
+                                          final count = await DatabaseHelper
+                                              .instance
+                                              .delete(element.id ?? 0,
+                                                  DatabaseHelper.DutyOfficers);
+                                          print("deletion Count in db:$count");
+                                        });
+                                        setState(() {
+                                          DutyOfficersList.clear();
+                                          //selectedValue="";
+                                        });
+                                        getDutyOffcersList();
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return SingleButtonDialogBox(
+                                                title: "UAT-PQMS",
+                                                descriptions:
+                                                    "Please Check your Internet Connectivity",
+                                                Buttontext: "Ok",
+                                                img: Image.asset(
+                                                    "assets/caution.png"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                });
+                                          },
+                                        );
+                                      }
                                     }),
                                     icon: Icon(
                                       Icons.repeat_outlined,
@@ -510,7 +533,11 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
 
   getDutyOffcersList() async {
     _date.text = "";
-    EasyLoading.show(status: "Loading...", maskType: EasyLoadingMaskType.black);
+    var result = await Connectivity().checkConnectivity();
+    if (result == ConnectivityResult.mobile ||
+        result == ConnectivityResult.wifi){
+      EasyLoading.show(
+          status: "Loading...", maskType: EasyLoadingMaskType.black);
     String requestUrl = BaseUrl.finalURL + EndPoints.getEmployeeListByRole;
     final requestPayLoad = {
       "actionType": "Duty officer",
@@ -564,6 +591,23 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
     } on DioError catch (e) {
       print("error");
     }
+        }
+        else{
+           showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return SingleButtonDialogBox(
+                                      title: "UAT-PQMS",
+                                      descriptions:
+                                          "Please Check your Internet Connectivity",
+                                      Buttontext: "Ok",
+                                      img: Image.asset("assets/caution.png"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      });
+                                },
+                              );
+        }
   }
 
   dbRetrieve() async {

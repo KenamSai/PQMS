@@ -12,8 +12,8 @@ class ExportListItem extends StatelessWidget {
     return GestureDetector(
       onTap: () async{
          FocusScope.of(context).unfocus();
-        await EasyLoading.show(status: "Loading...");
-        Navigator.pushNamed(context, AppRoutes.exportApplnDetails,
+         await EasyLoading.show(status: "Loading...");
+         Navigator.pushNamed(context, AppRoutes.exportApplnDetails,
             arguments: userInfo?.applicationId);
       },
       child: Card(

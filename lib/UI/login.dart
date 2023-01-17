@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -141,10 +142,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Container(
                         color: Colors.black.withOpacity(0.2),
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (validation()) {
-                              getLoginResponse();
-                              EasyLoading.show(status: "Loading...");
+                              var result =
+                                  await Connectivity().checkConnectivity();
+                              if (result == ConnectivityResult.mobile ||
+                                  result == ConnectivityResult.wifi) {
+                                getLoginResponse();
+                                EasyLoading.show(status: "Loading...");
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return SingleButtonDialogBox(
+                                        title: "UAT-PQMS",
+                                        descriptions:
+                                            "Please Check your Internet Connectivity",
+                                        Buttontext: "Ok",
+                                        img: Image.asset("assets/caution.png"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        });
+                                  },
+                                );
+                              }
                             }
                           },
                           child: Text(
@@ -259,13 +280,13 @@ class _LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (context) {
             return SingleButtonDialogBox(
-              title: "UAT-PQMS",
-              descriptions: loginResponse.statusMessage!,
-              Buttontext: "Ok",
-              img: Image.asset("assets/caution.png"),
-              onPressed: () {
-                Navigator.pop(context);
-              });
+                title: "UAT-PQMS",
+                descriptions: loginResponse.statusMessage!,
+                Buttontext: "Ok",
+                img: Image.asset("assets/caution.png"),
+                onPressed: () {
+                  Navigator.pop(context);
+                });
           },
         );
       }

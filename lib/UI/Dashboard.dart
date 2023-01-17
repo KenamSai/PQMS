@@ -191,16 +191,17 @@ class _DashboardState extends State<Dashboard> {
                         ),
                         GestureDetector(
                           onTap: (() async {
-                             var result =
+                            var result =
                                 await Connectivity().checkConnectivity();
                             if (result == ConnectivityResult.mobile ||
-                                result == ConnectivityResult.wifi){
-                            await EasyLoading.show(
-                                status: "Loading...",
-                                maskType: EasyLoadingMaskType.black);
-                            Navigator.pushNamed(
-                                context, AppRoutes.exportrelease);}
-                                else{showDialog(
+                                result == ConnectivityResult.wifi) {
+                              await EasyLoading.show(
+                                  status: "Loading...",
+                                  maskType: EasyLoadingMaskType.black);
+                              Navigator.pushNamed(
+                                  context, AppRoutes.exportrelease);
+                            } else {
+                              showDialog(
                                 context: context,
                                 builder: (context) {
                                   return SingleButtonDialogBox(
@@ -213,7 +214,8 @@ class _DashboardState extends State<Dashboard> {
                                         Navigator.pop(context);
                                       });
                                 },
-                              );}
+                              );
+                            }
                           }),
                           child: CardComponent(
                               TextData: "Export Applications",
