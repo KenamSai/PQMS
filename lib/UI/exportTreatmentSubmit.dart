@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/exporttreatmentresponsemodel.dart';
@@ -8,6 +9,7 @@ import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/reusable/alertWithButtonDone.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
@@ -252,65 +254,88 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
                           Buttontext1: "No ",
                           Buttontext2: "Yes",
                           img: Image.asset("assets/warning.png"),
-                          onButton1Pressed: (){Navigator.pop(context);},
-                          onButton2Pressed: ()async{ final requestUrl = BaseUrl.finalURL +
-                                EndPoints.saveExportPermitAction;
-                            final requestPayLoad = {
-                              "role": "Inspector",
-                              "action": "Forward",
-                              "applicationId": id.applicationId,
-                              "chemicals": id.chemicals,
-                              "dosage": id.dosage,
-                              "duration": id.durationHrs,
-                              "temperature": id.temperatureDegC,
-                              "treatmentDate": id.treatmentDate,
-                              "completedDateofSupervision": id.completionDate,
-                              "doneByAgency": id.agencyId,
-                              "remarks": id.treatmentRemarks,
-                              "employeeId": id.dutyofficerId,
-                              "forwardToRole": "Duty officer"
-                            };
-                            print("payLoad:  $requestPayLoad");
-                            final String token =
-                                await SharedPreferencesClass().readTheData(
-                              PreferenceConst.token,
-                            );
-                            final String username =
-                                await SharedPreferencesClass().readTheData(
-                              PreferenceConst.username,
-                            );
-                            print(token);
-                            print(username);
-                            final requestHeaders = {
-                              "clientId": "Client123Cgg",
-                              "token": token.toString(),
-                              "userName": username.toString()
-                            };
-                            final _dioObject = Dio();
-                            try {
-                              final Response = await _dioObject.post(
-                                requestUrl,
-                                data: requestPayLoad,
-                                options: Options(headers: requestHeaders),
+                          onButton1Pressed: () {
+                            Navigator.pop(context);
+                          },
+                          onButton2Pressed: () async {
+                            var result =
+                                await Connectivity().checkConnectivity();
+
+                            if (result == ConnectivityResult.mobile ||
+                                result == ConnectivityResult.wifi) {
+                              final requestUrl = BaseUrl.finalURL +
+                                  EndPoints.saveExportPermitAction;
+                              final requestPayLoad = {
+                                "role": "Inspector",
+                                "action": "Forward",
+                                "applicationId": id.applicationId,
+                                "chemicals": id.chemicals,
+                                "dosage": id.dosage,
+                                "duration": id.durationHrs,
+                                "temperature": id.temperatureDegC,
+                                "treatmentDate": id.treatmentDate,
+                                "completedDateofSupervision": id.completionDate,
+                                "doneByAgency": id.agencyId,
+                                "remarks": id.treatmentRemarks,
+                                "employeeId": id.dutyofficerId,
+                                "forwardToRole": "Duty officer"
+                              };
+                              print("payLoad:  $requestPayLoad");
+                              final String token =
+                                  await SharedPreferencesClass().readTheData(
+                                PreferenceConst.token,
                               );
-                              if (Response.data["status_Code"] == 200) {
-                                final value = await DatabaseHelper.instance
-                                    .deleteTheRequired(
-                                        id.applicationId ?? "",
-                                        DatabaseHelper.exporttreatmenttable,
-                                        "applicationId");
-                                print("Treatment count:$value");
-                                Navigator.pop(context);
-                                showAlert(Response.data["status_Message"]);
+                              final String username =
+                                  await SharedPreferencesClass().readTheData(
+                                PreferenceConst.username,
+                              );
+                              print(token);
+                              print(username);
+                              final requestHeaders = {
+                                "clientId": "Client123Cgg",
+                                "token": token.toString(),
+                                "userName": username.toString()
+                              };
+                              final _dioObject = Dio();
+                              try {
+                                final Response = await _dioObject.post(
+                                  requestUrl,
+                                  data: requestPayLoad,
+                                  options: Options(headers: requestHeaders),
+                                );
+                                if (Response.data["status_Code"] == 200) {
+                                  final value = await DatabaseHelper.instance
+                                      .deleteTheRequired(
+                                          id.applicationId ?? "",
+                                          DatabaseHelper.exporttreatmenttable,
+                                          "applicationId");
+                                  print("Treatment count:$value");
+                                  Navigator.pop(context);
+                                  showAlert(Response.data["status_Message"]);
+                                }
+                              } on DioError catch (e) {
+                                print("error");
                               }
-                            } on DioError catch (e) {
-                              print("error");
-                            }},
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return SingleButtonDialogBox(
+                                      title: "UAT-PQMS",
+                                      descriptions:
+                                          "Please Check your Internet Connectivity",
+                                      Buttontext: "Ok",
+                                      img: Image.asset("assets/caution.png"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      });
+                                },
+                              );
+                            }
+                          },
                         );
                       },
                     );
-
-                   
                   },
                 ),
               ),
@@ -321,7 +346,7 @@ class ExportTreatmentSubmitState extends State<ExportTreatmentSubmit> {
     );
   }
 
-   showAlert(msg) {
+  showAlert(msg) {
     showDialog(
       context: context,
       builder: (context) {

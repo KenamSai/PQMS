@@ -348,7 +348,6 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                         Navigator.pushNamed(
                             context, AppRoutes.importTransactionDetails,
                             arguments: exportmodelDetails?.applicationId);
-                        
                       }),
                       child: Container(
                         decoration: BoxDecoration(
@@ -481,30 +480,9 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
     super.initState();
     Future.delayed(Duration.zero).then((value) async {
       final id = ModalRoute.of(context)?.settings.arguments as String;
-      var result = await Connectivity().checkConnectivity();
 
-      if (result == ConnectivityResult.mobile ||
-          result == ConnectivityResult.wifi) {
-             FocusScope.of(context).unfocus();
-        await EasyLoading.show(status: "Loading...");
-        getApplnDetails(id);
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return SingleButtonDialogBox(
-                title: "UAT-PQMS",
-                descriptions: "Please Check your Internet Connectivity",
-                Buttontext: "Ok",
-                img: Image.asset("assets/caution.png"),
-                onPressed: () {
-                 Navigator.popUntil(
-                context,
-                ModalRoute.withName("/export release order"));
-                });
-          },
-        );
-      }
+      FocusScope.of(context).unfocus();
+      getApplnDetails(id);
     });
   }
 
@@ -514,10 +492,11 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
       child: Row(
         children: [
           Expanded(
-            child: Text(
-              data.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, )//fontSize: 17
-            ),
+            child: Text(data.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ) //fontSize: 17
+                ),
           ),
           SizedBox(
             width: 10,
@@ -525,7 +504,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
           Expanded(
             child: Text(
               value.toString(),
-             // style: TextStyle(fontSize: 17),
+              // style: TextStyle(fontSize: 17),
             ),
           )
         ],

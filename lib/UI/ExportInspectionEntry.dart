@@ -544,7 +544,7 @@ class _ExportInspectionEntryState extends State<ExportInspectionEntry> {
             onButtonPressed: () {
               Navigator.popUntil(
                 context,
-                ModalRoute.withName(AppRoutes.exportApplnDetails),
+                ModalRoute.withName(AppRoutes.exportrelease),
               );
             });
       },
