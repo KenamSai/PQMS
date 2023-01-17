@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/import_inspection_response.dart';
@@ -10,6 +11,7 @@ import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/alertWithButtonDone.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/deviceID.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
@@ -238,20 +240,41 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
                     showDialog(
                         context: context,
                         builder: ((context) => CustomDialogBoxTwoButtons(
-                                title: "UAT-PQMS",
-                                descriptions: "Do You Want To Submit?",
-                                Buttontext1: "No",
-                                Buttontext2: "Yes",
-                                img: Image.asset("assets/warning.png"),
-                                onButton1Pressed: (() {
-                                  Navigator.pop(context);
-                                }),
-                                onButton2Pressed: (() {
-                                  Navigator.pop(context);
-                                  submitDetails(args);
-                                }))
-                            
-                            ));
+                            title: "UAT-PQMS",
+                            descriptions: "Do You Want To Submit?",
+                            Buttontext1: "No",
+                            Buttontext2: "Yes",
+                            img: Image.asset("assets/warning.png"),
+                            onButton1Pressed: (() {
+                              Navigator.pop(context);
+                            }),
+                            onButton2Pressed: (() async {
+                              Navigator.pop(context);
+                              var result =await Connectivity().checkConnectivity();
+                              if (result == ConnectivityResult.mobile ||
+                                  result == ConnectivityResult.wifi) 
+                                  {
+                                     submitDetails(args);
+                                  } 
+                              else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return SingleButtonDialogBox(
+                                        title: "UAT-PQMS",
+                                        descriptions:
+                                            "Please Check your Internet Connectivity",
+                                        Buttontext: "Ok",
+                                        img: Image.asset("assets/caution.png"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        });
+                                  },
+                                );
+                              }
+
+                              
+                            }))));
 
                     // args.applicationId = "";
                     // args.Dutyofficer='';
@@ -339,8 +362,7 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
       if (importinspectionSubmitresponse.statusCode == 200) {
         DatabaseHelper.instance.ImportInspectiondelete(
             args.applicationId!, DatabaseHelper.ImportInspectiontable);
-        showAlert(_response.data["status_Message"]
-                                      .toString());
+        showAlert(_response.data["status_Message"].toString());
         print("Data Submitted");
       } else if (importinspectionSubmitresponse.statusCode == 204) {
         print("NOt submitted");
@@ -353,7 +375,6 @@ class _ImportInspectionSubmitState extends State<ImportInspectionSubmit> {
     }
   }
 
-  
   showAlert(msg) {
     showDialog(
       context: context,

@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pqms/ModelClass/import_treatment_response.dart';
@@ -9,6 +10,7 @@ import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/reusable/alertWithButtonDone.dart';
 import 'package:pqms/reusable/alert_dailog.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/reusableAlert.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
@@ -64,7 +66,7 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
             },
             child: Icon(
               Icons.home,
-              size: 50,
+              size: 30,
               color: Colors.white,
             ),
           )
@@ -244,34 +246,44 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                     showDialog(context: context, builder: ((context) => 
-                     CustomDialogBoxTwoButtons(
-                      title: 'UAT-PQMS',
-                      descriptions: 'Do You Want To Submit',
-                      Buttontext1: 'No', 
-                      Buttontext2: 'Yes', 
-                      img:  Image.asset("assets/warning.png"),
-                      onButton1Pressed: () { 
-                        Navigator.pop(context);
-                       },  onButton2Pressed: () { 
-                        Navigator.pop(context);
-                      submitDetails(args);
-                        }, )
-                    //  AppAlertDailog(title: "UAT-PQMS",
-                    //  message: "Do You Want To Submit", icon: Icons.error,
-                    //  yestitle: "Yes",
-                    //  notitle: "No",
-                    //  YesonPressed: () {
-                    //    Navigator.pop(context);
-                    //     submitDetails(args);
-                    //  },
-                    //  NoonPressed: () {
-                    //    Navigator.pop(context);
-                    //  },)
-                      )
-                     );
-                   
-                    
+                    showDialog(
+                        context: context,
+                        builder: ((context) => CustomDialogBoxTwoButtons(
+                              title: 'UAT-PQMS',
+                              descriptions: 'Do You Want To Submit',
+                              Buttontext1: 'No',
+                              Buttontext2: 'Yes',
+                              img: Image.asset("assets/warning.png"),
+                              onButton1Pressed: () {
+                                Navigator.pop(context);
+                              },
+                              onButton2Pressed: () async {
+                                Navigator.pop(context);
+                                var result =
+                                    await Connectivity().checkConnectivity();
+
+                                if (result == ConnectivityResult.mobile ||
+                                    result == ConnectivityResult.wifi) {
+                                  submitDetails(args);
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return SingleButtonDialogBox(
+                                          title: "UAT-PQMS",
+                                          descriptions:
+                                              "Please Check your Internet Connectivity",
+                                          Buttontext: "Ok",
+                                          img:
+                                              Image.asset("assets/caution.png"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          });
+                                    },
+                                  );
+                                }
+                              },
+                            )));
                   },
                 ),
               ),
@@ -299,7 +311,7 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
     importtreatmentSubmit.completedDateofSupervision = args.CompletedDate;
     importtreatmentSubmit.doneByAgency = args.agencyId.toString();
     importtreatmentSubmit.remarks = args.TreatmentRemarks.toString();
-    importtreatmentSubmit.employeeId = args.DutyOfficerId; 
+    importtreatmentSubmit.employeeId = args.DutyOfficerId;
     importtreatmentSubmit.forwardToRole = "Duty officer";
 
     importtreatmentSubmit.toJson();
@@ -333,7 +345,7 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
         var value = args.applicationId;
         print("application id+$value");
         showAlert(_response.data["status_Message"]);
-                print("Data Submitted");
+        print("Data Submitted");
       } else if (importtreatmentSubmitresponse.statusCode == 204) {
         print("NOt submitted");
       }
@@ -345,8 +357,8 @@ class _ImportTreatmentSubmit extends State<ImportTreatmentSubmit> {
       }
     }
   }
-  
-   showAlert(msg) {
+
+  showAlert(msg) {
     showDialog(
       context: context,
       builder: (context) {

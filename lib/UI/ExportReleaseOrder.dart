@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -6,6 +7,7 @@ import 'package:pqms/UI/ExportListItem.dart';
 import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/reusable/CustomColors.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
 
@@ -124,14 +126,15 @@ class _ExportList extends State<ExportList> {
   }
 
   @override
-  void initState() {
+   initState()  {
     // TODO: implement initState
     super.initState();
+
     getDetails();
   }
 
   getDetails() async {
-    var requestURL = BaseUrl.finalURL+EndPoints.getPSCList;
+    var requestURL = BaseUrl.finalURL + EndPoints.getPSCList;
     final requestPayload = {
       "data": "Inspector",
     };

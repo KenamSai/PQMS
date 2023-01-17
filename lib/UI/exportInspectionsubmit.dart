@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
 import 'package:pqms/reusable/TextReusable.dart';
 import 'package:pqms/reusable/alertWithButtonDone.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/reusable/alert_withtwo_buttons.dart';
 import 'package:pqms/reusable/singlebutton_alert.dart';
 import 'package:pqms/routes/AppRoutes.dart';
@@ -286,85 +288,107 @@ class _exportInspectionSubmissionState
                               Navigator.pop(context);
                             },
                             onButton2Pressed: () async {
-                              EasyLoading.show(
-                                  maskType: EasyLoadingMaskType.black,
-                                  status: "Loading...");
-                              final deviceId = await _getId();
-                              //print("id:  $deviceId");
-                              if (id.userimage1!.isNotEmpty) {
-                                final bytes1 =
-                                    File("${id.userimage1}").readAsBytesSync();
-                                image1 = base64Encode(bytes1);
-                              }
-                              if (id.userimage2!.isNotEmpty) {
-                                final bytes2 =
-                                    File("${id.userimage2}").readAsBytesSync();
-                                image2 = base64Encode(bytes2);
-                              }
-                              if (id.userimage3!.isNotEmpty) {
-                                final bytes3 =
-                                    File("${id.userimage3}").readAsBytesSync();
-                                image3 = base64Encode(bytes3);
-                              }
-                              final requestUrl = BaseUrl.finalURL +
-                                  EndPoints.saveExportPermitAction;
-                              final requestPayLoad = {
-                                "role": "Inspector",
-                                "applicationId": id.applicationId,
-                                "noOfSamples": id.noofSamples,
-                                "sampleSize": id.sampleSize,
-                                "inspectionPlace": id.inspectionPlace,
-                                "inspectionDate": id.inspectionDate,
-                                "remarks": id.inspectionRemarks,
-                                "action": "forward",
-                                "employeeId":
-                                    id.dutyofficerId, //pass id not name
-                                "forwardToRole": "Duty officer",
-                                "inptLocation": "17.436858,78.361197",
-                                "deviceId": deviceId,
-                                "inspctArea": "",
-                                "inptDoc1": id.userimage1!.isNotEmpty
-                                    ? image1
-                                    : id.userimage1,
-                                "inptDoc2": id.userimage2!.isNotEmpty
-                                    ? image2
-                                    : id.userimage2,
-                                "inptDoc3": id.userimage3!.isNotEmpty
-                                    ? image3
-                                    : id.userimage3
-                              };
-                              final token = await SharedPreferencesClass()
-                                  .readTheData(PreferenceConst.token);
-                              final username = await SharedPreferencesClass()
-                                  .readTheData(PreferenceConst.username);
-                              final requestHeaders = {
-                                "clientId": "Client123Cgg",
-                                "token": token.toString(),
-                                "userName": username.toString(),
-                              };
-                              final _dioObject = Dio();
+                              var result =
+                                  await Connectivity().checkConnectivity();
 
-                              try {
-                                final _response = await _dioObject.post(
-                                  requestUrl,
-                                  data: requestPayLoad,
-                                  options: Options(headers: requestHeaders),
-                                );
-                                if (_response.data["status_Code"] == 200) {
-                                  //print("${_response.data["status_Message"]}");
-                                  final value = await DatabaseHelper.instance
-                                      .deleteTheRequired(
-                                          id.applicationId ?? "",
-                                          DatabaseHelper.ExportInspectiontable,
-                                          "applicationId");
-                                  print("count:$value");
-                                  EasyLoading.dismiss();
-                                  Navigator.pop(context);
-                                  showAlert(_response.data["status_Message"]
-                                      .toString());
+                              if (result == ConnectivityResult.mobile ||
+                                  result == ConnectivityResult.wifi) {
+                                EasyLoading.show(
+                                    maskType: EasyLoadingMaskType.black,
+                                    status: "Loading...");
+                                final deviceId = await _getId();
+                                //print("id:  $deviceId");
+                                if (id.userimage1!.isNotEmpty) {
+                                  final bytes1 = File("${id.userimage1}")
+                                      .readAsBytesSync();
+                                  image1 = base64Encode(bytes1);
                                 }
-                              } on DioError catch (e) {
-                                print("error");
+                                if (id.userimage2!.isNotEmpty) {
+                                  final bytes2 = File("${id.userimage2}")
+                                      .readAsBytesSync();
+                                  image2 = base64Encode(bytes2);
+                                }
+                                if (id.userimage3!.isNotEmpty) {
+                                  final bytes3 = File("${id.userimage3}")
+                                      .readAsBytesSync();
+                                  image3 = base64Encode(bytes3);
+                                }
+                                final requestUrl = BaseUrl.finalURL +
+                                    EndPoints.saveExportPermitAction;
+                                final requestPayLoad = {
+                                  "role": "Inspector",
+                                  "applicationId": id.applicationId,
+                                  "noOfSamples": id.noofSamples,
+                                  "sampleSize": id.sampleSize,
+                                  "inspectionPlace": id.inspectionPlace,
+                                  "inspectionDate": id.inspectionDate,
+                                  "remarks": id.inspectionRemarks,
+                                  "action": "forward",
+                                  "employeeId":
+                                      id.dutyofficerId, //pass id not name
+                                  "forwardToRole": "Duty officer",
+                                  "inptLocation": "17.436858,78.361197",
+                                  "deviceId": deviceId,
+                                  "inspctArea": "",
+                                  "inptDoc1": id.userimage1!.isNotEmpty
+                                      ? image1
+                                      : id.userimage1,
+                                  "inptDoc2": id.userimage2!.isNotEmpty
+                                      ? image2
+                                      : id.userimage2,
+                                  "inptDoc3": id.userimage3!.isNotEmpty
+                                      ? image3
+                                      : id.userimage3
+                                };
+                                final token = await SharedPreferencesClass()
+                                    .readTheData(PreferenceConst.token);
+                                final username = await SharedPreferencesClass()
+                                    .readTheData(PreferenceConst.username);
+                                final requestHeaders = {
+                                  "clientId": "Client123Cgg",
+                                  "token": token.toString(),
+                                  "userName": username.toString(),
+                                };
+                                final _dioObject = Dio();
+
+                                try {
+                                  final _response = await _dioObject.post(
+                                    requestUrl,
+                                    data: requestPayLoad,
+                                    options: Options(headers: requestHeaders),
+                                  );
+                                  if (_response.data["status_Code"] == 200) {
+                                    //print("${_response.data["status_Message"]}");
+                                    final value = await DatabaseHelper.instance
+                                        .deleteTheRequired(
+                                            id.applicationId ?? "",
+                                            DatabaseHelper
+                                                .ExportInspectiontable,
+                                            "applicationId");
+                                    print("count:$value");
+                                    EasyLoading.dismiss();
+                                    Navigator.pop(context);
+                                    showAlert(_response.data["status_Message"]
+                                        .toString());
+                                  }
+                                } on DioError catch (e) {
+                                  print("error");
+                                }
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return SingleButtonDialogBox(
+                                        title: "UAT-PQMS",
+                                        descriptions:
+                                            "Please Check your Internet Connectivity",
+                                        Buttontext: "Ok",
+                                        img: Image.asset("assets/caution.png"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        });
+                                  },
+                                );
                               }
                             });
                       },

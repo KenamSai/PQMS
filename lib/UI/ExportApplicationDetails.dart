@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -9,6 +10,7 @@ import 'package:pqms/baseurl_and_endpoints/baseurl.dart';
 import 'package:pqms/baseurl_and_endpoints/endpoints.dart';
 import 'package:pqms/db/DatabaseHelper.dart';
 import 'package:pqms/reusable/CustomColors.dart';
+import 'package:pqms/reusable/alert_singlebutton.dart';
 import 'package:pqms/routes/AppRoutes.dart';
 import 'package:pqms/sharedpreference/preference.dart';
 import 'package:pqms/sharedpreference/sharedpreference.dart';
@@ -346,7 +348,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
                         Navigator.pushNamed(
                             context, AppRoutes.importTransactionDetails,
                             arguments: exportmodelDetails?.applicationId);
-                        EasyLoading.show(status: "Loading...");
+                        
                       }),
                       child: Container(
                         decoration: BoxDecoration(
@@ -477,22 +479,44 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration.zero).then((value) {
+    Future.delayed(Duration.zero).then((value) async {
       final id = ModalRoute.of(context)?.settings.arguments as String;
-      //print(id);
-      getApplnDetails(id);
+      var result = await Connectivity().checkConnectivity();
+
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
+             FocusScope.of(context).unfocus();
+        await EasyLoading.show(status: "Loading...");
+        getApplnDetails(id);
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return SingleButtonDialogBox(
+                title: "UAT-PQMS",
+                descriptions: "Please Check your Internet Connectivity",
+                Buttontext: "Ok",
+                img: Image.asset("assets/caution.png"),
+                onPressed: () {
+                 Navigator.popUntil(
+                context,
+                ModalRoute.withName("/export release order"));
+                });
+          },
+        );
+      }
     });
   }
 
   RowComponent(var data, var value) {
     return Padding(
-      padding: const EdgeInsets.only(top: 4, left: 10, bottom: 3),
+      padding: const EdgeInsets.only(top: 5, left: 10, bottom: 5),
       child: Row(
         children: [
           Expanded(
             child: Text(
               data.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              style: TextStyle(fontWeight: FontWeight.bold, )//fontSize: 17
             ),
           ),
           SizedBox(
@@ -501,7 +525,7 @@ class _ExportApplicationDetailsState extends State<ExportApplicationDetails> {
           Expanded(
             child: Text(
               value.toString(),
-              style: TextStyle(fontSize: 17),
+             // style: TextStyle(fontSize: 17),
             ),
           )
         ],

@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -143,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.black.withOpacity(0.2),
                         child: TextButton(
                           onPressed: () async {
+                          onPressed: () async {
                             if (validation()) {
                               var result =
                                   await Connectivity().checkConnectivity();
@@ -280,6 +282,13 @@ class _LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (context) {
             return SingleButtonDialogBox(
+                title: "UAT-PQMS",
+                descriptions: loginResponse.statusMessage!,
+                Buttontext: "Ok",
+                img: Image.asset("assets/caution.png"),
+                onPressed: () {
+                  Navigator.pop(context);
+                });
                 title: "UAT-PQMS",
                 descriptions: loginResponse.statusMessage!,
                 Buttontext: "Ok",

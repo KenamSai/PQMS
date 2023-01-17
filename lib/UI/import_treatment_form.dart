@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -183,7 +184,7 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                 Expanded(
                                   flex: 1,
                                   child: IconButton(
-                                    onPressed: (() {
+                                    onPressed: (() async {
                                       DutyOfficersList.forEach((element) async {
                                         final count = await DatabaseHelper
                                             .instance
@@ -195,7 +196,28 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                         DutyOfficersList.clear();
                                         //selectedValue="";
                                       });
-                                      getDutyOffcersList();
+                                      var result = await Connectivity()
+                                          .checkConnectivity();
+                                      if (result == ConnectivityResult.mobile ||
+                                          result == ConnectivityResult.wifi) {
+                                        getDutyOffcersList();
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return SingleButtonDialogBox(
+                                                title: "UAT-PQMS",
+                                                descriptions:
+                                                    "Please Check your Internet Connectivity",
+                                                Buttontext: "Ok",
+                                                img: Image.asset(
+                                                    "assets/caution.png"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                });
+                                          },
+                                        );
+                                      }
                                     }),
                                     icon: Icon(
                                       Icons.repeat_outlined,
@@ -488,9 +510,9 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                               Buttontext2: "Yes",
                               img: Image.asset("assets/warning.png"),
                               onButton1Pressed: (() async {
-                                 Navigator.pop(context);
+                                Navigator.pop(context);
                               }),
-                              onButton2Pressed: (() async{
+                              onButton2Pressed: (() async {
                                 final data = ImportTreatmentModelClass(
                                   applicationId: id,
                                   Dutyofficer: selectedValue,
@@ -535,25 +557,23 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
                                 print(entries);
                                 Navigator.pop(context);
                                 showDialog(
-      context: context,
-      builder: (context) {
-        return alertWithButton(
-            title: "UAT-PQMS",
-            descriptions: "Data Saved Successfully",
-            Buttontext: "Ok",
-            img: Image.asset("assets/correct.png"),
-            onButtonPressed: () {
-              Navigator.popUntil(
-                context,
-                ModalRoute.withName(AppRoutes.importApplDetails),
-              );
-            });
-      },
-    );
-                               
-                              }))
-                          
-                          );
+                                  context: context,
+                                  builder: (context) {
+                                    return alertWithButton(
+                                        title: "UAT-PQMS",
+                                        descriptions: "Data Saved Successfully",
+                                        Buttontext: "Ok",
+                                        img: Image.asset("assets/correct.png"),
+                                        onButtonPressed: () {
+                                          Navigator.popUntil(
+                                            context,
+                                            ModalRoute.withName(
+                                                AppRoutes.importApplDetails),
+                                          );
+                                        });
+                                  },
+                                );
+                              })));
                     }
                   },
                 ),
@@ -570,14 +590,52 @@ class _ImportTreatmentForm extends State<ImportTreatmentForm> {
     _TreatmentDate.text = "";
     _CompletedDate.text = "";
     _getCurrentPosition();
-    dbRetrieve().then((value) {
+    dbRetrieve().then((value) async {
       if (DutyOfficersList.isEmpty) {
-        getDutyOffcersList();
+        var result = await Connectivity().checkConnectivity();
+
+        if (result == ConnectivityResult.mobile ||
+            result == ConnectivityResult.wifi) {
+          getDutyOffcersList();
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return SingleButtonDialogBox(
+                  title: "UAT-PQMS",
+                  descriptions: "Please Check your Internet Connectivity",
+                  Buttontext: "Ok",
+                  img: Image.asset("assets/caution.png"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  });
+            },
+          );
+        }
       }
     });
-    dbRetrieveAgencyList().then((value) {
+    dbRetrieveAgencyList().then((value) async {
       if (AgencyNameID.isEmpty) {
-        getAgencyList();
+        var result = await Connectivity().checkConnectivity();
+
+        if (result == ConnectivityResult.mobile ||
+            result == ConnectivityResult.wifi) {
+          getAgencyList();
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return SingleButtonDialogBox(
+                  title: "UAT-PQMS",
+                  descriptions: "Please Check your Internet Connectivity",
+                  Buttontext: "Ok",
+                  img: Image.asset("assets/caution.png"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  });
+            },
+          );
+        }
       }
     });
   }
